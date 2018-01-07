@@ -1,0 +1,104 @@
+# Copyright (C) 2017 WP Charitable
+# This file is distributed under the same license as the Charitable - Anonymous Donations package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Charitable - Anonymous Donations 1.2.1\n"
+"Report-Msgid-Bugs-To: "
+"http://wordpress.org/support/plugin/charitable-anonymous\n"
+"POT-Creation-Date: 2017-12-12 23:55:56+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+
+#: build/charitable-anonymous/includes/admin/views/anonymous-donation-note.php:16
+#: includes/admin/views/anonymous-donation-note.php:16
+msgid "Donation made anonymously."
+msgstr ""
+
+#: build/charitable-anonymous/includes/charitable-anonymous-core-functions.php:60
+#: includes/charitable-anonymous-core-functions.php:60
+msgid "Yes"
+msgstr ""
+
+#: build/charitable-anonymous/includes/charitable-anonymous-core-functions.php:60
+#: includes/charitable-anonymous-core-functions.php:60
+msgid "No"
+msgstr ""
+
+#: build/charitable-anonymous/includes/class-charitable-anonymous.php:325
+#: build/charitable-anonymous/includes/class-charitable-anonymous.php:336
+#: includes/class-charitable-anonymous.php:325
+#: includes/class-charitable-anonymous.php:336
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: build/charitable-anonymous/includes/class-charitable-extension-activation.php:45
+#: includes/class-charitable-extension-activation.php:45
+msgid "This plugin"
+msgstr ""
+
+#: build/charitable-anonymous/includes/class-charitable-extension-activation.php:81
+#: includes/class-charitable-extension-activation.php:81
+msgid "activate it"
+msgstr ""
+
+#: build/charitable-anonymous/includes/class-charitable-extension-activation.php:84
+#: includes/class-charitable-extension-activation.php:84
+msgid "install it"
+msgstr ""
+
+#: build/charitable-anonymous/includes/class-charitable-extension-activation.php:87
+#: includes/class-charitable-extension-activation.php:87
+msgid " requires Charitable! Please %s to continue!"
+msgstr ""
+
+#: build/charitable-anonymous/includes/donation-form/class-charitable-anonymous-donation-form.php:66
+#: includes/donation-form/class-charitable-anonymous-donation-form.php:66
+msgid "Keep donation anonymous"
+msgstr ""
+
+#: build/charitable-anonymous/includes/users/class-charitable-anonymous-donor.php:102
+#: build/charitable-anonymous/includes/users/class-charitable-anonymous-donor.php:142
+#: includes/users/class-charitable-anonymous-donor.php:110
+msgid "Anonymous"
+msgstr ""
+
+#: build/charitable-anonymous/includes/widgets/class-charitable-anonymous-donors-widget.php:68
+#: includes/widgets/class-charitable-anonymous-donors-widget.php:68
+msgid "Hide anonymous donors"
+msgstr ""
+
+#: build/charitable-anonymous/templates/donation-form-field.php:19
+#: build/charitable-anonymous/templates/easy-digital-downloads/checkout-form-field.php:21
+#: templates/donation-form-field.php:19
+#: templates/easy-digital-downloads/checkout-form-field.php:21
+msgid "I would like to make my donation anonymously."
+msgstr ""
+
+#: tests/helpers/edd/class-helper-payment.php:120
+msgid "PayPal Transaction ID: %s"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Charitable - Anonymous Donations"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.wpcharitable.com/extensions/charitable-anonymous-donations/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Allow your supporters to donate anonymously."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WP Charitable"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.wpcharitable.com"
+msgstr ""

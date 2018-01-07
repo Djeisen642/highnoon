@@ -1,0 +1,222 @@
+/* 
+ * Clearfix helper class.
+ * Credit: h5bp.com/q
+ */
+.cf {
+  *zoom: 1; }
+  .cf:before, .cf:after {
+    content: " ";
+    display: table; }
+  .cf:after {
+    clear: both; }
+
+/* 
+ * Media block
+ *
+ * Credit: http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+ */
+.charitable-media-block {
+  overflow: hidden; }
+  .charitable-media-block .charitable-media-image {
+    float: left;
+    margin-right: 12px; }
+    .charitable-media-block .charitable-media-image img {
+      display: block; }
+  .charitable-media-block .charitable-media-body {
+    overflow: hidden; }
+
+.charitable-metabox.postbox {
+  min-width: 0;
+  padding: 0 0 24px 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  box-shadow: none; }
+  .charitable-metabox.postbox .inside {
+    margin-top: 0;
+    padding: 0; }
+.charitable-metabox .postbox-title {
+  padding: 0 0 6px 0; }
+.charitable-metabox .handlediv,
+.charitable-metabox .hndle {
+  display: none; }
+.charitable-metabox input,
+.charitable-metabox textarea {
+  padding: 14px 10px;
+  width: 100%; }
+.charitable-metabox input[type=checkbox],
+.charitable-metabox input[type=radio],
+.charitable-metabox input[type=button],
+.charitable-metabox input[type=submit] {
+  width: auto; }
+.charitable-metabox .charitable-metabox-title {
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 6px; }
+.charitable-metabox .charitable-helper {
+  display: block;
+  padding-top: 6px;
+  font-style: italic; }
+.charitable-metabox .charitable-metabox .charitable-metabox-wrap {
+  margin-bottom: 24px; }
+.charitable-metabox .charitable-metabox label {
+  display: block;
+  margin-bottom: 6px; }
+.charitable-metabox .charitable-metabox .widefat th {
+  font-size: 13px; }
+.charitable-metabox .charitable-metabox .widefat tbody th {
+  width: 33%;
+  border-right: 1px solid #e1e1e1;
+  background: #f5f5f5; }
+.charitable-metabox .charitable-metabox .widefat .remove-col,
+.charitable-metabox .charitable-metabox .widefat .reorder-col {
+  vertical-align: middle;
+  text-align: center; }
+  .charitable-metabox .charitable-metabox .widefat .remove-col span,
+  .charitable-metabox .charitable-metabox .widefat .reorder-col span {
+    font-size: 20px;
+    color: #aaa; }
+    .charitable-metabox .charitable-metabox .widefat .remove-col span:hover,
+    .charitable-metabox .charitable-metabox .widefat .reorder-col span:hover {
+      color: #444; }
+.charitable-metabox .charitable-metabox .widefat .reorder-col {
+  width: 10px;
+  padding-right: 0; }
+  .charitable-metabox .charitable-metabox .widefat .reorder-col span {
+    cursor: move; }
+.charitable-metabox .charitable-metabox .widefat .remove-col {
+  width: 20px;
+  padding-left: 0; }
+  .charitable-metabox .charitable-metabox .widefat .remove-col span {
+    cursor: pointer; }
+.charitable-metabox .charitable-metabox .widefat .ui-sortable-helper {
+  border: 1px solid #ddd;
+  background: #efefef; }
+.charitable-metabox .charitable-checkbox-wrap label {
+  display: inline-block; }
+.charitable-metabox .table-header {
+  background: #f5f5f5; }
+  .charitable-metabox .table-header label {
+    margin-bottom: 0;
+    font-weight: bold; }
+.charitable-metabox .charitable-metabox-header {
+  margin: 24px 0; }
+.charitable-metabox .inside > .charitable-metabox-header:first-child {
+  margin-top: 0; }
+
+.charitable-metabox-block {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #dedede; }
+
+body.post-type-donation .postbox-container .empty-container,
+body.post-type-campaign .postbox-container .empty-container {
+  border: none;
+  height: auto; }
+
+body.post-type-donation #post-body-content,
+body.post-type-donation #titlediv,
+body.post-type-donation .page-title-action {
+  display: none; }
+body.post-type-donation .closed .inside {
+  display: block; }
+
+#donation-overview .charitable-metabox {
+  *zoom: 1; }
+  #donation-overview .charitable-metabox:before, #donation-overview .charitable-metabox:after {
+    content: " ";
+    display: table; }
+  #donation-overview .charitable-metabox:after {
+    clear: both; }
+#donation-overview .postbox-title,
+#donation-overview .hndle {
+  display: none; }
+#donation-overview .inside {
+  margin: 0;
+  padding: 0; }
+#donation-overview #donor {
+  float: left;
+  padding: 20px 10px 40px 20px;
+  width: 300px;
+  max-width: 67%; }
+#donation-overview .donor-name {
+  font-weight: normal; }
+#donation-overview h3 {
+  margin: 0 0 0.5em;
+  padding: 0;
+  font-size: 1.3em; }
+#donation-overview #donation-summary {
+  float: right;
+  padding: 20px 20px 40px 0;
+  max-width: 33%;
+  text-align: right; }
+#donation-overview .donation-date,
+#donation-overview .donation-status {
+  display: block;
+  margin-bottom: 6px; }
+#donation-overview .donation-status .status {
+  font-weight: bolder; }
+#donation-overview table#overview {
+  float: left;
+  width: 100%;
+  border-spacing: 0; }
+  #donation-overview table#overview thead th {
+    padding: 0 0 0.8em; }
+  #donation-overview table#overview .col-campaign-name {
+    padding-left: 20px;
+    text-align: left; }
+  #donation-overview table#overview .col-campaign-donation-amount {
+    padding-right: 20px;
+    text-align: right; }
+  #donation-overview table#overview tbody td {
+    padding: 2em 0;
+    border-top: 1px solid #e5e5e5; }
+  #donation-overview table#overview tbody tr:last-child td {
+    border-bottom: 1px solid #e5e5e5; }
+  #donation-overview table#overview .campaign-name {
+    padding-left: 20px;
+    font-size: 18px; }
+  #donation-overview table#overview .campaign-donation-amount {
+    padding-right: 20px;
+    font-size: 16px;
+    text-align: right; }
+  #donation-overview table#overview tfoot td,
+  #donation-overview table#overview tfoot th {
+    padding: 0.8em 20px 0.8em 0;
+    background-color: #f8f8f8;
+    text-align: right; }
+
+#donation-details,
+#donation-log {
+  padding: 12px 8px; }
+
+#donation-details dt {
+  font-weight: bold;
+  margin-bottom: 0.5em; }
+#donation-details dd {
+  margin: 0 0 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #e5e5e5; }
+  #donation-details dd:last-child {
+    border-bottom: none;
+    padding-bottom: 0; }
+
+#donation-log thead th {
+  background: #f8f8f8; }
+#donation-log tbody td {
+  border-bottom: 1px solid #e5e5e5; }
+
+.edit-php.post-type-recurring_donation .wp-list-table .column-post_status mark.charitable-processing {
+  background-color: #ffb733;
+  border-color: #ffa500; }
+.edit-php.post-type-recurring_donation .wp-list-table .column-post_status mark.charitable-active {
+  background-color: #00b300;
+  border-color: #008000; }
+.edit-php.post-type-recurring_donation .wp-list-table .column-post_status mark.charitable-onhold {
+  background-color: #ffb733;
+  border-color: #ffa500; }
+.edit-php.post-type-recurring_donation .wp-list-table .column-post_status mark.charitable-cancelled {
+  background-color: #e6e6e6;
+  border-color: #CCC; }
+
+/*# sourceMappingURL=charitable-recurring-admin.css.map */

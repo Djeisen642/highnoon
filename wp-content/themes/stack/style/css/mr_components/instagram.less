@@ -1,0 +1,40 @@
+// MARKUP:
+//
+// <div class="instafeed gallery--gaps" data-user-name="funsizeco" data-fetch-count="16" data-grid="4"></div>
+//
+// MODIFIERS:
+// [data-fetch-count] - maximum 20 of photos to pull from Instagram
+// [data-grid] - how many photos per row
+// .gallery--gaps - make whitespace around each photo
+// .instafeed--background - make the feed appear like a 'poster' for another div or section
+
+
+.instafeed{
+	overflow: hidden;
+	display: inline-block;
+	ul{
+		overflow: hidden;
+		display: inline-block;
+	}
+	li{
+		float: left;
+		img{
+			margin: 0;
+		}
+	}
+	
+	&.instafeed--background{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 0;
+	}
+	
+	&.gallery--gaps{
+		li{
+			padding: @default-gap-padding;
+		}
+	}
+}

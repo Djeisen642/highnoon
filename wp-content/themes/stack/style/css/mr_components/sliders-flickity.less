@@ -1,0 +1,109 @@
+// MARKUP:
+// <div || section class="slider" data-animation="fade" data-arrows="true" data-pageing="false" data-timing="5000">
+//  <ul class="slides">
+//    <li>
+//      ...
+//    </li>
+//  </ul>
+// </div>
+//
+// MODIFIERS
+// [data-animation] - can be 'slider' or 'fade'
+// [data-arrows] - T/F do you want navigation arrows (left/right)?
+// [data-paging] - T/F do you want paging navigation?
+// [data-timing] - How long in ms for each slide?
+// .slider-controls--white - For the sliders controls to be white
+
+
+section.slider{
+	padding: 0 !important;
+	overflow: hidden;
+	position: relative;
+}
+
+.slides{
+	margin: 0;
+	overflow: hidden;
+}
+
+.heightSlides(@number) when (@number > 0){
+	.heightSlides((@number - 1));
+	@multiplier: @number*10;
+	&.height-@{multiplier}{
+		height: auto;
+		min-height: none;
+		.slides .flickity-slider li{
+			height: @number*10vh;
+			min-height: @number*10vh;
+			padding: 0;
+		}
+	}
+}
+
+.slider{
+	position: relative;
+	overflow: hidden;
+	.slides li{
+		position: relative;
+		padding: @standard-space-n 0;
+	}
+	&.space--lg{
+		.slides li{
+			padding: @standard-space-n * 2 0;
+		}
+	}
+	&.space--xlg{
+		.slides li{
+			padding: @standard-space-n * 4 0;
+		}
+	}
+	.heightSlides(10);
+	&.slider-controls--white{
+
+	}
+}
+
+.slider[data-animation="slide"]{
+	.slides{
+		li{
+			-webkit-backface-visibility: hidden;
+		}
+	}
+}
+
+@media all and (max-width: 767px){
+	.slider{
+		&[class*='height-']{
+			.slides li{
+				height: auto;
+				padding: @standard-space-n 0;
+			}
+		}
+		&.space--lg{
+			.slides li{
+				padding: @standard-space-mobile * 2 0;
+			}
+		}
+		&.space--xlg{
+			.slides li{
+				padding: @standard-space-mobile * 2 0;
+			}
+		}
+	}
+}
+
+
+
+.flickity-slider{
+	> li{
+		width: 100%;
+	}
+}
+
+.imagebg:not(.image--light){
+	.flickity-page-dots{
+		.dot{
+			background: #fff;
+		}
+	}
+}

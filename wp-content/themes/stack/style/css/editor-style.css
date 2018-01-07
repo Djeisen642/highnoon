@@ -1,0 +1,9 @@
+@import url('theme.css');
+
+body#tinymce {
+	padding: 10px;
+}
+img {
+	max-width: 100%;
+	height: auto;
+}

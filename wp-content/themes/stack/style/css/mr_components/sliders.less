@@ -1,0 +1,191 @@
+// MARKUP:
+// <div || section class="slider" data-animation="fade" data-arrows="true" data-pageing="false" data-timing="5000">
+//  <ul class="slides">
+//    <li>
+//      ...
+//    </li>
+//  </ul>
+// </div>
+//
+// MODIFIERS
+// [data-animation] - can be 'slider' or 'fade'
+// [data-arrows] - T/F do you want navigation arrows (left/right)?
+// [data-paging] - T/F do you want paging navigation?
+// [data-timing] - How long in ms for each slide?
+// .slider-controls--white - For the sliders controls to be white
+
+
+section.slider{
+	padding: 0 !important;
+	overflow: hidden;
+	position: relative;
+}
+
+.slides{
+	margin: 0;
+	overflow: hidden;
+}
+
+.heightSlides(@number) when (@number > 0){
+	.heightSlides((@number - 1));
+	@multiplier: @number*10;
+	&.height-@{multiplier}{
+		height: auto;
+		.slides li{
+			height: @number*10vh;
+			padding: 0;
+		}
+	}
+}
+
+.slider{
+	position: relative;
+	overflow: hidden;
+	.slides li{
+		position: relative;
+		padding: @standard-space-n 0;
+	}
+	&.space--lg{
+		.slides li{
+			padding: @standard-space-n * 2 0;
+		}
+	}
+	&.space--xlg{
+		.slides li{
+			padding: @standard-space-n * 4 0;
+		}
+	}
+	&:hover{
+		.flex-direction-nav{
+			a{
+				opacity: 1;
+			}
+		}
+	}
+	.heightSlides(10);
+	&.slider-controls--white{
+		.flex-direction-nav{
+			a{
+				color: #fff;
+			}
+		}
+		.flex-control-paging{
+			a{
+				background: #fff;
+			}
+		}
+	}
+}
+
+.slider[data-animation="slide"]{
+	.slides{
+		li{
+			-webkit-backface-visibility: hidden;
+		}
+	}
+}
+
+@media all and (max-width: 767px){
+	.slider{
+		&[class*='height-']{
+			.slides li{
+				height: auto;
+				padding: @standard-space-n 0;
+			}
+		}
+		&.space--lg{
+			.slides li{
+				padding: @standard-space-mobile * 2 0;
+			}
+		}
+		&.space--xlg{
+			.slides li{
+				padding: @standard-space-mobile * 2 0;
+			}
+		}
+	}
+}
+
+.flex-control-paging{
+	padding: 0 1em;
+	bottom: 1em;
+	z-index: 99;
+	text-align: @slider-paging-alignment;
+	li{
+		margin: 0 @slider-paging-spacing;
+		overflow: hidden;
+		a{
+			height: @slider-paging-height;
+			width: @slider-paging-width;
+			border-radius: @slider-paging-radius;
+			background: @slider-paging-bg;
+			border: @slider-paging-border;
+			box-shadow: none;
+			&.flex-active{
+				background: @slider-paging-bg-active;
+			}
+			&:hover{
+				background: @slider-paging-bg-active;
+			}
+		}
+	}
+}
+
+.flex-direction-nav{
+	a{
+		.transition(0.3s,ease);
+		text-shadow: none;
+		opacity: 0;
+		color: #fff;
+		&:before{
+			font-family: @slider-arrow-font;
+			font-size: @slider-arrow-size;
+		}
+	}
+	a.flex-prev{
+		left: 1em;
+		&:before{ 
+			content: @slider-arrow-left;
+		}
+	}
+	a.flex-next{
+		right: 1em;
+		&:before{ 
+			content: @slider-arrow-right;
+		}
+	}
+}
+
+@media all and (max-width: 767px){
+	.flex-direction-nav{
+		display: none;
+	}
+}
+
+.slider.slider--controlsoutside{
+	overflow: visible;
+	.slides li{
+		padding: 0;
+	}
+	&[data-paging="true"]{
+		.flex-control-paging{
+			position: relative;
+			margin-top: 2em;
+			li{
+				a{
+					box-shadow: none;
+				}
+			}
+		}
+	}
+	&[data-arrows="true"]{
+		.flex-direction-nav{
+			a.flex-prev{
+				left: -4em;
+			}
+			a.flex-next{
+				right: -4em;
+			}
+		}
+	}
+}

@@ -1,0 +1,856 @@
+# Copyright (C) 2017 Kathy Darling
+# This file is distributed under the same license as the Charitable - Recurring Donations package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Charitable - Recurring Donations 1.0.7\n"
+"Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
+"POT-Creation-Date: 2017-10-10 05:38:56+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: WP-Translations (http://wp-translations.org/)\n"
+"Language-Team: WP-Translations <wpt@wp-translations.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:79
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:135
+msgid "Suggested Recurring Donation Amounts"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:82
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:83
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:138
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:139
+#: templates/donation-receipt/recurring-details.php:29
+msgid "Amount"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:86
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:142
+msgid "Description (optional)"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:87
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:143
+msgid "Optional Description"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:121
+msgid "Recurring Donations Mode"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:124
+msgid "Simple &mdash; Allow donors to make their donation recurring"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:125
+msgid "Advanced &mdash; Define unique giving options for recurring donations"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:126
+msgid "Disabled &mdash; No recurring donations are accepted"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:151
+msgid "Default Tab"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:154
+msgid "One Time Donation Amounts"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-recurring-campaign-meta.php:155
+msgid "Recurring Donation Amounts"
+msgstr ""
+
+#: includes/admin/class-charitable-recurring-admin.php:227
+#. translators: placeholder is a number
+msgid "We can't find a recurring donation with ID #%d. Perhaps it was deleted?"
+msgstr ""
+
+#: includes/admin/class-charitable-recurring-admin.php:232
+msgid "Showing donations for %sRecurring Donation #%s%s"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:151
+msgid "Donation Overview"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:157
+msgid "Donation Details"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:163
+msgid "Donation Log"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:183
+msgid "Recurring Donation updated. <a href=\"%s\">View Recurring Donation</a>"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:184
+msgid "Custom field updated."
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:185
+msgid "Custom field deleted."
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:186
+msgid "Recurring Donation updated."
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:187
+msgid "Recurring Donation restored to revision from %s"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:188
+msgid "Recurring Donation published. <a href=\"%s\">View Recurring Donation</a>"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:189
+msgid "Recurring Donation saved."
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:190
+msgid ""
+"Recurring Donation submitted. <a target=\"_blank\" href=\"%s\">Preview "
+"Recurring Donation</a>"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:191
+msgid ""
+"Recurring Donation scheduled for: <strong>%1$s</strong>. <a "
+"target=\"_blank\" href=\"%2$s\">Preview Recurring Donation</a>"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:192
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:193
+msgid ""
+"Recurring Donation draft updated. <a target=\"_blank\" href=\"%s\">Preview "
+"Recurring Donation</a>"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:212
+#: includes/class-charitable-recurring-post-types.php:99
+msgid "Recurring Donation"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:213
+msgid "Amount Donated"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:214
+msgid "Campaign(s)"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:215
+msgid "Date"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:216
+msgid "Related Donations"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:217
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:36
+#: templates/donation-receipt/recurring-details.php:26
+msgid "Status"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:242
+msgid "View Donation Details"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:364
+msgid "View Details"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:365
+msgid "View"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:408
+#: includes/admin/views/recurring-donations-page/export-form.php:28
+#: includes/admin/views/recurring-donations-page/filter-form.php:35
+msgid "All"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:567
+msgid "Recurring donation status changed."
+msgid_plural "%s recurring donation statuses changed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:582
+msgid "%d recurring donation updated."
+msgid_plural "%d recurring donations updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:583
+msgid "1 recurring donation not updated, somebody is editing it."
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:584
+msgid "%s recurring donation not updated, somebody is editing it."
+msgid_plural "%s recurring donations not updated, somebody is editing them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:585
+msgid "%s recurring donation permanently deleted."
+msgid_plural "%s recurring donations permanently deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:586
+msgid "%s recurring donation moved to the Trash."
+msgid_plural "%s recurring donations moved to the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:587
+msgid "%s recurring donation restored from the Trash."
+msgid_plural "%s recurring donations restored from the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:161
+msgid "Recurring Donation ID"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:162
+msgid "Campaign ID"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:163
+msgid "Campaign Title"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:164
+msgid "Billing Period"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:165
+msgid "Billing Amount"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:166
+msgid "Total Amount Donated"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:167
+#: templates/donation-receipt/recurring-details.php:27
+msgid "Start Date"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:168
+msgid "Start Time"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:169
+msgid "End Date"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:170
+msgid "Donor First Name"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:171
+msgid "Donor Last Name"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:172
+msgid "Donor Email"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:173
+msgid "Address"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:174
+msgid "Address 2"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:175
+msgid "City"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:176
+msgid "State"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:177
+msgid "Postcode"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:178
+msgid "Country"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:179
+msgid "Phone Number"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:180
+msgid "Address Formatted"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:181
+msgid "Recurring Donation Status"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-recurring-donations.php:182
+msgid "Recurring Donation Gateway"
+msgstr ""
+
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-recurring-amounts.php:50
+msgid "No suggested amounts have been created yet."
+msgstr ""
+
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-recurring-amounts.php:91
+msgid "+ Add a Suggested Amount"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:32
+msgid "Donation"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:42
+msgid "Campaign"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:43
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:56
+msgid "Total"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:60
+msgid "Payment Method"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:64
+msgid "Change Status"
+msgstr ""
+
+#: includes/admin/views/metaboxes/donation/recurring-donation-overview.php:75
+msgid "Update Status"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:15
+#: includes/class-charitable-recurring-post-types.php:98
+msgid "Recurring Donations"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:21
+msgid "Export Recurring Donations"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:26
+#: includes/admin/views/recurring-donations-page/filter-form.php:33
+msgid "Filter by Status"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:33
+#: includes/admin/views/recurring-donations-page/filter-form.php:40
+msgid "Filter by Campaign"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:35
+#: includes/admin/views/recurring-donations-page/filter-form.php:42
+msgid "All Campaigns"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:41
+msgid "Type of Report"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/export-form.php:51
+msgid "Export"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filter-form.php:25
+msgid "Filter Recurring Donations"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filter-form.php:29
+msgid "Filter by Date"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filter-form.php:30
+msgid "From:"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filter-form.php:31
+msgid "To:"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filter-form.php:49
+#: includes/admin/views/recurring-donations-page/filters.php:11
+msgid "Filter"
+msgstr ""
+
+#: includes/admin/views/recurring-donations-page/filters.php:14
+msgid "Clear Filters"
+msgstr ""
+
+#: includes/charitable-recurring-core-functions.php:137
+#. translators: 1$: <price> / 2$: <interval> (e.g. "$15 / month" or "$15 every
+#. 2nd month")
+msgid "%1$s / %2$s"
+msgid_plural " %1$s every %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/charitable-recurring-core-functions.php:142
+#. translators: 1$: recurring string (e.g. "$15 on March 15th every 3 years"),
+#. 2$: lenght (e.g. "for 6 years")
+msgid "%1$s for %2$s"
+msgstr ""
+
+#: includes/charitable-recurring-core-functions.php:162
+msgid "day"
+msgid_plural "%s days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/charitable-recurring-core-functions.php:163
+msgid "week"
+msgid_plural "%s weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/charitable-recurring-core-functions.php:164
+msgid "month"
+msgid_plural "%s months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/charitable-recurring-core-functions.php:165
+msgid "year"
+msgid_plural "%s years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-extension-activation.php:45
+msgid "This plugin"
+msgstr ""
+
+#: includes/class-charitable-extension-activation.php:81
+msgid "activate it"
+msgstr ""
+
+#: includes/class-charitable-extension-activation.php:84
+msgid "install it"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:101
+msgid "Add Recurring Donation"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:102
+msgid "Add New Recurring Donation"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:103
+msgid "Edit"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:104
+msgid "Recurring Donation Details"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:105
+#: includes/emails/class-charitable-recurring-admin-email-new-recurring-donation.php:164
+msgid "New Recurring Donation"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:106
+#: includes/class-charitable-recurring-post-types.php:107
+msgid "View Recurring Donation"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:108
+msgid "Search Recurring Donations"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:109
+msgid "No Recurring Donations found"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:110
+msgid "No Recurring Donations found in trash"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:111
+msgid "Parent Recurring Donation"
+msgstr ""
+
+#: includes/class-charitable-recurring.php:406
+#: includes/class-charitable-recurring.php:417
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:75
+msgid "Date type is not a string."
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:77
+msgid "Date type can not be an empty string."
+msgstr ""
+
+#: includes/donations/class-charitable-recurring-donation-processor.php:100
+msgid ""
+"The chosen payment gateway does not support recurring donations. Please "
+"choose another payment processor."
+msgstr ""
+
+#: includes/donations/class-charitable-recurring-donation-processor.php:194
+msgid "We were unable to save the recurring donation. Please try again."
+msgstr ""
+
+#: includes/donations/class-charitable-recurring-donation-processor.php:202
+msgid "Recurring donation created."
+msgstr ""
+
+#: includes/donations/class-charitable-recurring-donation.php:131
+msgid "Recurring Donation status updated from %s to %s."
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-admin-email-new-recurring-donation.php:52
+msgid "Admin: New Recurring Donation Notification"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-admin-email-new-recurring-donation.php:153
+msgid "You have received a new recurring donation"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-admin-email-new-renewal-donation.php:52
+msgid "Admin: New Renewal Donation Notification"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-admin-email-new-renewal-donation.php:153
+msgid "You have received a recurring donation renewal"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-admin-email-new-renewal-donation.php:164
+msgid "Recurring Donation Renewal"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-email-recurring-donation-receipt.php:45
+msgid "Donor: Recurring Donation Receipt"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-email-recurring-donation-receipt.php:143
+msgid "Thank you for your donation"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-email-recurring-donation-receipt.php:154
+msgid "Your Donation Receipt"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-emails.php:94
+msgid "A summary of the recurring donation"
+msgstr ""
+
+#: includes/emails/class-charitable-recurring-emails.php:117
+msgid "Fake Campaign: $50.00 / month"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:143
+msgid "PayPal subscription ID: %s."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:144
+msgid "PayPal subscriber ID: %s."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:146
+msgid "Recurring Donation IPN: Subscriber profile created"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:172
+msgid "The donation has failed with the following status"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:173
+msgid "The recurring donation has failed with the following status"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:182
+msgid "Recurring Donation IPN: Failed payment status"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:191
+msgid ""
+"The amount in the IPN response does not match the expected donation amount. "
+"IPN data:"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:200
+msgid "Recurring Donation IPN: donation amount mismatch"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:213
+msgid "PayPal Transaction ID"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:220
+msgid "Recurring Donation IPN: Initial donation completed"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:228
+msgid "Recurring Donation IPN: Renewal donation completed"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:230
+msgid "Recurring Donation IPN Error: Renewal donation failed"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:255
+msgid "Recurring Donation IPN: Donation pending"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:259
+msgid "Recurring Donation IPN: Nothing left to process"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:278
+msgid "Recurring donation cancelled by PayPal."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:284
+msgid "Recurring Donation IPN: Recurring Donation Cancelled"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:302
+msgid "Recurring Donation IPN: Modify Subscription"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:319
+msgid "Recurring donation failed with PayPal."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:325
+msgid "Recurring Donation IPN Error: Subscription Failed"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:342
+msgid "Recurring donation expired with PayPal."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:348
+msgid "Recurring Donation IPN: Subscription Expired"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:377
+msgid "Recurring Donation IPN Error: No matching recurring donation found."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:383
+msgid ""
+"Recurring Donation key in the IPN response does not match the recurring "
+"donation. IPN data:"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:392
+msgid "Recurring Donation IPN Error: Recurring Donation Key does not match invoice."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:398
+msgid "Recurring Donation IPN Error: Gateway mismatch."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:408
+msgid "Invalid PayPal Business email. IPN data:"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:419
+msgid "Recurring Donation IPN Error: Invalid Business email."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:428
+msgid "The currency in the IPN response does not match the site currency. IPN data:"
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:439
+msgid "Recurring Donation IPN Error: Currency mismatch."
+msgstr ""
+
+#: includes/gateways/class-charitable-recurring-paypal.php:458
+msgid "missing PayPal custom data"
+msgstr ""
+
+#: includes/public/class-charitable-recurring-public.php:161
+msgid "Make it monthly"
+msgstr ""
+
+#: templates/donation-form/donation-amounts-subheading.php:22
+msgid "Your One-Time Donation"
+msgstr ""
+
+#: templates/donation-form/recurring-donation-amount.php:81
+msgid "Custom monthly amount"
+msgstr ""
+
+#: templates/donation-form/recurring-donation-amount.php:94
+msgid "Enter monthly donation amount"
+msgstr ""
+
+#: templates/donation-form/recurring-donation-amounts-subheading.php:25
+msgid "Your Monthly Donation"
+msgstr ""
+
+#: templates/donation-form/recurring-donation.php:34
+msgid "One Time"
+msgstr ""
+
+#: templates/donation-form/recurring-donation.php:40
+msgid "Monthly"
+msgstr ""
+
+#: templates/donation-receipt/recurring-details.php:22
+msgid "Your Recurring Donation"
+msgstr ""
+
+#: templates/donation-receipt/recurring-details.php:28
+msgid "Next Donation Date"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Accept recurring donations"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:243
+msgctxt "number symbol"
+msgid "#%d"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:245
+msgctxt "charitable-recurring"
+msgid " by %s"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:253
+msgctxt "charitable-recurring"
+msgid "via %s"
+msgstr ""
+
+#: includes/admin/donations/class-charitable-recurring-admin-post-type.php:444
+msgctxt "set donation status to x"
+msgid "Set to %s"
+msgstr ""
+
+#: includes/class-charitable-extension-activation.php:87
+msgctxt "Plugin requires Charitable! Please install/activate it to continue!"
+msgid "%s requires Charitable! Please %s to continue!"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:100
+msgctxt "Admin menu name"
+msgid "Recurring Donations"
+msgstr ""
+
+#: includes/class-charitable-recurring-post-types.php:147
+msgctxt "post status label including post count"
+msgid "Active <span class=\"count\">(%s)</span>"
+msgid_plural "Active <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-recurring-post-types.php:148
+msgctxt "post status label including post count"
+msgid "On-Hold <span class=\"count\">(%s)</span>"
+msgid_plural "On-Hold <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-recurring-post-types.php:149
+msgctxt "post status label including post count"
+msgid "Expired <span class=\"count\">(%s)</span>"
+msgid_plural "Expired <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-recurring-post-types.php:150
+msgctxt "post status label including post count"
+msgid "Pending Cancellation <span class=\"count\">(%s)</span>"
+msgid_plural "Pending Cancellation <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:27
+msgctxt "Recurring donation status"
+msgid "Pending"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:28
+msgctxt "Recurring donation status"
+msgid "Active"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:29
+msgctxt "Recurring donation status"
+msgid "On hold"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:30
+msgctxt "Recurring donation status"
+msgid "Cancelled"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:31
+msgctxt "Recurring donation status"
+msgid "Expired"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:32
+msgctxt "Recurring donation status"
+msgid "Failed"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:33
+msgctxt "Recurring donation status"
+msgid "Pending Cancellation"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:57
+msgctxt "table column header"
+msgid "Start Date"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:58
+msgctxt "table column header"
+msgid "Trial End"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:59
+msgctxt "table column header"
+msgid "Next Payment"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:60
+msgctxt "table column header"
+msgid "Last Payment"
+msgstr ""
+
+#: includes/donations/charitable-recurring-donation-functions.php:61
+msgctxt "table column header"
+msgid "End Date"
+msgstr ""

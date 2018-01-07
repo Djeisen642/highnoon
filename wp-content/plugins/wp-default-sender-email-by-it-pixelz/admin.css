@@ -1,0 +1,15 @@
+input[type=text], inpute[type=email] {
+    min-width: 300px;
+}
+
+.wdsei_settings_area {
+    padding: 20px;
+    border: 1px solid #cccccc;
+    background: #ffffff;
+}
+
+.form-table>tbody>tr>td, .form-table>tbody>tr>th, .form-table>tfoot>tr>td, .form-table>tfoot>tr>th, .form-table>thead>tr>td, .form-table>thead>tr>th {
+    border: 1px solid #ddd;
+    padding: 7px 12px;
+    line-height: 24px;
+}

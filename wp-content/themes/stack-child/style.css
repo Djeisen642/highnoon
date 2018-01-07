@@ -1,0 +1,108 @@
+/*
+ Theme Name:   Stack Child
+ Theme URI:    https://highnoon.org/themes/stack-child
+ Description:  Stack Child Theme
+ Author:       Highnoon Team
+ Author URI:   https://highnoon.org
+ Template:     stack
+ Version:      1.0.0
+ License:      GNU General Public License version 3.0
+ License URI:  http://www.gnu.org/licenses/gpl-3.0.html
+ Tags:         custom-background, threaded-comments, translation-ready, custom-menu
+ Text Domain:  stack-child
+*/
+
+/* Change color of tab */
+.tabs {
+	border: 1px solid #ffffff;
+	background-color: #F2A218;
+}
+
+.tabs li {
+	opacity: 1 !important;
+}
+
+.tabs li .tab__title span {
+	color: white !important;
+}
+
+.tabs li.active {
+	background-color: #BF591A;
+}
+
+.tabs-container.tabs--vertical .tabs li:not(:last-child) {
+	    border-bottom: 1px solid #ffffff;
+}
+
+/* edit courses sidebar */
+.widget.widget_sfwd-courses-widget.sidebar__widget h5:first-of-type {
+	font-size: 1.35714286em;
+}
+
+.ld-entry-title.entry-title {
+	font-size: 1.35714286em;
+}
+
+/* Change color of accordion */
+.accordion li .accordion__title {
+	border: 1px solid darkgray;
+	color: white;
+	background-color: #F2A218;
+}
+
+.accordion li .accordion__title:before {
+	color: white;
+}
+
+.accordion li.active .accordion__title {
+	border: 1px solid darkgray;
+	background-color: #BF591A;
+}
+
+.accordion li .accordion__title p {
+	color: white;
+}
+
+/* progress bar */
+dd.course_progress div.course_progress_blue {
+	background-color: #F2A218 !important;
+}
+
+/* logo size */
+@media (min-width: 991px) {
+	.bar .logo {
+			max-height: 70px;
+			top: -15px;
+	}
+}
+
+/* checkmark */
+.learndash .completed, #learndash_profile .completed {
+	background: url(https://highnoon.org/wp-content/uploads/2017/11/completed-2.png) no-repeat;
+    background-position: 97.9% center;
+}
+
+/* Take this course button color*/
+.btn-join, #btn-join, .learndash_checkout_buttons input.btn-join[type="button"], a#quiz_continue_link {
+	background: #f2a218;
+	background-color: #f2a218;
+}
+.btn-join:hover, .btn-join:focus, .btn-join:active, .btn-join:visited, .btn-join.active, #btn-join:hover, #btn-join:focus, a#quiz_continue_link:hover, .learndash_checkout_buttons input.btn-join[type="button"]:hover, a#quiz_continue_link:focus {
+	background: #f2a218;
+	background-color: #f2a218;
+}
+
+/* sidebar */
+.blog-post--sidebar + div .sidebar {
+	background: #FCFCFC;
+	border: none;
+	border-radius: 0;
+	border-left: 1px solid lightgray;
+}
+
+/* move sidebar on larger screens */
+@media (min-width: 1200px) {
+	.blog-post--sidebar + div .sidebar {
+		margin-left: 62px;
+	}
+}

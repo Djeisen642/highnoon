@@ -1,0 +1,142 @@
+<wpml-config>
+    <shortcodes>
+        <shortcode>
+            <tag>stack_cards</tag>
+        </shortcode>
+        <shortcode>
+            <tag>stack_process_content</tag>
+        </shortcode>
+        <shortcode>
+            <tag>stack_call_to_action</tag>
+            <attributes>
+                <attribute>intro</attribute>
+                <attribute>button_text</attribute>
+                <attribute>button_url</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>stack_process</tag>
+        </shortcode>
+        <shortcode>
+            <tag>stack_typed_text</tag>
+            <attributes>
+                <attribute>intro</attribute>
+                <attribute>text</attribute>
+                <attribute>outro</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_column_text</tag>
+        </shortcode>
+        <shortcode>
+            <tag>vc_text_separator</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_message</tag>
+        </shortcode>
+        <shortcode>
+            <tag>vc_toggle</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_tta_section</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_custom_heading</tag>
+            <attributes>
+                <attribute>text</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag encoding="base64">vc_raw_html</tag>
+        </shortcode>
+        <shortcode>
+            <tag>vc_progress_bar</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_pie</tag>
+            <attributes>
+                <attribute>title</attribute>
+                <attribute>label_value</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_round_chart</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_btn</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_cta</tag>
+            <attributes>
+                <attribute>h2</attribute>
+                <attribute>h4</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vc_line_chart</tag>
+            <attributes>
+                <attribute>title</attribute>
+            </attributes>
+        </shortcode>
+    </shortcodes>
+    <custom-types>
+        <custom-type translate="1">portfolio</custom-type>
+        <custom-type translate="1">team</custom-type>
+        <custom-type translate="1">client</custom-type>
+        <custom-type translate="1">testimonial</custom-type>
+    </custom-types>    
+    <taxonomies>
+        <taxonomy translate="1">portfolio_category</taxonomy>
+        <taxonomy translate="1">team_category</taxonomy>
+        <taxonomy translate="1">client_category</taxonomy>
+        <taxonomy translate="1">testimonial_category</taxonomy>
+    </taxonomies>    
+    <admin-texts>
+        <key name="custom_logo_alt_text" />
+        <key name="stack_blog_title" />
+        <key name="stack_blog_subtitle" />
+        <key name="stack_portfolio_title" />
+        <key name="stack_portfolio_subtitle" />
+        <key name="stack_team_title" />
+        <key name="stack_team_subtitle" />
+        <key name="stack_shop_title" />
+        <key name="stack_shop_subtitle" />
+        <key name="cta_text" />
+        <key name="stack_header_address" />
+        <key name="stack_header_email" />
+        <key name="nav_button_text" />
+        <key name="stack_footer_copyright" />
+        <key name="stack_footer_email" />
+        <key name="portfolio_all" />
+        <key name="ctcc_content_settings">
+        <key name="notification_text" />
+        <key name="accept_text" />
+        <key name="more_info_text" />
+        <key name="more_info_page" />
+        <key name="stack_magazine_loop_cta" />
+        <key name="stack_single_post_cta_shortcode" />
+        <key name="stack_careers_cta" />
+        <key name="stack_lightbox_text" />
+        <key name="stack_header_button_text_1" />
+        <key name="stack_header_button_text_2" />
+        <key name="stack_sub_header_blurb" />
+    </admin-texts>      
+</wpml-config>

@@ -1,0 +1,56 @@
+/* Forms */
+.charitable-donation-form .recurring-donation {
+  *zoom: 1;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-bottom: 1px solid #DDD;
+  list-style: none; }
+  .charitable-donation-form .recurring-donation:before, .charitable-donation-form .recurring-donation:after {
+    content: " ";
+    display: table; }
+  .charitable-donation-form .recurring-donation:after {
+    clear: both; }
+  .charitable-donation-form .recurring-donation .recurring-donation-option {
+    float: left;
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    border: none;
+    list-style: none; }
+    .charitable-donation-form .recurring-donation .recurring-donation-option .amount {
+      font-weight: bolder; }
+    .charitable-donation-form .recurring-donation .recurring-donation-option:nth-child(2n+2) {
+      margin-right: 0; }
+    .charitable-donation-form .recurring-donation .recurring-donation-option label {
+      display: block;
+      cursor: pointer;
+      width: 100%;
+      margin: 0;
+      padding: 0.5em 1em;
+      border: 1px solid #DDD;
+      border-width: 1px 1px 0 1px;
+      background-color: transparent; }
+    .charitable-donation-form .recurring-donation .recurring-donation-option input[type=radio] {
+      position: relative;
+      margin: 0 6px 0 0;
+      vertical-align: middle;
+      cursor: pointer; }
+    .charitable-donation-form .recurring-donation .recurring-donation-option.selected > label {
+      font-weight: bolder;
+      margin-bottom: -1px;
+      border-color: #DDD;
+      border-bottom: 1px solid transparent;
+      background: white; }
+.charitable-donation-form .charitable-form-subheader {
+  margin: 0 0 1em;
+  font-style: italic; }
+.charitable-donation-form .charitable-donation-options {
+  padding: 1em 0; }
+  .charitable-donation-form .charitable-donation-options .charitable-custom-donation-field-alone,
+  .charitable-donation-form .charitable-donation-options .custom-donation-amount {
+    margin-bottom: 0; }
+
+.js .charitable-donation-form .recurring-donation-option input[type=radio],
+.js .charitable-donation-form .donation-amount input[type=radio] {
+  display: none; }
+
+/*# sourceMappingURL=charitable-recurring.css.map */
