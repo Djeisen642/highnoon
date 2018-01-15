@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: "
 "Stack\n"
 "POT-Creation-Date: "
-"2017-09-29 12:04-0700\n"
+"2018-01-03 17:25-0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -45,7 +45,7 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Language: en_US\n"
 "X-Generator: Poedit "
-"2.0.4\n"
+"2.0.5\n"
 "X-Poedit-"
 "SearchPath-0: .\n"
 
@@ -645,54 +645,54 @@ msgid ""
 "(%2$d/%3$d)"
 msgstr ""
 
-#: admin/theme_filters.php:322
+#: admin/theme_filters.php:332
 msgid "Gallery Layout"
 msgstr ""
 
-#: admin/theme_functions.php:360
+#: admin/theme_functions.php:173
 msgid "Contact Form 7"
 msgstr ""
 
-#: admin/theme_functions.php:366
+#: admin/theme_functions.php:179
 msgid "WP Less"
 msgstr ""
 
-#: admin/theme_functions.php:372
+#: admin/theme_functions.php:185
 msgid "Custom Metaboxes 2"
 msgstr ""
 
-#: admin/theme_functions.php:378
+#: admin/theme_functions.php:191
 msgid ""
 "One Click Demo Import"
 msgstr ""
 
-#: admin/theme_functions.php:390
+#: admin/theme_functions.php:203
 msgid "Ebor Framework"
 msgstr ""
 
-#: admin/theme_functions.php:398
+#: admin/theme_functions.php:211
 msgid "Visual Composer"
 msgstr ""
 
-#: admin/theme_functions.php:406
+#: admin/theme_functions.php:219
 msgid ""
 "Variant Page Builder"
 msgstr ""
 
-#: admin/theme_functions.php:450
+#: admin/theme_functions.php:263
 msgid "Home"
 msgstr ""
 
-#: admin/theme_functions.php:466
+#: admin/theme_functions.php:279
 msgid "Careers"
 msgstr ""
 
-#: admin/theme_functions.php:471
-#: admin/theme_functions.php:473
+#: admin/theme_functions.php:284
+#: admin/theme_functions.php:286
 msgid "Shop"
 msgstr ""
 
-#: admin/theme_functions.php:2933
+#: admin/theme_functions.php:2753
 msgid ""
 "Your comment is awaiting "
 "moderation."
@@ -977,7 +977,7 @@ msgctxt ""
 msgid "on"
 msgstr ""
 
-#: author.php:5
+#: author.php:6
 msgid "Posts By: "
 msgstr ""
 
@@ -1021,15 +1021,15 @@ msgstr ""
 msgid "Submit Comment"
 msgstr ""
 
-#: comments.php:38
+#: comments.php:40
 msgid "0 Comments"
 msgstr ""
 
-#: comments.php:38
+#: comments.php:41
 msgid "1 Comment"
 msgstr ""
 
-#: comments.php:38
+#: comments.php:42
 msgid "% Comments"
 msgstr ""
 
@@ -1043,7 +1043,7 @@ msgstr ""
 
 #: inc/content-footer-social.php:14
 #: inc/content-header-social.php:14
-#: inc/content-header-top-bar.php:57
+#: inc/content-header-top-bar.php:56
 msgid "Page"
 msgstr ""
 
@@ -1056,26 +1056,27 @@ msgid ""
 "now"
 msgstr ""
 
+#: inc/content-header-search-full.php:5
 #: inc/content-header-search.php:5
 msgid ""
 "Type search query and "
 "hit enter"
 msgstr ""
 
-#: inc/content-header-side-menu.php:26
+#: inc/content-header-side-menu.php:25
 msgid ""
 "Want to view your cart?"
 msgstr ""
 
-#: inc/content-header-side-menu.php:27
+#: inc/content-header-side-menu.php:26
 msgid "View Cart"
 msgstr ""
 
-#: inc/content-header-side-menu.php:30
+#: inc/content-header-side-menu.php:29
 msgid "Or checkout now?"
 msgstr ""
 
-#: inc/content-header-side-menu.php:31
+#: inc/content-header-side-menu.php:30
 msgid "Checkout Now"
 msgstr ""
 
@@ -1099,6 +1100,16 @@ msgstr ""
 msgid "All Categories"
 msgstr ""
 
+#: inc/content-portfolio-nav.php:23
+#: inc/content-post-nav.php:23
+msgid "Previous Post"
+msgstr ""
+
+#: inc/content-portfolio-nav.php:56
+#: inc/content-post-nav.php:57
+msgid "Next Post"
+msgstr ""
+
 #: inc/content-post-author.php:15
 msgid "About The Author: "
 msgstr ""
@@ -1117,6 +1128,15 @@ msgstr ""
 
 #: inc/content-post-sharing.php:13
 msgid "Share on Twitter"
+msgstr ""
+
+#: inc/content-team-nav.php:23
+msgid ""
+"Previous Team Member"
+msgstr ""
+
+#: inc/content-team-nav.php:56
+msgid "Next Team Member"
 msgstr ""
 
 #: inc/layout-header-search.php:44
@@ -1157,6 +1177,10 @@ msgstr ""
 msgid ""
 "This feed contains no "
 "content."
+msgstr ""
+
+#: loop/content-portfolio-creative.php:6
+msgid "View Project"
 msgstr ""
 
 #: loop/content-portfolio-fullscreen.php:9
@@ -1262,17 +1286,17 @@ msgstr ""
 msgid "Cart Subtotal:"
 msgstr ""
 
-#: woocommerce/cart/cart-totals.php:49
-#: woocommerce/cart/cart-totals.php:50
+#: woocommerce/cart/cart-totals.php:51
+#: woocommerce/cart/cart-totals.php:52
 msgid "Shipping"
 msgstr ""
 
-#: woocommerce/cart/cart-totals.php:69
+#: woocommerce/cart/cart-totals.php:73
 #, php-format
 msgid "estimated for %s"
 msgstr ""
 
-#: woocommerce/cart/cart-totals.php:101
+#: woocommerce/cart/cart-totals.php:105
 msgid "Total:"
 msgstr ""
 

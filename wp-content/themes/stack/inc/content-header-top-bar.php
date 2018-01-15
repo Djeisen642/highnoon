@@ -1,16 +1,15 @@
 <?php
-	$blurb = get_option('stack_sub_header_blurb', 'Stack | Multipurpose WP Theme with Visual Composer Page Builder');
-	$side_menu = get_option('stack_side_menu', 'yes');
-	$search_menu = get_option('stack_search_menu', 'yes');
+	$blurb          = get_option( 'stack_sub_header_blurb', 'Stack | Multipurpose WP Theme with Visual Composer Page Builder' );
+	$side_menu      = get_option( 'stack_side_menu', 'yes' );
+	$search_menu    = get_option( 'stack_search_menu', 'yes' );
+	$scroll_trigger = get_option('stack_scroll_trigger', '200px');
+	$scroll         = ( 'yes' == get_option( 'stack_scroll_sub_header', 'no' ) ) ? 'data-scroll-class="'. $scroll_trigger .':pos-fixed"' : false;
 	
 	if( 'yes' == $side_menu )
-		get_template_part('inc/content-header', 'side-menu'); 
+		get_template_part( 'inc/content-header', 'side-menu' ); 
 	
 	if( 'yes' == $search_menu )
-		get_template_part('inc/content-header', 'search'); 
-		
-	$scroll_trigger = get_option('stack_scroll_trigger', '200px');
-	$scroll = ( 'yes' == get_option('stack_scroll_sub_header', 'no') ) ? 'data-scroll-class="'. $scroll_trigger .':pos-fixed"' : false;
+		get_template_part( 'inc/content-header', get_option( 'stack_search_menu_layout', 'search' ) ); 
 ?>
 
 <section class="bar bar-3 bar--sm <?php echo esc_attr(get_option('stack_sub_header_background', 'bg--secondary')); ?> header--top-bar" <?php echo wp_kses_post($scroll); ?>>
@@ -80,8 +79,8 @@
 						<?php endif; ?>
 						
 						<?php 
-							if( function_exists('icl_get_languages') && 'yes' == get_option('stack_header_wpml', 'yes') ){
-								get_template_part('inc/content-header', 'wpml');
+							if( function_exists( 'icl_get_languages' ) && 'yes' == get_option( 'stack_header_wpml', 'yes' ) ){
+								get_template_part( 'inc/content-header-wpml', get_option( 'stack_header_wpml_layout', 'flag' ) );
 							}
 						?>
 						

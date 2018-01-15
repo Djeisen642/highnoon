@@ -1,7 +1,7 @@
 <?php 
-	do_action('ebor_after_content');
+	do_action( 'ebor_after_content' );
 	
-	do_action('ebor_before_footer');
+	do_action( 'ebor_before_footer' );
 	
 	/**
 	 * First, we need to check if we're going to override the header layout (with post meta)
@@ -10,16 +10,17 @@
 	 * 
 	 * Oh yeah, exactly the same for the footer as well.
 	 */
-	get_template_part('inc/layout-footer', ebor_get_footer_layout()); 
+	get_template_part( 'inc/layout-footer', ebor_get_footer_layout() ); 
 	
-	do_action('ebor_after_footer');
+	do_action( 'ebor_after_footer' );
 ?>
 
 </div><!-- /main-container -->
 
 <?php 
-	if( 'yes' == get_option('stack_btt_button', 'yes') )
-		get_template_part('inc/content','btt-button');
+	if( 'yes' == get_option( 'stack_btt_button', 'yes' ) ){
+		get_template_part( 'inc/content', 'btt-button' );
+	}
 		
 	wp_footer(); 
 ?>

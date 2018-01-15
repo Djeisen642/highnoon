@@ -21,6 +21,7 @@ define('EBOR_REQUIRE_DIRECTORY', trailingslashit( get_template_directory() ));
  * @author TommusRhodus
  */
 require_once( EBOR_REQUIRE_DIRECTORY . 'admin/theme_menus_widgets.php' );
+require_once( EBOR_REQUIRE_DIRECTORY . 'admin/theme_layouts.php' );
 require_once( EBOR_REQUIRE_DIRECTORY . 'admin/theme_functions.php' );
 require_once( EBOR_REQUIRE_DIRECTORY . 'admin/theme_scripts.php' );
 require_once( EBOR_REQUIRE_DIRECTORY . 'admin/theme_filters.php' );

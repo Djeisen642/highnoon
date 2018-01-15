@@ -1,4 +1,37 @@
 ===================================================================
+January 5th 2018 - v10.5.3
+-------------------------------------------------------------------
+
+* FIXED: Breadcrumbs section with title and subtitle display
+* FIXED: Single team social icons margin
+* FIXED: Product feed category selection now working properly with WPML installed
+* FIXED: If using scrolling navigation links, navigation on mobile will now auto close after a link is clicked
+* FIXED: In page navigator filter breaking on search results
+* FIXED: YouTube Video backgrounds - downgraded plugin script to last working version - will investigate upgrade for later theme update
+* IMPROVED: Comment Styling
+* IMPROVED: Mobile sticky header styling
+* IMPROVED: Twitter feed styling so that words are not broken to a new line
+* DEVELOPERS: Improved code readability where possible ( theme wide )
+* ADDED: Single blog post navigation [previous, archive, next]
+* ADDED: Theme option to turn single blog post navigation on/off
+* ADDED: Single portfolio post navigation [previous, archive, next]
+* ADDED: Theme option to turn single portfolio post navigation on/off
+* ADDED: Single team post navigation [previous, archive, next]
+* ADDED: Theme option to turn single team post navigation on/off
+* ADDED: Link target option for Call To Action block ( Visual Composer )
+* ADDED: New header search dropdown option, full height dropdown (covers entire page)
+* ADDED: New Portfolio Layout! Creative Portfolio
+* ADDED: New Variant Block: Portfolio Creative
+* ADDED: New Testimonials Layout! Testimonials thumbnails, perfect for loads of quotes!
+* ADDED: New Variant Block! Testmonials Thumbnails
+* ADDED: New custom WPML switcher (in top bar) layout - Flag
+* ADDED: New theme option: choose WPML custom switcher layout - Flag or Text
+* UPDATED: Language translation file
+* UPDATED: Revolution slider version
+* VARIANT: Improved javascript removal from Variant data to avoid loading issues
+* VARIANT: Updated minimum required version to 1.5.3
+
+===================================================================
 January 2nd 2018 - v10.5.2
 -------------------------------------------------------------------
 

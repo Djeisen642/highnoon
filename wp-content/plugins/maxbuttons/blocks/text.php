@@ -19,10 +19,7 @@ class textBlock extends maxBlock
 						"font_size" => array("default" => "15px",
 											  "css" => "font-size",
 											  "csspart" => 'mb-text' ),
-					/*	"font_size_unit" => array("default" => "em",
-											  "css" => "font_size_unit",
-											  "csspart" => "mb-text",
-											), */
+
 						"text_align" => array(
 										"default" => "center",
 										 "css" => "text-align",

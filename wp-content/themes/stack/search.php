@@ -18,7 +18,7 @@
 
 <section>
 	<div class="container">
-		<?php get_template_part('loop/loop-post', 'search'); ?>
+		<?php get_template_part( 'loop/loop-post', 'search' ); ?>
 	</div><!--end of container-->
 </section>
             

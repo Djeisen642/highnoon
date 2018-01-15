@@ -2,9 +2,9 @@
 Contributors: maxfoundry, basszje, arcware, johnbhartley
 Tags: wordpress button plugin, share button, wordpress buttons, css3 button generator, responsive buttons, css wordpress button
 Requires at least: 4.0
-Tested up to: 4.9
+Tested up to: 4.9.1
 Requires PHP: 5.3
-Stable tag: 6.25
+Stable tag: 6.26.1
 
 WordPress button plugin so powerful and easy to use anyone can create beautiful buttons, share buttons and social icons.
 
@@ -244,6 +244,16 @@ By default WordPress can't display shortcodes in a menu. You can use this [plugi
 This depends on the slider plugin you are using. Most of the well-known ones are allowing the use of shortcodes within the slides. To find out if your plugin can handle that, please ask the slider vendor.
 
 == Changelog ==
+
+= 6.26.1 =
+
+* Fixed - Advanced options 
+
+= 6.26 =
+
+* Technical maintenance
+* Tested up to 4.9.1.
+* Fixed interface issue with conditional Javascript for sharing plugin
 
 = 6.25 =
 

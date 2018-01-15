@@ -10,9 +10,11 @@ function makeTitle(slug) {
 }
 
 jQuery(window).load(function(){
+	
 	jQuery('.instafeed img').each(function(){
 		jQuery(this).attr('src', jQuery(this).attr('src').replace('150x150', '320x320'));
 	});		
+
 });
 
 jQuery(document).ready(function(){
@@ -52,7 +54,9 @@ jQuery(document).ready(function(){
 	jQuery('a.btn:not(:has(>span))').wrapInner('<span class="btn__text" />');
 	
 	//Scrolling links
-	jQuery('a[href^="#"]:not(a[href="#"]):not(.vc_tta a)').addClass('inner-link');
+	jQuery('a[href^="#"]:not(a[href="#"]):not(.vc_tta a)').addClass('inner-link').click(function(){
+		jQuery('.hamburger-toggle.toggled-class').trigger('click');
+	});
 	
 	jQuery('p:empty, li:empty').remove();
 	

@@ -22,12 +22,13 @@ class iconBlock extends maxBlock
 							  					),
 							  "icon_url" => 	array('default' => '',
 							  						  'css' => ''),
+								'icon_size' => array('default' => '',),
 							  /*"background_url" => array('default' => '',
 							  						  'css' => 'background-image',
 							  					),		 */
 							 /* "icon_alt" => 	array('default' => '',
 							  						  'css' => ''),
-							  */					
+							  */
 
 							  "icon_position"	=> array('default' => 'left',
 							  						 'css' => 'text-align',
@@ -71,9 +72,36 @@ class iconBlock extends maxBlock
 			$url = $css["maxbutton"]["normal"]["background-image"];
 			$css["maxbutton"]["normal"]["background-image"] = "url($url)";
 
+		}		if (isset($css[$csspart][$csspseudo]["text-align"]) && $css[$csspart][$csspseudo]["text-align"] != '')
+		{
+			switch( $css[$csspart][$csspseudo]["text-align"])
+			{
+				case "left":
+					$css[$csspart][$csspseudo]["float"] = 'left';
+					unset($css[$csspart][$csspseudo]["text-align"]);
+				break;
+				case "right":
+					$css[$csspart][$csspseudo]["float"] = 'right';
+					unset($css[$csspart][$csspseudo]["text-align"]);
+
+				break;
+				case "top":
+				case "bottom":
+					$css[$csspart][$csspseudo]["text-align"] = 'center';
+				break;
+			}
 		}
 			print_R($css["maxbutton"]);
 		*/
+		$css = $this->parse_rule_textalign($css, 'mb-icon', 'normal');
+
+
+		return $css;
+	}
+
+	/* Parse text align rule. Used for alignment of images and icons. In seperate function since it needs to process different pseudo's */
+	public function parse_rule_textalign($css, $csspart, $csspseudo)
+	{
 
 		if (isset($css[$csspart][$csspseudo]["text-align"]) && $css[$csspart][$csspseudo]["text-align"] != '')
 		{
@@ -95,8 +123,7 @@ class iconBlock extends maxBlock
 			}
 		}
 
-
-		return $css;
+		return $css; 
 	}
 
  	public function parse_button($domObj, $mode = 'normal')
@@ -105,7 +132,9 @@ class iconBlock extends maxBlock
  		if (count($data) == 0)
  			return $domObj; // no icons present here.
 
-		$id = $this->data["id"];
+		//$button_id = $this->data["id"];
+
+		$icon_id = isset($data['icon_id']) ? $data['icon_id'] : 0;
 
 		$icon_url = $data["icon_url"];
 		$use_fa_icon= $data["use_fa_icon"];
@@ -123,7 +152,8 @@ class iconBlock extends maxBlock
 		}
 		else
 		{
-		$anchor_text = '<span class="mb-icon  "><img src="' . $data["icon_url"] . '" alt="' . $data["icon_alt"] . '" border="0" /></span>' ;
+			$icon_alt = get_post_meta( $icon_id, '_wp_attachment_image_alt', true );
+		  $anchor_text = '<span class="mb-icon  "><img src="' . $data["icon_url"] . '" alt="' . $icon_alt . '" border="0" /></span>' ;
 		}
 		if ($position == 'bottom')
 			$anchor->innertext = $anchor->innertext . $anchor_text;

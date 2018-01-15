@@ -21,6 +21,20 @@ function ebor_nav_menu_classes($items, $menu, $args) {
 }
 add_filter( 'wp_get_nav_menu_items', 'ebor_nav_menu_classes', 10, 3 );
 
+if(!( function_exists('ebor_excerpt_length') )){
+	function ebor_excerpt_length( $length ) {
+		return 22;
+	}
+	add_filter( 'excerpt_length', 'ebor_excerpt_length', 999 );
+}
+
+if(!( function_exists('ebor_excerpt_more') )){
+	function ebor_excerpt_more( $more ) {
+		return '...';
+	}
+	add_filter('excerpt_more', 'ebor_excerpt_more');
+}
+
 /**
  * Custom Sensei Wrapper Markup for Stack
  * 
@@ -33,14 +47,14 @@ function ebor_sensei_wrapper_start() {
 add_action('sensei_before_main_content', 'ebor_sensei_wrapper_start', 10);
 
 function ebor_sensei_wrapper_end() {
-	echo '</div><!-- #content --></div><!-- #container -->';
+	echo '</div>';
 	get_sidebar();
 }
 add_action('sensei_after_main_content', 'ebor_sensei_wrapper_end', 10);
 
 function ebor_in_page_navigator(){
 	global $post;
-	if( 'yes' == get_post_meta($post->ID, '_ebor_page_navigator', 1) ){
+	if( isset( $post->ID ) && 'yes' == get_post_meta($post->ID, '_ebor_page_navigator', 1) ){
 		echo '<section class="page-navigator"><ul></ul></section>';
 	}
 }

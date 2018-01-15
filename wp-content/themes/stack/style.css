@@ -1,7 +1,7 @@
 /*
 Theme Name: Stack
 Theme URI: http://www.tommusrhodus.com/stack-wordpress-theme/
-Version: 10.5.2
+Version: 10.5.3
 Description: Stack WordPress Theme
 Author: Tom Rhodes
 Author URI: http://www.tommusrhodus.com/
@@ -25,8 +25,6 @@ body,
 html {
 	overflow-x: hidden;
 }
-
-/* Global Tweaks */
 img {
 	height: auto;
 }
@@ -128,8 +126,12 @@ p:empty {
 		margin-right: -15px;
 	}
 	.admin-bar .bar.pos-fixed {
-		top: 0;
+		top: 46px;
 	}
+	.admin-bar .bar.bar--mobile-sticky[data-scroll-class*='fixed'] + .bar.pos-fixed {
+		top: 96px;
+	}
+	
 	.comments-form {
 		padding-top: 30px;
 	}
@@ -676,7 +678,7 @@ footer .socicon {
     pointer-events: auto;
 }
 p.tweet {
-	word-break: break-all;
+	word-break: break-word;
 }
 @media all and (max-width: 767px){
 	.slider li {
@@ -1413,9 +1415,90 @@ padding-top: 0;
 }
 body:not(.variant-active) nav#menu1 { z-index: 9999; }
 .product img {
-  margin-bottom: 0;
-  transition: none;
-  -webkit-transition: none;
-  -moz-transition: none;
-  backface-visibility: hidden;
+	margin-bottom: 0;
+	transition: none;
+	-webkit-transition: none;
+	-moz-transition: none;
+	backface-visibility: hidden;
+}
+.comment + .comment {
+	margin-top: -1px;
+}
+.comment:not(:last-child) {
+	border-bottom: none;
+}
+h4 span {
+	display: block;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 0.70714286em;
+	margin-bottom: 10px;
+}
+.article__body + .social-list {
+	padding-top: 30px;
+}
+.notification.height-100 form {
+    position: relative;
+    top: 50%;
+    margin-top: -20px;
+}
+.creative-portfolio .creative-title {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 15px;
+	max-width: 35%;
+	transition: all ease-in-out 150ms;
+	text-align: left;
+}
+.creative-portfolio img {
+	width: 85%;
+	float: right;
+}
+.creative-portfolio h1 {
+	font-weight: 700;
+}
+.creative-portfolio a {
+	opacity: 1;
+}
+.creative-portfolio .project-thumb:not(.hover-element) > a:hover {
+	opacity: 1;
+}
+.creative-portfolio:nth-of-type(even) img {
+	float: left;
+}
+.creative-portfolio:nth-of-type(even) .creative-title {
+	left: auto;
+	right: 15px;
+	text-align: right;
+}
+.creative-portfolio:hover .creative-title {
+	left: 25px;
+}
+.creative-portfolio:nth-of-type(even):hover .creative-title {
+	right: 25px;
+	left: auto;
+}
+@media all and ( max-width: 767px ) {
+	.creative-portfolio .creative-title {
+		max-width: 70%;
+	}
+}
+.thumbnails-slider.slider:not([data-paging="true"]) .slides {
+	margin-bottom: 35px;
+}
+.thumbnails-slider .thumbnail-trigger {
+	cursor: pointer;
+	overflow: hidden;
+}
+.thumbnails-slider .thumbnail-trigger.active img {
+	border: 1px solid #333;
+	border-radius: 99px;
+	padding: 3px;
+	transition: all ease-in-out 150ms;
+}
+
+.thumbnails-slider .col-sm-1 {
+	float: none;
+	display: inline-block;
 }

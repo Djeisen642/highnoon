@@ -224,13 +224,12 @@ jQuery(document).ready(function($) {
 		else
 			this.setHeight = false;
 
-
 		var title = $(data).find('.title').text();
 		var controls = $(data).find('.controls').html();
 		var content = $(data).find('.content').html();
 
 		this.newModal(id);
-		this.setTitle(title)
+		this.setTitle(title);
 		this.setContent(content);
 		this.setControls(controls);
 

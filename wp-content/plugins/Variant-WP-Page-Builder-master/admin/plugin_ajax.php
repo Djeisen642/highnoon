@@ -17,7 +17,14 @@ add_action('wp_ajax_nopriv_variant_page_builder_check_user_ajax', 'variant_page_
  * Update an option name with a value, both given by $_POST data
  */
 function variant_page_builder_update_option(){
-	update_option($_POST['optionName'], $_POST['optionValue']);
+	if( current_user_can('edit_others_pages') ){
+		
+		$name = $_POST['optionName'];
+		if( 'variant_page_builder_vc_notification' == $name || 'variant_show_welcome_modal' == $name ){
+			update_option($name, 'no');
+		}
+		
+	}
 }
 add_action('wp_ajax_variant_page_builder_update_option', 'variant_page_builder_update_option');
 
@@ -56,14 +63,33 @@ function variant_page_builder_save_html($html = false, $post_id = false) {
 		$input = $html;
 	}
 	
+	$find = array(
+		' id=\"\"', 
+		'\"\"]', 
+		'\\', 
+		'<p></p>', 
+		'<p> </p>', 
+		home_url('/')
+	);
+	
+	$replace = array(
+		' id=\"', 
+		'\"]', 
+		'', 
+		'', 
+		'', 
+		'/'
+	);
+	
 	//Quick string replace to fix double quotes in shortcodes, and make URLs relative.
-	$html = str_replace(array(' id=\"\"', '\"\"]', '\\', '<p></p>', '<p> </p>', home_url('/')), array(' id=\"', '\"]', '', '', '', '/'), $input);
+	$html = str_replace( $find, $replace, $input);
 	
 	//Update the post meta.
 	update_post_meta($ID, '_variant_page_builder_html', $html);
 	
 	//Kill AJAX and return.
 	wp_die('variant_page_builder_save_html_success');
+	
 }
 add_action('wp_ajax_variant_page_builder_save_html', 'variant_page_builder_save_html');
 
@@ -89,7 +115,7 @@ function variant_page_builder_save_variant($variant = false, $post_id = false) {
 	}
 	
 	//Quick string replace to fix double quotes in shortcodes, and make URLs relative.
-	$input = str_replace(home_url('/'), '/', $input);
+	$input = str_replace( home_url('/'), '/', $input );
 
 	//Update the post meta.
 	update_post_meta($ID, '_variant_page_builder_variant', wp_slash($input));
@@ -101,6 +127,7 @@ function variant_page_builder_save_variant($variant = false, $post_id = false) {
 	
 	//Kill AJAX and return.
 	wp_die('variant_page_builder_save_variant_success');
+	
 }
 add_action('wp_ajax_variant_page_builder_save_variant', 'variant_page_builder_save_variant');
 
@@ -147,6 +174,9 @@ function variant_page_builder_load_variant() {
 			'src="//',
 			'href="//'
 		);
+		
+		//Remove script tags
+		$content->masterHtml = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content->masterHtml);
 		
 		$content->masterHtml = do_shortcode(str_replace($search, $replace, $content->masterHtml));
 		

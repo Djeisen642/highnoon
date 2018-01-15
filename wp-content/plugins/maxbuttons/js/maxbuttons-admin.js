@@ -623,8 +623,7 @@ maxAdmin.prototype.initConditionials = function ()
     if ( $('[name="' + target + '"]').length > 1)  // trigger change to test condition
     {
       // this statement doesn't work in MBPRO for some reason
-    //  $('[name="' + target + '"]:checked').trigger('change', ['conditional']); // radio button
-        $('[name="' + target + '"]:checked').change(); // radio button
+        $('[name="' + target + '"]:checked').change(['conditional']); // radio button
 
     }
     else {
@@ -639,6 +638,8 @@ maxAdmin.prototype.initConditionials = function ()
 		var self = this;
 
 		$(document).on('change', '[name="' + target + '"]', {target: target, child: this, values: values}, $.proxy(mAP.updateHasConditional, mAP) );
+
+     $('[name="' + target + '"]').trigger('change', ['conditional']);
 
 	});
 
@@ -684,7 +685,6 @@ maxAdmin.prototype.updateConditional = function (event)
 
 maxAdmin.prototype.updateHasConditional = function(event)
 {
-
 	var mAP = this;
 	var data = event.data;
 
@@ -702,10 +702,9 @@ maxAdmin.prototype.updateHasConditional = function(event)
 		if (cond_values.indexOf(target_val) >= 0)
 		{
 			hascond = true;
-			return true;
+			return false;
 		}
 	});
-
 
 	if (hascond)
 	{

@@ -4,14 +4,14 @@
 Plugin Name: Variant Page Builder
 Plugin URI: http://www.tommusrhodus.com/variant/
 Description: Variant Page Builder
-Version: 1.2.1
+Version: 1.5.3
 Author: TommusRhodus & MediumRare
 Author URI: http://www.tommusrhodus.com/
 */
 
 //Vars & definitions
 define('VARIANT_PAGE_BUILDER_PATH', trailingslashit(plugin_dir_url( __FILE__ )));
-define('VARIANT_PAGE_BUILDER_VERSION', '1-2-1');
+define('VARIANT_PAGE_BUILDER_VERSION', '1-5-3');
 
 //Load all functions which enqueue styles or scripts
 require('admin/plugin_styles_scripts.php');

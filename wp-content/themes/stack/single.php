@@ -38,6 +38,7 @@
 					</div><!--end article title-->
 					
 					<div class="article__body post-content">
+						
 						<div class="featured-image-holder">
 							<?php 
 								//Featured image on/off
@@ -46,23 +47,26 @@
 								}
 							?>
 						</div>
+						
 						<?php
 							the_content();
 							wp_link_pages();
 						?>
+						
 						<div class="post__tags">
 							<?php 
-								if( 'yes' == get_option('stack_single_post_tags', 'yes') ){
+								if( 'yes' == get_option( 'stack_single_post_tags', 'yes' ) ){
 									the_tags(); 
 								}
 							?>
 						</div>
+						
 					</div>
 					
 					<?php
 						//Single post sharing
-						if( 'yes' == get_option('stack_single_post_sharing', 'yes') ){
-							get_template_part('inc/content-post', 'sharing');
+						if( 'yes' == get_option( 'stack_single_post_sharing', 'yes' ) ){
+							get_template_part( 'inc/content-post', 'sharing' );
 						}
 					?>
 					
@@ -79,22 +83,27 @@
 </section>
 
 <?php 
-	if( 'yes' == get_option('stack_single_post_author', 'yes') ){
-		get_template_part('inc/content-post', 'author');
+	if( 'yes' == get_option( 'stack_single_post_author', 'yes' ) ){
+		get_template_part( 'inc/content-post', 'author' );
 	}
 	
 	//Single post CTA
 	if( 'yes' == get_option('stack_single_post_cta', 'yes') ){
-		get_template_part('inc/content-post', 'cta');
+		get_template_part( 'inc/content-post', 'cta' );
 	}
 	
 	if( comments_open() || get_comments_number() ){
 		comments_template();
 	}
 	
+	//Post nav
+	if( 'yes' == get_option( 'stack_single_post_nav', 'yes' ) ){
+		get_template_part( 'inc/content-post', 'nav' );
+	}
+	
 	//Related posts	
-	if( 'yes' == get_option('stack_single_post_related', 'yes') ){
-		get_template_part('loop/loop-post', 'related');
+	if( 'yes' == get_option( 'stack_single_post_related', 'yes' ) ){
+		get_template_part( 'loop/loop-post', 'related' );
 	}
 	
 	get_footer();

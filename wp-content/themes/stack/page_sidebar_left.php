@@ -3,8 +3,8 @@
 	get_header();
 	the_post();
 	
-	$active = is_active_sidebar('page');
-	$class = ( $active ) ? 'col-sm-10 col-md-8' : 'col-sm-12';
+	$active = is_active_sidebar( 'page' );
+	$class  = ( $active ) ? 'col-sm-10 col-md-8' : 'col-sm-12';
 	
 	echo ebor_breadcrumb_section( get_the_title() );
 ?>
@@ -14,11 +14,12 @@
 		<div class="row">
 			
 			<?php 
-				if( $active )
-					get_sidebar('page'); 
+				if( $active ){
+					get_sidebar( 'page' ); 
+				}
 			?>
 			
-			<div class="<?php echo esc_attr($class); ?> article__body post-content">
+			<div class="<?php echo esc_attr( $class ); ?> article__body post-content">
 				<article>
 					<?php
 						the_content();

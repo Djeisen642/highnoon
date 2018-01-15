@@ -1,14 +1,14 @@
 jQuery(document).ready(function() {
 	
-	updateOption = function(name, value){
+	updateOption = function(){
 		
 		jQuery.ajax({
 			type: "POST",
 			url: ajaxurl,
 			data: {
 				action: 'variant_page_builder_update_option',
-				optionName: name,
-				optionValue: value
+				optionName: 'variant_page_builder_vc_notification',
+				optionValue: 'no'
 			},
 			error: function(response) {},
 			success: function(response) {}

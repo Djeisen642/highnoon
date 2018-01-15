@@ -8,6 +8,7 @@
  * 5. Remove datepicker section
  * 6. Smoothscroll, add admin-bar checks var offset = ( $('body').hasClass('admin-bar') ) ? 32 : 0;
  * 7. Typed headline effect speed parseInt(stack_data.typed_speed)
+ * 8. Changes to flickity call to include linkable thumbnails
  */
 
 var mr = (function ($, window, document){
@@ -1740,8 +1741,10 @@ mr = (function (mr, $, window, document){
             if(childnum < 2){
                 draggable = false;
             }
+            
+            var $carousel = $(sliderInitializer);
 
-            $(sliderInitializer).flickity({
+            $carousel.flickity({
                 cellSelector: '.slide',
                 cellAlign: 'left',
                 wrapAround: true,
@@ -1751,8 +1754,21 @@ mr = (function (mr, $, window, document){
                 draggable: draggable,
                 imagesLoaded: true
             });
+            
+            jQuery('.thumbnail-trigger').click(function(){
+            	var index = $(this).index();
+            	$carousel.flickity( 'select', index );
+            	jQuery('.thumbnail-trigger').removeClass('active');
+            	$(this).addClass('active');
+            });
+            
+            $carousel.on( 'settle.flickity', function() {
+            	var flkty = $carousel.data('flickity');
+            	jQuery('.thumbnail-trigger').removeClass('active');
+            	jQuery('.thumbnail-trigger').eq(flkty.selectedIndex).addClass('active');
+            });
 
-            $(sliderInitializer).on( 'scroll.flickity', function( event, progress ) {
+            $carousel.on( 'scroll.flickity', function( event, progress ) {
               if(slider.find('.is-selected').hasClass('controls--dark')){
                 slider.addClass('controls--dark');
               }else{

@@ -14,18 +14,22 @@
 		
 	} else {
 		
-		$term = get_queried_object();
-		$title = $term->name;
+		$term        = get_queried_object();
+		$title       = $term->name;
 		$description = $term->description;
 		
 	}
 	
-	echo ebor_breadcrumb_section( $title, $description, get_option('stack_blog_breadcrumb_image', '') );
+	echo ebor_breadcrumb_section( 
+			$title, 
+			$description, 
+			get_option( 'stack_blog_breadcrumb_image', '' ) 
+	);
 ?>
 
 <section class="space--sm unpad--top">
 	<div class="container">
-		<?php get_template_part('loop/loop-post', get_option('stack_blog_layout', 'cards-sidebar')); ?>
+		<?php get_template_part( 'loop/loop-post', get_option( 'stack_blog_layout', 'cards-sidebar' ) ); ?>
 	</div><!--end of container-->
 </section>
             

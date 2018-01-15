@@ -10,11 +10,11 @@
 		    'email'  => '<div class="col-sm-4"><label>' . esc_html__('Email Address','stack') . ':</label><input name="email" type="text" id="email" placeholder="' . esc_html__('you@example.com','stack') . '" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" /></div>',
 		    'url'    => '<div class="col-sm-4"><label>' . esc_html__('Your URL','stack') . ':</label><input name="url" type="text" id="url" placeholder="' . esc_html__('example.com','stack') . '" value="' . esc_attr(  $commenter['comment_author_url'] ) . '" /></div></div>')
 		),
-		'comment_field' => '<label>' . esc_html__('Comment','stack') . ':</label><textarea name="comment" placeholder="' . esc_html__('Your comment here','stack') . '" id="comment" aria-required="true" rows="4"></textarea>',
-		'cancel_reply_link' => esc_html__( 'Cancel' , 'stack' ),
+		'comment_field'        => '<label>' . esc_html__('Comment','stack') . ':</label><textarea name="comment" placeholder="' . esc_html__('Your comment here','stack') . '" id="comment" aria-required="true" rows="4"></textarea>',
+		'cancel_reply_link'    => esc_html__( 'Cancel' , 'stack' ),
 		'comment_notes_before' => '',
-		'comment_notes_after' => '',
-		'label_submit' => esc_html__( 'Submit Comment' , 'stack' )
+		'comment_notes_after'  => '',
+		'label_submit'         => esc_html__( 'Submit Comment' , 'stack' )
 	);
 ?>
 
@@ -35,7 +35,14 @@
 			
 				<div class="comments">
 				
-					<h3><?php comments_number( esc_html__('0 Comments','stack'), esc_html__('1 Comment','stack'), esc_html__('% Comments','stack') ); ?></h3>
+					<h3>
+						<?php comments_number( 
+								esc_html__( '0 Comments', 'stack' ), 
+								esc_html__( '1 Comment', 'stack' ), 
+								esc_html__( '% Comments', 'stack' ) 
+							  ); 
+						?>
+					</h3>
 					
 					<?php
 						if( have_comments() ){
@@ -49,7 +56,7 @@
 				</div><!--end comments-->
 				
 				<div class="comments-form">
-					<?php comment_form($custom_comment_form); ?>
+					<?php comment_form( $custom_comment_form ); ?>
 				</div>
 				
 			</div>

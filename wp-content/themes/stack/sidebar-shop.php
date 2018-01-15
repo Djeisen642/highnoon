@@ -1,6 +1,8 @@
 <div class="row">
 	<div class="col-sm-12">
+		
 		<?php do_action('ebor_before_sidebar'); ?>
+		
 			<div class="sidebar boxed boxed--border boxed--lg bg--secondary">
 				<div class="row">
 					<?php 
@@ -10,6 +12,8 @@
 					?>
 				</div>
 			</div>
+			
 		<?php do_action('ebor_after_sidebar'); ?>
+		
 	</div>
 </div>

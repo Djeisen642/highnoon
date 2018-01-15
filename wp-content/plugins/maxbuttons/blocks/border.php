@@ -63,7 +63,6 @@ class borderBlock extends maxBlock
 		$map["radius_bottom_left"]["func"] = "updateRadius";
 		$map["radius_bottom_right"]["func"] = "updateRadius";
 
-
 		return $map;
 	}
 

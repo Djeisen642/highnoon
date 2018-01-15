@@ -263,11 +263,13 @@ $preset = '<h2>Sound like the job for you?</h2>
 	$ebor_options->add_setting('select', 'stack_side_menu', 'Show site menu link in top bar? (3 dots)', 'top_bar_section', 'yes', 35, $yesNo);
 	$ebor_options->add_setting('select', 'stack_social_icons_header_top_bar', 'Show social icons in top bar?', 'top_bar_section', 'yes', 37, $yesNo);
 	$ebor_options->add_setting('select', 'stack_search_menu', 'Show search link in top bar? (magnifying glass)', 'top_bar_section', 'yes', 40, $yesNo);
+	$ebor_options->add_setting('select', 'stack_search_menu_layout', 'Search dropdown style', 'top_bar_section', 'searcg', 42, array('search' => 'Small height search area', 'search-full' => 'Full height search area'));
 	$ebor_options->add_setting('select', 'stack_header_cart', 'Show cart icon in top bar?', 'top_bar_section', 'yes', 45, $yesNo);
 	$ebor_options->add_setting('select', 'stack_header_mobile_cart', 'Show cart icon in mobile bar?', 'top_bar_section', 'yes', 50, $yesNo);
 	
-	if( function_exists('icl_get_languages') ){
+	if( function_exists( 'icl_get_languages' ) ){
 		$ebor_options->add_setting('select', 'stack_header_wpml', 'Show WPML dropdown in top bar?', 'top_bar_section', 'yes', 50, $yesNo);
+		$ebor_options->add_setting('select', 'stack_header_wpml_layout', 'WPML dropdown layout', 'top_bar_section', 'flag', 55, array( 'flag' => 'Flag', 'text' => 'Text' ));
 	}
 	
 	$ebor_options->add_section('slide_in_section', 'Slide In Header Settings', 35, $theme_name . ': Header Settings', '<code>NOTE:</code> For details on the "target" options for buttons <a href="https://www.w3schools.com/tags/att_a_target.asp" target="_blank">see here</a>');
@@ -315,6 +317,7 @@ $preset = '<h2>Sound like the job for you?</h2>
 	$ebor_options->add_setting('select', 'stack_single_post_author', 'Show post author section?', 'blog_single_section', 'yes', 13, $yesNo);
 	$ebor_options->add_setting('select', 'stack_single_post_cta', 'Show call to action section?', 'blog_single_section', 'yes', 15, $yesNo);
 	$ebor_options->add_setting('input', 'stack_single_post_cta_shortcode', 'Add shortcode for CTA box (CF7)', 'blog_single_section', '', 17);
+	$ebor_options->add_setting('select', 'stack_single_post_nav', 'Show post navigation?', 'blog_single_section', 'yes', 19, $yesNo);
 	$ebor_options->add_setting('select', 'stack_single_post_related', 'Show related posts?', 'blog_single_section', 'yes', 20, $yesNo);
 	$ebor_options->add_setting('select', 'stack_blog_single_breadcrumbs', 'Show breadcrumbs?', 'blog_single_section', 'no', 25, $yesNo);
 	
@@ -342,6 +345,9 @@ $preset = '<h2>Sound like the job for you?</h2>
 	$ebor_options->add_setting('image', 'stack_team_breadcrumb_image', 'Team Titles Background Image', 'team_archive_section', '', 12);
 	$ebor_options->add_setting('select', 'stack_team_layout', 'Global Team Layout', 'team_archive_section', 'grid-3', 20, $team_options);
 	
+	$ebor_options->add_section('team_single_section', 'Single Team Post Settings', 15, $theme_name . ': Team Settings');
+	$ebor_options->add_setting('select', 'stack_single_team_nav', 'Show post navigation?', 'team_single_section', 'yes', 19, $yesNo);
+	
 	/**
 	 * All Portfolio Settings
 	 */
@@ -363,6 +369,7 @@ $preset = '<h2>Sound like the job for you?</h2>
 	 */
 	$ebor_options->add_section('portfolio_single_section', 'Portfolio Single Post Settings', 25, $theme_name . ': Portfolio Settings');
 	$ebor_options->add_setting('select', 'stack_single_portfolio_layout', 'Single Portfolio Post Layout', 'portfolio_single_section', 'split', 20, array('split' => 'Split (image left, text right)', 'feed' => 'Feed (image top, text bottom)', 'blank' => 'Blank (no image)'));
+	$ebor_options->add_setting('select', 'stack_single_portfolio_nav', 'Show post navigation?', 'portfolio_single_section', 'yes', 25, $yesNo);
 	
 	/**
 	 * All shop Settings

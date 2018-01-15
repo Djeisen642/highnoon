@@ -162,6 +162,9 @@ if(!( function_exists('ebor_load_scripts') )){
 			    	background: '. $secondary .';
 			    }
 			}
+			.thumbnails-slider .thumbnail-trigger.active img {
+				border: 1px solid '. get_option( 'color_primary', '#4A90E2' ) .';
+			}
 		';
 		
 		if(!( '0' == $nav_margin_top )){

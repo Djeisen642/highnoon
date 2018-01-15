@@ -145,6 +145,8 @@ mr_variant.wp.load = function() {
             		$this.clone().insertAfter($this).removeClass('cf7-holder').addClass('hide-form shortcode-holder-wrapper').html('<div class="shortcode-holder lead" data-shortcode=""></div>');
             	}
             });
+            
+            jQuery('.main-container script').remove();
       	}
     });
     
@@ -226,6 +228,7 @@ mr_variant.wp.saveHTML = function($html) {
     
     //Remove footer from HTML output
     jQuery('.main-container > footer', el).remove();
+    jQuery('.main-container script', el).remove();
     jQuery('div[class="wysiwyg"]', el).contents().unwrap();
     jQuery('.wysiwyg', el).removeClass('wysiwyg');
     
@@ -390,7 +393,7 @@ mr_variant.wp.updateHeader = function($layout){
  */
 mr_variant.wp.renderFooter = function($layout){
 	
-	mr_variant.startLoading(jQuery('.viu footer').length? 'footer':'.viu');
+	mr_variant.startLoading( jQuery('.viu footer').length ? 'footer' : '.viu' );
 	
 	jQuery.ajax({
 		type: "POST",
@@ -540,15 +543,15 @@ mr_variant.wp.updateWpData = function($post_id, callback){
 	
 }
 
-mr_variant.wp.updateOption = function(name, value){
+mr_variant.wp.updateOption = function(){
 	
 	jQuery.ajax({
 		type: "POST",
 		url: wp_data.ajax_url,
 		data: {
 			action: 'variant_page_builder_update_option',
-			optionName: name,
-			optionValue: value
+			optionName: 'variant_show_welcome_modal',
+			optionValue: 'no'
 		},
 		error: function(response) {},
 		success: function(response) {}
@@ -718,7 +721,7 @@ jQuery(window).load(function(){
 	});
 	
 	jQuery('.variant-welcome-modal .vex').click(function(){
-		mr_variant.wp.updateOption('variant_show_welcome_modal', 'no');
+		mr_variant.wp.updateOption();
 	});
 
 });
