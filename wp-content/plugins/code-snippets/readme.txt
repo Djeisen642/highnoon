@@ -3,8 +3,8 @@ Contributors: bungeshea
 Donate link: https://bungeshea.com/donate/
 Tags: code-snippets, snippets, code, php, network, multisite
 Requires at least: 3.6
-Tested up to: 4.9.1
-Stable tag: 2.9.5
+Tested up to: 4.9.2
+Stable tag: 2.10.0
 License: MIT
 License URI: license.txt
 
@@ -26,6 +26,7 @@ If you have any feedback, issues, or suggestions for improvements please leave a
 
 Code Snippets can be used in these different languages thanks to the following translators:
 
+* Brazilian Portuguese – [Bruno Borges](http://brunoborges.info)
 * French (Canada) - [Dominic Desbiens](http://www.dominicdesbiens.com/)
 * Indonesian - [Jordan Silaen from ChameleonJohn.com](https://www.chameleonjohn.com/)
 * German - [Mario Siegmann](http://web-alltag.de/), [Joerg Knoerchen](http://www.sensorgrafie.de/), and [David Decker](http://deckerweb.de)
@@ -109,6 +110,24 @@ That's fantastic! Fork the [repository on GitHub](http://github.com/sheabunge/co
 4. Importing snippets from an XML file
 
 == Changelog ==
+
+= 2.10.0 (18 Jan 2018) =
+* Improved: Added support for importing from multiple export files at once
+* Improved: Unbold the titles of inactive snippets for greater visual distinction
+* Added: New scope for single-use snippets
+* Improved: Don't show network snippets on subsites by default, and only to super admins
+* Improved: Export snippets to JSON instead of XML
+* Improved: More options for importing duplicate snippets
+* Improved: Use strings for representing scopes internally instead of numbers
+* Added: Allowed plugin settings to be unified on multisite through Network Settings option
+* Fixed: Issue with incorrectly treating network snippets as site-wide for code validation
+* Improved: Rename 'Export to PHP' to 'Download', and add button to edit snippet page
+
+= 2.9.6 (14 Jan 2018) =
+* Added Brazilian Portuguese translation by [Bruno Borges](http://brunoborges.info)
+* Fixed: Use standard WordPress capabilities instead of custom capabilities to prevent lockouts
+* Fixed: Multisite issue with retrieving active shared snippets from the wrong table causing duplicate snippet execution
+* Moved scope and other settings on single snippet page to below code area
 
 = 2.9.5 (13 Jan 2018) =
 * Fixed: Undefined function error when accessing the database on multisite
@@ -486,6 +505,9 @@ That's fantastic! Fork the [repository on GitHub](http://github.com/sheabunge/co
 * Stable version released.
 
 == Upgrade Notice ==
+
+= 2.10.0 =
+Improvements for multisite and new single-use snippet scope
 
 = 2.9.5 =
 Fixed issue with saving snippets on multisite

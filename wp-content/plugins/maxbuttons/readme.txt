@@ -4,7 +4,7 @@ Tags: wordpress button plugin, share button, wordpress buttons, css3 button gene
 Requires at least: 4.0
 Tested up to: 4.9.1
 Requires PHP: 5.3
-Stable tag: 6.26.1
+Stable tag: 6.27
 
 WordPress button plugin so powerful and easy to use anyone can create beautiful buttons, share buttons and social icons.
 
@@ -243,11 +243,23 @@ By default WordPress can't display shortcodes in a menu. You can use this [plugi
 
 This depends on the slider plugin you are using. Most of the well-known ones are allowing the use of shortcodes within the slides. To find out if your plugin can handle that, please ask the slider vendor.
 
+= Non-Latin language users =
+
+The plugin works with users of non-lating languages with a few exceptions. First, the character set of the Database Table should be in UTF-8. If you see '????' characters in the plugin, go to Settings -> Advanced. There is a button to set the tabel to UTF-8
+
+Secondly, please use latin only characters for button name ( Basic settings) and extra classes ( Advanced settings ). Not doing so might prevent the styling output from working correctly.
+
 == Changelog ==
+
+= 6.27 =
+
+* Tested for 4.9.2
+* Security - Added rel='noopener' for links opening in new window
+* Fixed missing values on a template
 
 = 6.26.1 =
 
-* Fixed - Advanced options 
+* Fixed - Advanced options
 
 = 6.26 =
 

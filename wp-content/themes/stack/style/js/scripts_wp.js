@@ -9,14 +9,6 @@ function makeTitle(slug) {
     return words.join(' ');
 }
 
-jQuery(window).load(function(){
-	
-	jQuery('.instafeed img').each(function(){
-		jQuery(this).attr('src', jQuery(this).attr('src').replace('150x150', '320x320'));
-	});		
-
-});
-
 jQuery(document).ready(function(){
 	"use strict";
 	

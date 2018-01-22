@@ -35,35 +35,45 @@ class Code_Snippets_Import_Menu extends Code_Snippets_Admin_Menu {
 		$contextual_help = new Code_Snippets_Contextual_Help( 'import' );
 		$contextual_help->load();
 
-		$this->process_import_file();
+		$this->process_import_files();
 	}
 
 	/**
-	 * Process the uploaded import file
+	 * Process the uploaded import files
 	 *
 	 * @uses import_snippets() to process the import file
 	 * @uses wp_redirect() to pass the import results to the page
 	 * @uses add_query_arg() to append the results to the current URI
 	 */
-	private function process_import_file() {
+	private function process_import_files() {
 
 		/* Ensure the import file exists */
-		if ( ! isset( $_FILES['code_snippets_import_file']['tmp_name'] ) ) {
+		if ( ! isset( $_FILES['code_snippets_import_files'] ) || ! count( $_FILES['code_snippets_import_files'] ) ) {
 			return;
 		}
 
-		$network = get_current_screen()->in_admin( 'network' );
+		$count = 0;
+		$network = is_network_admin();
+		$dup_action = isset( $_POST['duplicate_action'] ) ? $_POST['duplicate_action'] : 'ignore';
 
-		/* Import the snippets  */
-		$result = import_snippets( $_FILES['code_snippets_import_file']['tmp_name'], $network );
+		/* Loop through the uploaded files and import the snippets */
+
+		foreach ( $_FILES['code_snippets_import_files']['tmp_name'] as $i => $import_file ) {
+			$file_type = $_FILES['code_snippets_import_files']['type'][ $i ];
+
+			if ( 'application/json' === $file_type ) {
+				$result = import_snippets_json( $import_file, $network, $dup_action );
+			} elseif ( 'text/xml' === $file_type ) {
+				$result = import_snippets_xml( $import_file, $network, $dup_action );
+			} else {
+				continue;
+			}
+
+			$count += count( $result );
+		}
 
 		/* Send the amount of imported snippets to the page */
-		$url = add_query_arg(
-			$result ?
-			array( 'imported' => count( $result ) ) :
-			array( 'error' => true )
-		);
-
+		$url = add_query_arg( $count > 0 ? array( 'imported' => $count ) : array( 'error' => true ) );
 		wp_redirect( esc_url_raw( $url ) );
 		exit;
 	}
@@ -94,14 +104,15 @@ class Code_Snippets_Import_Menu extends Code_Snippets_Admin_Menu {
 		if ( isset( $_REQUEST['imported'] ) ) {
 			echo '<div id="message" class="updated fade"><p>';
 
+			$imported = intval( $_REQUEST['imported'] );
+
 			printf(
 				_n(
 					'Successfully imported <strong>%d</strong> snippet. <a href="%s">Have fun!</a>',
 					'Successfully imported <strong>%d</strong> snippets. <a href="%s">Have fun!</a>',
-					count( $_REQUEST['imported'] ),
-					'code-snippets'
+					$imported, 'code-snippets'
 				),
-				$_REQUEST['imported'],
+				$imported,
 				code_snippets()->get_menu_url( 'manage' )
 			);
 

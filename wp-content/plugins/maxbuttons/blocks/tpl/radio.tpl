@@ -11,6 +11,6 @@
 		{if:icon}	<i class='dashicons %%icon%%' tabindex='0'></i>	{/if:icon}
  	  {if:custom_icon} <i class='%%custom_icon%%'></i>{/if:custom_icon}
 		{if:image} <img src='%%image%%' /> {/if:image}
-		{if:label} %%label {/if:label}
+		{if:label} %%label%% {/if:label}
 		</label>
 </div>

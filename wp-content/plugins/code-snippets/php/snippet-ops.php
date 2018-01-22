@@ -326,17 +326,81 @@ function update_snippet_fields( $snippet_id, $fields, $network = null ) {
 }
 
 /**
+ * Imports snippets from a JSON file
+ *
+ * @since 2.9.7
+ *
+ * @uses save_snippet() to add the snippets to the database
+ *
+ * @param string     $file       The path to the file to import
+ * @param bool|null  $multisite  Import into network-wide table or site-wide table?
+ * @param string     $dup_action Action to take if duplicate snippets are detected. Can be 'skip', 'ignore', or 'replace'
+ *
+ * @return array|bool An array of imported snippet IDs on success, false on failure
+ */
+function import_snippets_json( $file, $multisite = null, $dup_action = 'ignore' ) {
+
+	if ( ! file_exists( $file ) || ! is_file( $file ) ) {
+		return false;
+	}
+
+	$raw_data = file_get_contents( $file );
+	$data = json_decode( $raw_data, true );
+
+	$imported = array();
+
+	/* Get a list of existing snippet names keyed to their IDs */
+	$existing_snippets = array();
+	if ( 'replace' == $dup_action || 'skip' === $dup_action ) {
+		$all_snippets = get_snippets( array(), $multisite );
+
+		foreach ( $all_snippets as $snippet ) {
+			if ( $snippet->name ) {
+				$existing_snippets[ $snippet->name ] = $snippet->id;
+			}
+		}
+	}
+
+	/* Loop through all snippets */
+
+	/** @var DOMElement $snippet_xml */
+	foreach ( $data['snippets'] as $snippet ) {
+		$snippet = new Code_Snippet( $snippet );
+		$snippet->network = $multisite;
+
+		if ( 'ignore' !== $dup_action && isset( $existing_snippets[ $snippet->name ] ) ) {
+
+			if ( 'replace' === $dup_action ) {
+				$snippet->id = $existing_snippets[ $snippet->name ];
+			} elseif ( 'skip' === $dup_action ) {
+				continue;
+			}
+		}
+
+		/* Save the snippet and increase the counter if successful */
+		if ( $snippet_id = save_snippet( $snippet ) ) {
+			$imported[] = $snippet_id;
+		}
+	}
+
+	do_action( 'code_snippets/import/json', $file, $multisite );
+	return $imported;
+}
+
+/**
  * Imports snippets from an XML file
  *
  * @since 2.0
  *
  * @uses save_snippet() to add the snippets to the database
  *
- * @param  string     $file      The path to the XML file to import
- * @param  bool|null  $multisite Import into network-wide table or site-wide table?
- * @return array|bool            An array of imported snippet IDs on success, false on failure
+ * @param string     $file             The path to the file to import
+ * @param bool|null  $multisite        Import into network-wide table or site-wide table?
+ * @param string     $dup_action Action to take if duplicate snippets are detected. Can be 'skip', 'ignore', or 'replace'
+ *
+ * @return array|bool An array of imported snippet IDs on success, false on failure
  */
-function import_snippets( $file, $multisite = null ) {
+function import_snippets_xml( $file, $multisite = null, $dup_action = 'ignore' ) {
 
 	if ( ! file_exists( $file ) || ! is_file( $file ) ) {
 		return false;
@@ -347,7 +411,19 @@ function import_snippets( $file, $multisite = null ) {
 
 	$snippets_xml = $dom->getElementsByTagName( 'snippet' );
 	$fields = array( 'name', 'description', 'desc', 'code', 'tags', 'scope' );
-	$exported_snippets = array();
+	$imported = array();
+
+	/* Get a list of existing snippet names keyed to their IDs */
+	$existing_snippets = array();
+	if ( 'replace' == $dup_action || 'skip' === $dup_action ) {
+		$all_snippets = get_snippets( array(), $multisite );
+
+		foreach ( $all_snippets as $snippet ) {
+			if ( $snippet->name ) {
+				$existing_snippets[ $snippet->name ] = $snippet->id;
+			}
+		}
+	}
 
 	/* Loop through all snippets */
 
@@ -374,18 +450,26 @@ function import_snippets( $file, $multisite = null ) {
 			$snippet->scope = $scope;
 		}
 
+		if ( 'ignore' !== $dup_action && isset( $existing_snippets[ $snippet->name ] ) ) {
+			if ( 'replace' === $dup_action ) {
+				$snippet->id = $existing_snippets[ $snippet->name ];
+			} elseif ( 'skip' === $dup_action ) {
+				continue;
+			}
+		}
+
 		/* Save the snippet and increase the counter if successful */
 		if ( $snippet_id = save_snippet( $snippet ) ) {
-			$exported_snippets[] = $snippet_id;
+			$imported[] = $snippet_id;
 		}
 	}
 
-	do_action( 'code_snippets/import', $dom, $multisite );
-	return $exported_snippets;
+	do_action( 'code_snippets/import/xml', $file, $multisite );
+	return $imported;
 }
 
 /**
- * Exports snippets as an XML file
+ * Exports snippets as an XML, JSON or PHP file
  *
  * @since 2.0
  * @uses Code_Snippets_Export to export selected snippets
@@ -393,9 +477,9 @@ function import_snippets( $file, $multisite = null ) {
  *
  * @param array     $ids       The IDs of the snippets to export
  * @param bool|null $multisite Is the snippet a network-wide or site-wide snippet?
- * @param string    $format    Export to xml or php?
+ * @param string    $format    Export to json, xml or php?
  */
-function export_snippets( $ids, $multisite = null, $format = 'xml' ) {
+function export_snippets( $ids, $multisite = null, $format = 'json' ) {
 	$table = code_snippets()->db->get_table_name( $multisite );
 
 	if ( ! class_exists( 'Code_Snippets_Export' ) ) {
@@ -457,12 +541,14 @@ function execute_active_snippets() {
 	/** @var wpdb $wpdb */
 	global $wpdb;
 
-	$current_scope = is_admin() ? 1 : 2;
+	$current_scope = is_admin() ? 'admin' : 'front-end';
 	$queries = array();
+
+	$sql_format = "SELECT id, code, scope FROM %s WHERE scope IN ('global', 'single-use', %%s) ";
 
 	/* Fetch snippets from site table */
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->snippets'" ) === $wpdb->snippets ) {
-		$queries[ $wpdb->snippets ] = $wpdb->prepare( "SELECT id, code FROM {$wpdb->snippets} WHERE (scope=0 OR scope=%d) AND active=1", $current_scope );
+		$queries[ $wpdb->snippets ] = $wpdb->prepare( sprintf( $sql_format, $wpdb->snippets ) . 'AND active=1', $current_scope );
 	}
 
 	/* Fetch snippets from the network table */
@@ -476,14 +562,14 @@ function execute_active_snippets() {
 			$active_shared_ids_format = implode( ',', array_fill( 0, count( $active_shared_ids ), '%d' ) );
 
 			/* Include them in the query */
-			$sql = "SELECT id, code FROM {$wpdb->snippets} WHERE (scope=0 OR scope=%d) AND (active=1 OR id IN ($active_shared_ids_format))";
+			$sql = sprintf( $sql_format, $wpdb->ms_snippets ) . " AND (active=1 OR id IN ($active_shared_ids_format))";
 
 			/* Add the scope number to the IDs array, so that it is the first variable in the query */
 			array_unshift( $active_shared_ids, $current_scope );
 			$queries[ $wpdb->ms_snippets ] = $wpdb->prepare( $sql, $active_shared_ids );
 
 		} else {
-			$sql = "SELECT id, code  FROM {$wpdb->ms_snippets} WHERE (scope=0 OR scope=%d) AND active=1";
+			$sql = sprintf( $sql_format, $wpdb->ms_snippets ) . 'AND active=1';
 			$queries[ $wpdb->ms_snippets ] = $wpdb->prepare( $sql, $current_scope );
 		}
 	}
@@ -495,6 +581,10 @@ function execute_active_snippets() {
 		foreach ( $active_snippets as $snippet ) {
 			$snippet_id = intval( $snippet['id'] );
 			$code = $snippet['code'];
+
+			if ( 'single-use' === $snippet['scope'] ) {
+				$wpdb->update( $table_name, array( 'active' => '0' ), array( 'id' => $snippet_id ), array( '%d' ), array( '%d' ) );
+			}
 
 			if ( apply_filters( 'code_snippets/allow_execute_snippet', true, $snippet_id, $table_name ) ) {
 				execute_snippet( $code, $snippet_id );

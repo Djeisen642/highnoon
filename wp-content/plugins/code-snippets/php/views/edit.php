@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-global $pagenow;
-
 $table = code_snippets()->db->get_table_name();
 $edit_id = code_snippets()->get_menu_slug( 'edit' ) === $_REQUEST['page'] ? absint( $_REQUEST['id'] ) : 0;
 $snippet = get_snippet( $edit_id );
@@ -64,6 +62,7 @@ $snippet = get_snippet( $edit_id );
 
 		/* Add a nonce for security */
 		wp_nonce_field( 'save_snippet' );
+
 		?>
 
 		<p class="submit">
@@ -71,7 +70,13 @@ $snippet = get_snippet( $edit_id );
 
 			/* Make the 'Save and Activate' button the default if the setting is enabled */
 
-			if ( $snippet->shared_network && get_current_screen()->in_admin( 'network' ) ) {
+			if ( 'single-use' === $snippet->scope ) {
+
+				submit_button( null, 'primary', 'save_snippet', false );
+
+				submit_button( __( 'Save Changes and Execute Once', 'code-snippets' ), 'secondary', 'save_snippet_execute', false );
+
+			} elseif ( $snippet->shared_network && is_network_admin() ) {
 
 				submit_button( null, 'primary', 'save_snippet', false );
 
@@ -106,6 +111,12 @@ $snippet = get_snippet( $edit_id );
 
 			if ( 0 !== $snippet->id ) {
 
+				/* Download button */
+
+				if ( apply_filters( 'code_snippets/enable_downloads', true ) ) {
+					submit_button( __( 'Download', 'code-snippets' ), 'secondary', 'download_snippet', false );
+				}
+
 				/* Export button */
 
 				submit_button( __( 'Export', 'code-snippets' ), 'secondary', 'export_snippet', false );
@@ -129,16 +140,6 @@ $snippet = get_snippet( $edit_id );
 
 			?>
 		</p>
-
-		<?php if ( has_action( 'code_snippets/admin/single/settings' ) ) : ?>
-
-		<h2><?php _e( 'Settings', 'code-snippets' ); ?></h2>
-		<table class="form-table">
-			<?php do_action( 'code_snippets/admin/single/settings', $snippet ); ?>
-		</table>
-
-		<?php endif; ?>
-
 	</form>
 </div>
 

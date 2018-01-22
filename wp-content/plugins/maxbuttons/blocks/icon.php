@@ -95,7 +95,6 @@ class iconBlock extends maxBlock
 		*/
 		$css = $this->parse_rule_textalign($css, 'mb-icon', 'normal');
 
-
 		return $css;
 	}
 
@@ -123,7 +122,7 @@ class iconBlock extends maxBlock
 			}
 		}
 
-		return $css; 
+		return $css;
 	}
 
  	public function parse_button($domObj, $mode = 'normal')

@@ -69,8 +69,8 @@ function code_snippets_get_settings_fields() {
 		'show_network_snippets' => array(
 			'name' => __( 'Show Network Snippets', 'code-snippets' ),
 			'type' => 'checkbox',
-			'label' => __( 'Show network-wide snippets in the snippets table on subsites', 'code-snippets' ),
-			'default' => true,
+			'label' => __( 'Show network-wide snippets in the snippets table on subsites to super administrators only', 'code-snippets' ),
+			'default' => false,
 		),
 
 		'disable_prism' => array(
@@ -81,7 +81,7 @@ function code_snippets_get_settings_fields() {
 		),
 	);
 
-	if ( ! is_multisite() ) {
+	if ( ! is_multisite() || ! current_user_can( code_snippets()->get_network_cap_name() ) ) {
 		unset( $fields['general']['show_network_snippets'] );
 	}
 

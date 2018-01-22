@@ -146,17 +146,33 @@ class basicBlock extends maxBlock
 
 		$data = $this->data[$this->blockname];
 		$button_id = $this->data["id"];
+		$rels = array();
 
 		$anchor = $domObj->find("a",0);
 
 		if (isset($data["nofollow"]) && $data["nofollow"] == 1)
-			$anchor->rel = "nofollow";
+		{
+			$rels[] = 'nofollow';
+			$rels[] = 'noopener';
+		}
+		//	$anchor->rel = "nofollow";
 		//	$buttonAttrs[] = "rel=nofollow";
+
 		if (isset($data["new_window"]) && $data["new_window"] == 1)
+		{
 			$anchor->target = "_blank";
+			if (! in_array('noopener', $rels))
+				$rels[] = 'noopener';
+		}
 		if (isset($data['link_title']) && strlen($data['link_title']) > 0)
 			$anchor->title = $data['link_title'];
 
+		$rels = apply_filters('mb/button/rel', $rels);
+
+		if (count($rels) > 0)
+		{
+			$anchor->rel = implode(' ', $rels);
+		}
 
 		if (isset($data["url"]) && $data["url"] != '')
 		{

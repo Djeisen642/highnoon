@@ -1,4 +1,13 @@
 ===================================================================
+January 5th 2018 - v10.5.4
+-------------------------------------------------------------------
+
+* FIXED: WooCommerce product image transition speed
+* FIXED: Issue with IE compatibility mode
+* FIXED: Instagram feeds loading issue
+* FIXED: Cache busting now uses theme version number automatically
+
+===================================================================
 January 5th 2018 - v10.5.3
 -------------------------------------------------------------------
 

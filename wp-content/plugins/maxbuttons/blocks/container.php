@@ -166,7 +166,6 @@ class containerBlock extends maxBlock
 
         $admin->addField($container_width, 'start', 'end');
 
-
 			 		// Margin - trouble
 			 		$ptop = new maxField('number');
 			 		$ptop->label = __('Margin', 'maxbuttons');
@@ -221,11 +220,11 @@ class containerBlock extends maxBlock
 	 				$align->value= maxBlocks::getValue('container_alignment');
 	 				//$align->setDefault(maxBlocks::getDefault('container_alignment'));
 	 				$align->content = maxUtils::selectify($align->name, $maxbuttons_container_alignments, $align->value);
-	 				$align->output('start', 'end');
+	 				//$align->output('start', 'end');
 
           $admin->addField($align, 'start', 'end');
 
-          $admin->display_fields(); 
+          $admin->display_fields();
         ?>
 
 				</div>

@@ -99,27 +99,30 @@ if(!( function_exists('ebor_fonts_url') )){
  */ 
 if(!( function_exists('ebor_load_scripts') )){
 	function ebor_load_scripts() {
+	
+		$theme_data = wp_get_theme();
+		$version    = $theme_data->get( 'Version' );
+		$extension  = ( class_exists('WPLessPlugin') ) ? '.less' : '.css';
 			
 		//Enqueue Styles
-		$extension = ( class_exists('WPLessPlugin') ) ? '.less' : '.css';
-		wp_enqueue_style( 'ebor-google-font', ebor_fonts_url(), array(), '1.5.0' );
-		wp_enqueue_style( 'bootstrap', EBOR_THEME_DIRECTORY . 'style/css/bootstrap.css', array(), '1.5.0' );
-		wp_enqueue_style( 'ebor-icons', EBOR_THEME_DIRECTORY . 'style/css/icons.css', array(), '1.5.0' );	
-		wp_enqueue_style( 'ebor-plugins', EBOR_THEME_DIRECTORY . 'style/css/plugins.css', array(), '1.5.0' );	
-		wp_enqueue_style( 'ebor-theme', EBOR_THEME_DIRECTORY . 'style/css/theme' . $extension, array(), '1.5.0' );	
-		wp_enqueue_style( 'ebor-style', get_stylesheet_uri(), array(), '1.5.0' );
+		wp_enqueue_style( 'ebor-google-font', ebor_fonts_url(), array(), $version );
+		wp_enqueue_style( 'bootstrap', EBOR_THEME_DIRECTORY . 'style/css/bootstrap.css', array(), $version );
+		wp_enqueue_style( 'ebor-icons', EBOR_THEME_DIRECTORY . 'style/css/icons.css', array(), $version );	
+		wp_enqueue_style( 'ebor-plugins', EBOR_THEME_DIRECTORY . 'style/css/plugins.css', array(), $version );	
+		wp_enqueue_style( 'ebor-theme', EBOR_THEME_DIRECTORY . 'style/css/theme' . $extension, array(), $version );	
+		wp_enqueue_style( 'ebor-style', get_stylesheet_uri(), array(), $version );
 		
 		if( 'no' == get_option( 'stack_reduce_iconsmind', 'no' ) ){
-			wp_enqueue_style( 'ebor-iconsmind', EBOR_THEME_DIRECTORY . 'style/css/iconsmind.css', array(), '1.5.0' );	
+			wp_enqueue_style( 'ebor-iconsmind', EBOR_THEME_DIRECTORY . 'style/css/iconsmind.css', array(), $version );	
 		} else {
-			wp_enqueue_style( 'ebor-iconsmind-light', EBOR_THEME_DIRECTORY . 'style/css/iconsmind-light.css', array(), '1.5.0' );		
+			wp_enqueue_style( 'ebor-iconsmind-light', EBOR_THEME_DIRECTORY . 'style/css/iconsmind-light.css', array(), $version );		
 		}
 		
 		//Enqueue Scripts
-		wp_enqueue_script( 'ebor-parallax', EBOR_THEME_DIRECTORY . 'style/js/parallax.js', array('jquery'), '1.5.0', true  );
-		wp_enqueue_script( 'ebor-plugins', EBOR_THEME_DIRECTORY . 'style/js/plugins.js', array('jquery'), '1.5.0', true  );
-		wp_enqueue_script( 'ebor-scripts-wp', EBOR_THEME_DIRECTORY . 'style/js/scripts_wp.js', array('jquery'), '1.5.0', true  );
-		wp_enqueue_script( 'ebor-scripts', EBOR_THEME_DIRECTORY . 'style/js/scripts.js', array('jquery'), '1.5.0', true  );
+		wp_enqueue_script( 'ebor-parallax', EBOR_THEME_DIRECTORY . 'style/js/parallax.js', array('jquery'), $version, true  );
+		wp_enqueue_script( 'ebor-plugins', EBOR_THEME_DIRECTORY . 'style/js/plugins.js', array('jquery'), $version, true  );
+		wp_enqueue_script( 'ebor-scripts-wp', EBOR_THEME_DIRECTORY . 'style/js/scripts_wp.js', array('jquery'), $version, true  );
+		wp_enqueue_script( 'ebor-scripts', EBOR_THEME_DIRECTORY . 'style/js/scripts.js', array('jquery'), $version, true  );
 		
 		//Enqueue Comments
 		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

@@ -7,6 +7,10 @@
  */
 class Code_Snippets_DB {
 
+	public $table;
+
+	public $ms_table;
+
 	/**
 	 * Class constructor
 	 */
@@ -23,13 +27,16 @@ class Code_Snippets_DB {
 	function set_table_vars() {
 		global $wpdb;
 
+		$this->table = 'snippets';
+		$this->ms_table = 'ms_snippets';
+
 		/* Register the snippet table names with WordPress */
-		$wpdb->tables[]           = 'snippets';
-		$wpdb->ms_global_tables[] = 'ms_snippets';
+		$wpdb->tables[] = $this->table;
+		$wpdb->ms_global_tables[] = $this->ms_table;
 
 		/* Setup initial table variables */
-		$wpdb->snippets    = $wpdb->prefix . 'snippets';
-		$wpdb->ms_snippets = $wpdb->base_prefix . 'ms_snippets';
+		$wpdb->snippets = $this->table = $wpdb->prefix . $this->table;
+		$wpdb->ms_snippets = $this->ms_table = $wpdb->base_prefix . $this->ms_table;
 	}
 
 	/**
@@ -47,8 +54,8 @@ class Code_Snippets_DB {
 		}
 
 		/* If $multisite is null, try to base it on the current admin page */
-		if ( is_null( $network ) && function_exists( 'get_current_screen' ) && get_current_screen() ) {
-			$network = get_current_screen()->in_admin( 'network' );
+		if ( is_null( $network ) && function_exists( 'is_network_admin' ) ) {
+			$network = is_network_admin();
 		}
 
 		return $network;
@@ -123,13 +130,13 @@ class Code_Snippets_DB {
 
 		/* Create the database table */
 		$sql = "CREATE TABLE $table_name (
-				id          bigint(20) NOT NULL AUTO_INCREMENT,
-				name        tinytext   NOT NULL default '',
-				description text       NOT NULL default '',
-				code        longtext   NOT NULL default '',
-				tags        longtext   NOT NULL default '',
-				scope       tinyint(1) NOT NULL default 0,
-				active      tinyint(1) NOT NULL default 0,
+				id          bigint(20)  NOT NULL AUTO_INCREMENT,
+				name        tinytext    NOT NULL default '',
+				description text        NOT NULL default '',
+				code        longtext    NOT NULL default '',
+				tags        longtext    NOT NULL default '',
+				scope       varchar(15) NOT NULL default 'global',
+				active      tinyint(1)  NOT NULL default 0,
 				PRIMARY KEY  (id)
 			) $charset_collate;";
 

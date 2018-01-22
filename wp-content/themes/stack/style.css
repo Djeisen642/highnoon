@@ -1,7 +1,7 @@
 /*
 Theme Name: Stack
 Theme URI: http://www.tommusrhodus.com/stack-wordpress-theme/
-Version: 10.5.3
+Version: 10.5.4
 Description: Stack WordPress Theme
 Author: Tom Rhodes
 Author URI: http://www.tommusrhodus.com/
@@ -1414,7 +1414,7 @@ section:not(.unpad):not(.imagebg):not([class*='bg--']):not(.imageblock):not(.unp
 padding-top: 0;
 }
 body:not(.variant-active) nav#menu1 { z-index: 9999; }
-.product img {
+.woocommerce-product-gallery img {
 	margin-bottom: 0;
 	transition: none;
 	-webkit-transition: none;

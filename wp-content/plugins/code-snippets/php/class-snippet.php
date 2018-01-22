@@ -16,8 +16,9 @@
  * @property bool   $network        true if is multisite-wide snippet, false if site-wide
  * @property bool   $shared_network Whether the snippet is a shared network snippet
  *
- * @property-read array  $tags_list The tags in string list format
+ * @property-read array  $tags_list  The tags in string list format
  * @property-read string $scope_name The name of the scope
+ * @property-read string $scope_icon The dashicon used to represent the current scope
  */
 class Code_Snippet {
 
@@ -32,15 +33,23 @@ class Code_Snippet {
 		'desc' => '',
 		'code' => '',
 		'tags' => array(),
-		'scope' => 0,
+		'scope' => 'global',
 		'active' => false,
 		'network' => null,
 		'shared_network' => null,
 	);
 
-	private $field_aliases = array(
+	private static $field_aliases = array(
 		'description' => 'desc',
 	);
+
+	/**
+	 * Constructor function
+	 * @param array|object $fields Initial snippet fields
+	 */
+	public function __construct( $fields = null ) {
+		$this->set_fields( $fields );
+	}
 
 	/**
 	 * Set all of the snippet fields from an array or object.
@@ -66,12 +75,8 @@ class Code_Snippet {
 		}
 	}
 
-	/**
-	 * Constructor function
-	 * @param array|object $fields Initial snippet fields
-	 */
-	public function __construct( $fields = null ) {
-		$this->set_fields( $fields );
+	public function get_fields() {
+		return $this->fields;
 	}
 
 	/**
@@ -84,8 +89,8 @@ class Code_Snippet {
 	private function validate_field_name( $field ) {
 
 		/* If a field alias is set, remap it to the valid field name */
-		if ( isset( $this->field_aliases[ $field ] ) ) {
-			return $this->field_aliases[ $field ];
+		if ( isset( self::$field_aliases[ $field ] ) ) {
+			return self::$field_aliases[ $field ];
 		}
 
 		return $field;
@@ -150,7 +155,7 @@ class Code_Snippet {
 	 * @return array
 	 */
 	public function get_allowed_fields() {
-		return array_keys( $this->fields ) + array_keys( $this->field_aliases );
+		return array_keys( $this->fields ) + array_keys( self::$field_aliases );
 	}
 
 	/**
@@ -161,7 +166,7 @@ class Code_Snippet {
 	 * @return bool true if the is allowed, false if invalid
 	 */
 	public function is_allowed_field( $field ) {
-		return array_key_exists( $field, $this->fields ) || array_key_exists( $field, $this->field_aliases );
+		return array_key_exists( $field, $this->fields ) || array_key_exists( $field, self::$field_aliases );
 	}
 
 	/**
@@ -213,10 +218,14 @@ class Code_Snippet {
 	 * @return int        The field in the correct format
 	 */
 	private function prepare_scope( $scope ) {
-		$scope = (int) $scope;
+		$scopes = self::get_all_scopes();
 
-		if ( in_array( $scope, array( 0, 1, 2 ) ) ) {
+		if ( in_array( $scope, $scopes ) ) {
 			return $scope;
+		}
+
+		if ( is_numeric( $scope ) && isset( $scopes[ $scope ] ) ) {
+			return $scopes[ $scope ];
 		}
 
 		return $this->fields['scope'];
@@ -237,6 +246,7 @@ class Code_Snippet {
 	 * @return bool             The field in the correct format
 	 */
 	private function prepare_active( $active ) {
+
 		if ( is_bool( $active ) ) {
 			return $active;
 		}
@@ -251,8 +261,8 @@ class Code_Snippet {
 	 */
 	private function prepare_network( $network ) {
 
-		if ( null === $network && function_exists( 'get_current_screen' ) && $screen = get_current_screen() ) {
-			return $screen->in_admin( 'network' );
+		if ( null === $network && function_exists( 'is_network_admin' ) ) {
+			return is_network_admin();
 		}
 
 		return true === $network;
@@ -267,21 +277,41 @@ class Code_Snippet {
 	}
 
 	/**
-	 * Retrieve the string representation of the scope
-	 * @param  string $default The name to use for the default scope
-	 * @return string          The name of the scope
+	 * Retrieve a list of all available scopes
+	 * @return array
 	 */
-	private function get_scope_name( $default = 'global' ) {
+	public static function get_all_scopes() {
+		return array( 'global', 'admin', 'front-end', 'single-use' );
+	}
 
-		switch ( intval( $this->fields['scope'] ) ) {
-			case 1:
-				return 'admin';
-			case 2:
-				return 'front-end';
-			default:
-			case 0:
-				return $default;
-		}
+	/**
+	 * Retrieve a list of all scope icons
+	 * @return array
+	 */
+	public static function get_scope_icons() {
+		return array(
+			'global' => 'admin-site',
+			'admin' => 'admin-tools',
+			'front-end' => 'admin-appearance',
+			'single-use' => 'clock',
+		);
+	}
+
+	/**
+	 * Retrieve the string representation of the scope
+	 * @return string The name of the scope
+	 */
+	private function get_scope_name() {
+		return $this->scope;
+	}
+
+	/**
+	 * Retrieve the icon used for the current scope
+	 * @return string a dashicon name
+	 */
+	private function get_scope_icon() {
+		$icons = self::get_scope_icons();
+		return $icons[ $this->scope ];
 	}
 
 	/**

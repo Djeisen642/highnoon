@@ -38,7 +38,7 @@ class Code_Snippets_List_Table extends WP_List_Table {
 	public function __construct() {
 		global $status, $page;
 		$screen = get_current_screen();
-		$this->is_network = $screen->in_admin( 'network' );
+		$this->is_network = is_network_admin();
 
 		/* Determine the status */
 		$status = 'all';
@@ -124,6 +124,17 @@ class Code_Snippets_List_Table extends WP_List_Table {
 						'id'     => $snippet->id,
 					) ) )
 				);
+			} elseif ( 'single-use' === $snippet->scope ) {
+
+				$actions['run_once'] = sprintf(
+					$link_format,
+					esc_html__( 'Run Once', 'code-snippets' ),
+					esc_url( add_query_arg( array(
+						'action' => 'run-once',
+						'id'     => $snippet->id,
+					) ) )
+				);
+
 			} else {
 				$actions['activate'] = sprintf(
 					$link_format,
@@ -201,7 +212,7 @@ class Code_Snippets_List_Table extends WP_List_Table {
 		}
 
 		/* Don't add Edit/Export/Delete actions for if current user can't manage network snippets */
-		if ( ! current_user_can( apply_filters( 'code_snippets_network_cap', 'manage_network_snippets' ) ) ) {
+		if ( ! current_user_can( code_snippets()->get_network_cap_name() ) ) {
 			return $actions;
 		}
 
@@ -262,20 +273,25 @@ class Code_Snippets_List_Table extends WP_List_Table {
 			apply_filters( 'code_snippets/list_table/row_actions_always_visible', true )
 		);
 
-		$out = sprintf( '<strong>%s</strong>', esc_html( $title ) );
+		$out = esc_html( $title );
+
+		if ( 'global' !== $snippet->scope ) {
+			$out .= ' <span class="dashicons dashicons-' . $snippet->scope_icon . '"></span>';
+		}
+
+		/* Only bold active snippets */
+		if ( $snippet->active ) {
+			$out = sprintf( '<strong>%s</strong>', $out );
+		}
 
 		/* Add a link to the snippet if it isn't an unreadable network-only snippet */
 		if ( $this->is_network || ! $snippet->network || current_user_can( code_snippets()->get_network_cap_name() ) ) {
 
 			$out = sprintf(
-				'<a href="%s"><strong>%s</strong></a>',
+				'<a href="%s">%s</a>',
 				code_snippets()->get_snippet_edit_url( $snippet->id, $snippet->network ? 'network' : 'admin' ),
 				$out
 			);
-		}
-
-		if ( $snippet->shared_network && ! current_user_can( apply_filters( 'code_snippets_network_cap', 'manage_network_snippets' ) ) ) {
-			$out = sprintf( '<a><strong>%s</strong></a>', esc_html( $title ) );
 		}
 
 		if ( $snippet->shared_network ) {
@@ -391,9 +407,9 @@ class Code_Snippets_List_Table extends WP_List_Table {
 		$actions = array(
 			'activate-selected'   => $this->is_network ? __( 'Network Activate', 'code-snippets' ) : __( 'Activate', 'code-snippets' ),
 			'deactivate-selected' => $this->is_network ? __( 'Network Deactivate', 'code-snippets' ) : __( 'Deactivate', 'code-snippets' ),
-			'export-selected'	  => __( 'Export', 'code-snippets' ),
-			'delete-selected'	  => __( 'Delete', 'code-snippets' ),
-			'export-php-selected' => __( 'Export to PHP', 'code-snippets' ),
+			'download-selected'   => __( 'Download', 'code-snippets' ),
+			'export-selected'     => __( 'Export', 'code-snippets' ),
+			'delete-selected'     => __( 'Delete', 'code-snippets' ),
 		);
 		return apply_filters( 'code_snippets/list_table/bulk_actions', $actions );
 	}
@@ -592,6 +608,10 @@ class Code_Snippets_List_Table extends WP_List_Table {
 				activate_snippet( $id, $this->is_network );
 				$result = 'activated';
 			}
+			elseif ( 'run-once' === $action ) {
+				activate_snippet( $id, $this->is_network );
+				$result = 'executed';
+			}
 			elseif ( 'deactivate' === $action ) {
 				deactivate_snippet( $id, $this->is_network );
 				$result = 'deactivated';
@@ -619,7 +639,7 @@ class Code_Snippets_List_Table extends WP_List_Table {
 			elseif ( 'export' === $action ) {
 				export_snippets( array( $id ), $this->is_network );
 			}
-			elseif ( 'export-php' === $action ) {
+			elseif ( 'download' === $action ) {
 				export_snippets( array( $id ), $this->is_network, 'php' );
 			}
 
@@ -681,7 +701,7 @@ class Code_Snippets_List_Table extends WP_List_Table {
 				export_snippets( $ids, $this->is_network );
 				break;
 
-			case 'export-php-selected':
+			case 'download-selected':
 				export_snippets( $ids, $this->is_network, 'php' );
 				break;
 
@@ -781,7 +801,8 @@ class Code_Snippets_List_Table extends WP_List_Table {
 		$snippets = array_fill_keys( $this->statuses, array() );
 
 		/* Fetch all snippets */
-		if ( is_multisite() && ! $this->is_network && code_snippets_get_setting( 'general', 'show_network_snippets' ) ) {
+		if ( is_multisite() && ! $this->is_network && current_user_can( code_snippets()->get_network_cap_name() ) &&
+		     code_snippets_get_setting( 'general', 'show_network_snippets' ) ) {
 			$network_snippets = get_snippets( array(), true );
 			$network_snippets = array_filter( $network_snippets, array( $this, 'exclude_shared_network_snippets' ) );
 
@@ -807,8 +828,8 @@ class Code_Snippets_List_Table extends WP_List_Table {
 		if ( code_snippets_get_setting( 'general', 'snippet_scope_enabled' ) ) {
 			foreach ( $snippets['all'] as $snippet ) {
 
-				if ( 0 != $snippet->scope ) {
-					$snippet->tags = array_merge( $snippet->tags, array( $snippet->scope_name ) );
+				if ( 'global' !== $snippet->scope ) {
+					$snippet->tags = array_merge( $snippet->tags, array( $snippet->scope ) );
 				}
 			}
 		}
@@ -1036,7 +1057,7 @@ class Code_Snippets_List_Table extends WP_List_Table {
 		$row_class = ( $snippet->active ? 'active' : 'inactive' );
 
 		if ( code_snippets_get_setting( 'general', 'snippet_scope_enabled' ) ) {
-			$row_class .= sprintf( ' %s-scope', $snippet->scope_name );
+			$row_class .= sprintf( ' %s-scope', $snippet->scope );
 		}
 
 		if ( $snippet->shared_network ) {
