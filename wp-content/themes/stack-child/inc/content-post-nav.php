@@ -6,7 +6,7 @@
 		return false;
 	}
 
-  if ($post->post_type == 'sfwd-lessons' || $post->post_type == 'sfwd-topic') {
+  if ($post->post_type == 'sfwd-lessons' || $post->post_type == 'sfwd-topic' || $post->post_type == 'sfwd-courses' || $post->post_type == 'campaigns') {
     return false;
   }
 
