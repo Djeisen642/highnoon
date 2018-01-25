@@ -6,7 +6,7 @@
 		return false;
 	}
 
-  if ($post->post_type == 'sfwd-lessons' || $post->post_type == 'sfwd-topic' || $post->post_type == 'sfwd-courses' || $post->post_type == 'campaigns') {
+  if ($post->post_type != 'post') {
     return false;
   }
 
@@ -15,7 +15,7 @@
 
 <section class="unpad text-center ">
     <div class="row--gapless">
-
+<?php echo $post->post_type ?>
         <?php if( !empty( $prev_post ) ) : ?>
 	        <div class="col-sm-4 col-xs-12">
 	            <a href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>" class="block">
