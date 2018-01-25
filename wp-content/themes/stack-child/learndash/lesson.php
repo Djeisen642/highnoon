@@ -154,16 +154,17 @@
 <?php endif; ?>
 
 <br />
-
-<p id="learndash_next_prev_link"><?php echo learndash_previous_post_link(); ?>
-	<?php
-	/*
-	 * See details for filter 'learndash_show_next_link' https://bitbucket.org/snippets/learndash/5oAEX
-	 *
-	 * @since version 2.3
-	 */
-	?>
-	<?php if ( apply_filters( 'learndash_show_next_link', learndash_is_lesson_complete( $user_id, $post->ID ),  $user_id, $post->ID ) ) { ?>
-		&nbsp;&nbsp;&nbsp;&nbsp;<?php echo learndash_next_post_link(); ?>
-	<?php } ?>
-</p>
+<?php if ($post->course_id != 5509) : ?>
+  <p id="learndash_next_prev_link"><?php echo learndash_previous_post_link(); ?>
+  	<?php
+  	/*
+  	 * See details for filter 'learndash_show_next_link' https://bitbucket.org/snippets/learndash/5oAEX
+  	 *
+  	 * @since version 2.3
+  	 */
+  	?>
+  	<?php if ( apply_filters( 'learndash_show_next_link', learndash_is_lesson_complete( $user_id, $post->ID ),  $user_id, $post->ID ) ) { ?>
+  		&nbsp;&nbsp;&nbsp;&nbsp;<?php echo learndash_next_post_link(); ?>
+  	<?php } ?>
+  </p>
+<?php endif; ?>
