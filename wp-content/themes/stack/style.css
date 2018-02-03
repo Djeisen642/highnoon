@@ -1,7 +1,7 @@
 /*
 Theme Name: Stack
 Theme URI: http://www.tommusrhodus.com/stack-wordpress-theme/
-Version: 10.5.4
+Version: 10.5.5
 Description: Stack WordPress Theme
 Author: Tom Rhodes
 Author URI: http://www.tommusrhodus.com/
@@ -1501,4 +1501,10 @@ h4 span {
 .thumbnails-slider .col-sm-1 {
 	float: none;
 	display: inline-block;
+}
+nav img {
+    margin-bottom: -1px;
+}
+.accordion li.active .accordion__content {
+	max-height: 99999px;
 }

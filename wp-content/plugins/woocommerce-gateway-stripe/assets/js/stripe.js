@@ -6,7 +6,8 @@ jQuery( function( $ ) {
 	var stripe = Stripe( wc_stripe_params.key );
 
 	if ( 'yes' === wc_stripe_params.use_elements ) {
-		var elements = stripe.elements(),
+		var stripe_elements_options = wc_stripe_params.elements_options.length ? wc_stripe_params.elements_options : {};
+		var elements = stripe.elements( stripe_elements_options ),
 			stripe_card,
 			stripe_exp,
 			stripe_cvc;
@@ -232,6 +233,10 @@ jQuery( function( $ ) {
 			return $( '#payment_method_stripe_bitcoin' ).is( ':checked' );
 		},
 
+		isP24Chosen: function() {
+			return $( '#payment_method_stripe_p24' ).is( ':checked' );
+		},
+
 		hasSource: function() {
 			return 0 < $( 'input.stripe-source' ).length;
 		},
@@ -354,10 +359,12 @@ jQuery( function( $ ) {
 
 		onError: function( e, result ) {
 			var message = result.error.message,
-				errorContainer = wc_stripe_form.getSelectedPaymentElement().parent( '.wc_payment_method, .woocommerce-PaymentMethod' ).find( '.stripe-source-errors' );
+				errorContainer = wc_stripe_form.getSelectedPaymentElement().parents( 'li' ).eq(0).find( '.stripe-source-errors' );
 
-			// Customers do not need to know the specifics of the below type of errors
-			// therefore return a generic localizable error message.
+			/*
+			 * Customers do not need to know the specifics of the below type of errors
+			 * therefore return a generic localizable error message.
+			 */
 			if (
 				'invalid_request_error' === result.error.type ||
 				'api_connection_error'  === result.error.type ||
@@ -380,9 +387,12 @@ jQuery( function( $ ) {
 			$( '.woocommerce-NoticeGroup-checkout' ).remove();
 			console.log( result.error.message ); // Leave for troubleshooting.
 			$( errorContainer ).html( '<ul class="woocommerce_error woocommerce-error wc-stripe-error"><li>' + message + '</li></ul>' );
-			$( 'html, body' ).animate({
-				scrollTop: ( $( '.wc-stripe-error' ).offset().top - 200 )
-			}, 200 );
+
+			if ( $( '.wc-stripe-error' ).length ) {
+				$( 'html, body' ).animate({
+					scrollTop: ( $( '.wc-stripe-error' ).offset().top - 200 )
+				}, 200 );
+			}
 			wc_stripe_form.unblock();
 		},
 
@@ -487,9 +497,12 @@ jQuery( function( $ ) {
 				// Handle special inputs that are unique to a payment method.
 				switch ( source_type ) {
 					case 'sepa_debit':
-						extra_details.currency = $( '#stripe-' + source_type + '-payment-data' ).data( 'currency' );
-						extra_details.owner.name = $( '#stripe-sepa-owner' ).val();
-						extra_details.sepa_debit = { iban: $( '#stripe-sepa-iban' ).val() };
+						var owner = $( '#stripe-payment-data' );
+						extra_details.currency    = $( '#stripe-' + source_type + '-payment-data' ).data( 'currency' );
+						extra_details.owner.name  = $( '#stripe-sepa-owner' ).val();
+						extra_details.owner.email = owner.data( 'email' );
+						extra_details.sepa_debit  = { iban: $( '#stripe-sepa-iban' ).val() };
+						extra_details.mandate     = { notification_method: wc_stripe_params.sepa_mandate_notification };
 						break;
 					case 'ideal':
 						extra_details.ideal = { bank: $( '#stripe-ideal-bank' ).val() };
@@ -498,6 +511,9 @@ jQuery( function( $ ) {
 					case 'alipay':
 						extra_details.currency = $( '#stripe-' + source_type + '-payment-data' ).data( 'currency' );
 						extra_details.amount = $( '#stripe-' + source_type + '-payment-data' ).data( 'amount' );
+						break;
+					case 'sofort':
+						extra_details.sofort = { country: $( '#billing_country' ).val() };
 						break;
 				}
 
@@ -521,6 +537,19 @@ jQuery( function( $ ) {
 			} else {
 				wc_stripe_form.processStripeResponse( response.source );
 			}
+		},
+
+		processStripeResponse: function( source ) {
+			wc_stripe_form.reset();
+
+			// Insert the Source into the form so it gets submitted to the server.
+			wc_stripe_form.form.append( "<input type='hidden' class='stripe-source' name='stripe_source' value='" + source.id + "'/>" );
+
+			if ( $( 'form#add_payment_method' ).length ) {
+				$( wc_stripe_form.form ).off( 'submit', wc_stripe_form.form.onSubmit );
+			}
+
+			wc_stripe_form.form.submit();
 		},
 
 		// Legacy
@@ -612,60 +641,6 @@ jQuery( function( $ ) {
 					return false;
 				}
 
-				if (
-					wc_stripe_form.isBancontactChosen() ||
-					wc_stripe_form.isGiropayChosen() ||
-					wc_stripe_form.isIdealChosen() ||
-					wc_stripe_form.isAlipayChosen()
-				) {
-					if ( $( 'form#order_review' ).length ) {
-						$( 'form#order_review' )
-							.off(
-								'submit',
-								this.onSubmit
-							);
-
-						wc_stripe_form.form.submit();
-					}
-
-					return true;
-				}
-
-				if ( wc_stripe_form.isSofortChosen() ) {
-					// Check if Sofort bank country is chosen before proceed.
-					if ( '-1' === $( '#stripe-bank-country' ).val() ) {
-						var error = { error: { message: wc_stripe_params.no_bank_country_msg } };
-						$( document.body ).trigger( 'stripeError', error );
-						return false;
-					}
-
-					if ( $( 'form#order_review' ).length ) {
-						$( 'form#order_review' )
-							.off(
-								'submit',
-								this.onSubmit
-							);
-
-						wc_stripe_form.form.submit();
-					}
-
-					return true;
-				}
-
-				wc_stripe_form.validateCheckout();
-
-				// Prevent form submitting
-				return false;
-			} else if ( $( 'form#add_payment_method' ).length ) {
-				e.preventDefault();
-
-				// Stripe Checkout.
-				if ( 'yes' === wc_stripe_params.is_stripe_checkout && wc_stripe_form.isStripeModalNeeded() && wc_stripe_form.isStripeCardChosen() ) {
-					wc_stripe_form.openModal();
-
-					return false;
-				}
-
 				if ( wc_stripe_form.isSepaChosen() ) {
 					// Check if SEPA owner is filled before proceed.
 					if ( '' === $( '#stripe-sepa-owner' ).val() ) {
@@ -678,6 +653,80 @@ jQuery( function( $ ) {
 						$( document.body ).trigger( 'stripeError', { error: { message: wc_stripe_params.no_sepa_iban_msg } } );
 						return false;
 					}
+				}
+
+				/*
+				 * For methods that needs redirect, we will create the
+				 * source server side so we can obtain the order ID.
+				 */
+				if (
+					wc_stripe_form.isBancontactChosen() ||
+					wc_stripe_form.isGiropayChosen() ||
+					wc_stripe_form.isIdealChosen() ||
+					wc_stripe_form.isAlipayChosen() ||
+					wc_stripe_form.isSofortChosen() ||
+					wc_stripe_form.isP24Chosen()
+				) {
+					if ( $( 'form#order_review' ).length ) {
+						$( 'form#order_review' )
+							.off(
+								'submit',
+								this.onSubmit
+							);
+
+						if ( wc_stripe_form.isMobile() ) {
+							wc_stripe_form.unblock();
+						}
+
+						wc_stripe_form.form.submit();
+					}
+
+					if ( $( 'form.woocommerce-checkout' ).length ) {
+						$( 'form.woocommerce-checkout' )
+							.off(
+								'submit',
+								this.onSubmit
+							);
+
+						if ( wc_stripe_form.isMobile() ) {
+							wc_stripe_form.unblock();
+						}
+
+						return true;
+					}
+
+					if ( $( 'form#add_payment_method' ).length ) {
+						$( 'form#add_payment_method' )
+							.off(
+								'submit',
+								this.onSubmit
+							);
+
+						if ( wc_stripe_form.isMobile() ) {
+							wc_stripe_form.unblock();
+						}
+
+						wc_stripe_form.form.submit();
+					}
+				}
+
+				// We don't need to run validate on non checkout pages.
+				if ( wc_stripe_params.is_checkout ) {
+					wc_stripe_form.validateCheckout();
+				} else {
+					wc_stripe_form.createSource();
+				}
+
+				// Prevent form submitting
+				return false;
+			} else if ( $( 'form#add_payment_method' ).length ) {
+				e.preventDefault();
+
+				// Stripe Checkout.
+				if ( 'yes' === wc_stripe_params.is_stripe_checkout && wc_stripe_form.isStripeModalNeeded() && wc_stripe_form.isStripeCardChosen() ) {
+					wc_stripe_form.openModal();
+
+					return false;
 				}
 
 				wc_stripe_form.block();
@@ -695,34 +744,6 @@ jQuery( function( $ ) {
 
 		onCCFormChange: function() {
 			wc_stripe_form.reset();
-		},
-
-		prepareSourceToServer: function( source ) {
-			var preparedSource = {
-				id:      source.id,
-				card:    source.card ? source.card : '',
-				bitcoin: source.bitcoin ? source.bitcoin : '',
-				flow:    source.flow,
-				object:  source.object,
-				status:  source.status,
-				type:    source.type,
-				usage:   source.usage
-			};
-
-			return preparedSource;
-		},
-
-		processStripeResponse: function( source ) {
-			wc_stripe_form.reset();
-
-			// Insert the Source into the form so it gets submitted to the server.
-			wc_stripe_form.form.append( "<input type='hidden' class='stripe-source' name='stripe_source' value='" + source.id + "'/>" );
-
-			if ( $( 'form#add_payment_method' ).length ) {
-				$( wc_stripe_form.form ).off( 'submit', wc_stripe_form.form.onSubmit );
-			}
-
-			wc_stripe_form.form.submit();
 		},
 
 		reset: function() {

@@ -20,7 +20,7 @@
 <section>
 	<div class="container">
 		<div class="row">
-			<?php get_template_part('inc/content-pagination', get_option('stack_pagination_layout', 'text')); ?>
+			<?php get_template_part( 'inc/content-pagination', get_option( 'stack_pagination_layout', 'text' ) ); ?>
 		</div>
 	</div>
 </section>

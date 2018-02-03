@@ -1,5 +1,20 @@
 ===================================================================
-January 5th 2018 - v10.5.4
+January 12th 2018 - v10.5.5
+-------------------------------------------------------------------
+
+* FIXED: Team nav archive link (was pointing to portfolio)
+* FIXED: WPML language switcher flags margin
+* FIXED: In page navigation scoller IDs with whitespace fix
+* FIXED: Accordions with long content
+* VARIANT: Fixed issue regarding the removal [-] of items in the lightbox gallery block
+* VARIANT: Added shortcode section 1 with image background
+* VARIANT: Added shortcode section 2 with image background
+* ADDED: New "features small", Large Padding, Images & Button
+* ADDED: Search blog layout to available blog layouts
+* ADDED: Search results layout option, appearance => customise => site settings => search settings
+
+===================================================================
+January 12th 2018 - v10.5.4
 -------------------------------------------------------------------
 
 * FIXED: WooCommerce product image transition speed

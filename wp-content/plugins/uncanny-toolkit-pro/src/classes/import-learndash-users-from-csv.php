@@ -770,36 +770,7 @@ class ImportLearndashUsersFromCSV extends toolkit\Config implements toolkit\Requ
 
 				}
 
-				if ( 'new_user' === $import_type ) {
-
-					if ( $uo_import_users_send_new_user_email ) {
-
-						$email = self::send_email( $current_row[ $key_location['user_email'] ], $uo_import_users_new_user_email_subject, $uo_import_users_new_user_email_body, $password );
-						if ( $email ) {
-							$data['emails_sent'] += 1;
-						} else {
-							$data['ignored_rows_data'][ $i ] = $email;
-						}
-
-					}
-				} elseif ( 'updated_user' === $import_type ) {
-
-					if ( $uo_import_users_send_updated_user_email ) {
-
-						if( '' === $password ){
-							$password = 'Password has not changed';
-						}
-
-						$email = self::send_email( $current_row[ $key_location['user_email'] ], $uo_import_users_updated_user_email_subject, $uo_import_users_updated_user_email_body, $password );
-						if ( $email ) {
-							$data['emails_sent'] += 1;
-						} else {
-							$data['ignored_rows_data'][ $i ] = 'Email failed to send.';
-						}
-
-					}
-
-				}
+				$user_email = $current_row[ $key_location['user_email'] ];
 
 				// Remove values that are not needed anymore so we can loop the remaining as meta
 				unset( $current_row[ $key_location['user_email'] ] );
@@ -832,6 +803,39 @@ class ImportLearndashUsersFromCSV extends toolkit\Config implements toolkit\Requ
 
 
 				}
+
+				if ( 'new_user' === $import_type ) {
+
+					if ( $uo_import_users_send_new_user_email ) {
+
+						$email = self::send_email( $user_email, $uo_import_users_new_user_email_subject, $uo_import_users_new_user_email_body, $password );
+						if ( $email ) {
+							$data['emails_sent'] += 1;
+						} else {
+							$data['ignored_rows_data'][ $i ] = $email;
+						}
+
+					}
+				} elseif ( 'updated_user' === $import_type ) {
+
+					if ( $uo_import_users_send_updated_user_email ) {
+
+						if( '' === $password ){
+							$password = 'Password has not changed';
+						}
+
+						$email = self::send_email( $user_email, $uo_import_users_updated_user_email_subject, $uo_import_users_updated_user_email_body, $password );
+						if ( $email ) {
+							$data['emails_sent'] += 1;
+						} else {
+							$data['ignored_rows_data'][ $i ] = 'Email failed to send.';
+						}
+
+					}
+
+				}
+
+
 
 			} else {
 				// define error message

@@ -44,6 +44,9 @@ class UncannyDripLessonsByGroup extends toolkit\Config implements toolkit\Requir
 
 			# Call a javascript
 			//add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+
+			#Convert String DateTime to UnixTimeStamp
+			add_action( 'admin_init', array( __CLASS__, 'reformat_date_to_unix' ), 999 );
 		}
 
 	}
@@ -198,23 +201,26 @@ class UncannyDripLessonsByGroup extends toolkit\Config implements toolkit\Requir
 			// Add tha ( date ) after group name on selection if exists
 			if ( 'all' === $group_id ) {
 				$original_option = get_post_meta( $post->ID, '_sfwd-lessons', true );
-				$original_date   = $original_option['sfwd-lessons_visible_after_specific_date'];
-				if ( self::is_timestamp( $original_date ) ) {
-					$original_date = learndash_adjust_date_time_display( $original_date );
-				}
-				if ( $original_option['sfwd-lessons_visible_after_specific_date'] ) {
-					$group_name = $group_name . ' ( ' . $original_date . ' )';
-				}
+				if ( key_exists( '', $original_option ) ) {
+					$original_date = $original_option['sfwd-lessons_visible_after_specific_date'];
+					if ( self::is_timestamp( $original_date ) ) {
+						$original_date = learndash_adjust_date_time_display( $original_date );
+						$group_name    = $group_name . ' ( ' . $original_date . ' )';
+					}
 
-				update_post_meta( $post->ID, stripslashes( __CLASS__ ) . '-all', $original_option['sfwd-lessons_visible_after_specific_date'] );
-
+					update_post_meta( $post->ID, stripslashes( __CLASS__ ) . '-all', $original_option['sfwd-lessons_visible_after_specific_date'] );
+				}
 			} elseif ( $date ) {
 				if ( is_array( $date ) ) {
-					//self::trace_logs( $date, '$date', 'drip' );
 					$date = self::reformat_date( $date );
 					$date = learndash_adjust_date_time_display( $date );
 				}
-				$group_name = $group_name . ' ( ' . $date . ' )';
+				if ( self::is_timestamp( $date ) ) {
+					$date_format = get_option( 'date_format' );
+					$time_format = get_option( 'time_format' );
+					$date        = date_i18n( "$date_format $time_format", $date );
+				}
+				$group_name = $group_name . ' &mdash; (' . $date . ')';
 			}
 		}
 
@@ -252,7 +258,7 @@ class UncannyDripLessonsByGroup extends toolkit\Config implements toolkit\Requir
 			if ( 0 === $date ) {
 				delete_post_meta( $post_id, stripslashes( __CLASS__ ) . '-' . $group_id );
 			} else {
-				update_post_meta( $post_id, stripslashes( __CLASS__ ) . '-' . $group_id, learndash_adjust_date_time_display( $date ) );
+				update_post_meta( $post_id, stripslashes( __CLASS__ ) . '-' . $group_id, $date );
 			}
 		}
 
@@ -415,7 +421,12 @@ class UncannyDripLessonsByGroup extends toolkit\Config implements toolkit\Requir
 		foreach ( $user_groups as $group_id ) {
 			$date = get_post_meta( $lesson_id, stripslashes( __CLASS__ ) . '-' . $group_id, true );
 			if ( ! empty( $date ) ) {
-				$group_dates[ $group_id ] = strtotime( $date );
+				echo self::attempt_to_unix( $date );
+				if ( self::is_timestamp( $date ) ) {
+					$group_dates[ $group_id ] = $date;
+				} else {
+					$group_dates[ $group_id ] = strtotime( $date );
+				}
 			}
 		}
 
@@ -481,7 +492,67 @@ class UncannyDripLessonsByGroup extends toolkit\Config implements toolkit\Requir
 	 *
 	 * @return bool
 	 */
-	public static function is_timestamp( $string ) {
-		return ( 1 === preg_match( '~^[1-9][0-9]*$~', $string ) );
+	public static function is_timestamp( $timestamp ) {
+		if ( is_numeric( $timestamp ) && strtotime( date( 'd-m-Y H:i:s', $timestamp ) ) === (int) $timestamp ) {
+			return $timestamp;
+		} else {
+			return false;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public static function reformat_date_to_unix() {
+		if ( 'no' === get_option( 'group_drip_date_modified_to_unix', 'no' ) ) {
+			global $wpdb;
+			$groups = $wpdb->get_results( "SELECT * FROM {$wpdb->postmeta} WHERE meta_key LIKE '" . stripslashes( __CLASS__ ) . "%'" );
+			// If any group is not exists, this option will be disabled
+			if ( ! empty( $groups ) ) {
+				// group_selection
+				foreach ( $groups as $group ) {
+					$post_id      = $group->post_id;
+					$key          = $group->meta_key;
+					$current_date = $group->meta_value;
+					self::trace_logs( $current_date, '$current_date', 'unix' );
+					if ( ! empty( $current_date ) && 0 !== $current_date ) {
+						if ( false === self::is_timestamp( $current_date ) ) {
+							//attempt to convert to unix timestamp
+							if ( is_array( maybe_unserialize( $current_date ) ) ) {
+								$date_format  = get_option( 'date_format' );
+								$time_format  = get_option( 'time_format' );
+								$current_date = date( "$date_format $time_format", self::reformat_date( $current_date ) );
+							}
+							self::trace_logs( $current_date, '$current_date_after_array_check', 'unix' );
+							$unix_time = self::attempt_to_unix( $current_date );
+							self::trace_logs( $unix_time, '$unix_time', 'unix' );
+							if ( false !== $unix_time ) {
+								//DateTime was able to convert it to unix time, all good
+								update_post_meta( $post_id, $key, $unix_time );
+								$bak = str_replace( stripslashes( __CLASS__ ), 'bak-UncannyDripLessonsByGroup', $key );
+								update_post_meta( $post_id, $bak, $current_date ); //keep a backup, Just-in-case
+							}
+						}
+					}
+				}
+			}
+			update_option( 'group_drip_date_modified_to_unix', 'yes' );
+		}
+	}
+
+	/**
+	 * @param $date
+	 *
+	 * @return bool
+	 */
+	public static function attempt_to_unix( $date ) {
+		try {
+			$date = new \DateTime( $date );
+
+			return $date->getTimestamp();
+		} catch ( \Exception $e ) {
+			return false;
+		}
 	}
 }

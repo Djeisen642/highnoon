@@ -23,4 +23,4 @@
 		
 	endif;
 	
-	get_template_part('inc/content-pagination', 'text');
+	get_template_part( 'inc/content-pagination', get_option( 'stack_pagination_layout', 'text' ) );

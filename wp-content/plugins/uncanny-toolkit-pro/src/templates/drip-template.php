@@ -118,9 +118,14 @@ $drip_course = new \uncanny_pro_toolkit\UncannyDripLessonsByGroup();
 
 					<div id="lessons_list" class="lessons_list">
 
-						<?php foreach ( $lessons as $lesson ) : ?>
-							<?php
-							$lesson["lesson_access_from"] = $drip_course->get_lesson_access_from( $lesson['post']->ID, get_current_user_id() );
+						<?php foreach ( $lessons as $lesson ) :
+							$access_from = \uncanny_pro_toolkit\UncannyDripLessonsByGroup::get_lesson_access_from( $lesson['post']->ID, get_current_user_id() );
+							if ( ! empty( $access_from ) && 'Available' !== $access_from ) {
+								$lesson["lesson_access_from"] = $access_from;
+							} else {
+								$lesson["lesson_access_from"] = '';
+							}
+
 							?>
 							<div class='post-<?php echo esc_attr( $lesson['post']->ID ); ?> <?php echo esc_attr( $lesson['sample'] ); ?>'>
 

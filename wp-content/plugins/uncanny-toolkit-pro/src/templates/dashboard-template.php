@@ -126,23 +126,32 @@ if ( class_exists( 'SFWD_LMS' ) ) {
 							$lessons = learndash_get_course_lessons_list( $course );
 							/* Show Lesson List */
 							if ( ! empty( $lessons ) ) {
-								$lesson_topics = array();
-								$has_topics    = false;
-								foreach ( $lessons as $lesson ) {
-									$lesson_topics[ $lesson['post']->ID ] = learndash_topic_dots( $lesson['post']->ID, false, 'array' );
-									if ( ! empty( $lesson_topics[ $lesson['post']->ID ] ) ) {
-										$has_topics = true;
-									}
-								}
+//								$lesson_topics = array();
+//								$has_topics    = false;
+//								foreach ( $lessons as $lesson ) {
+//									$lesson_topics[ $lesson['post']->ID ] = learndash_topic_dots( $lesson['post']->ID, false, 'array' );
+//									if ( ! empty( $lesson_topics[ $lesson['post']->ID ] ) ) {
+//										$has_topics = true;
+//									}
+//								}
 								?>
 								<div id="learndash_lessons">
 									<div id="lessons_list">
-										<?php foreach ( $lessons as $lesson ) { ?>
+										<?php
+                                        foreach ( $lessons as $lesson ) {
+
+	                                        $has_topics    = false;
+                                            $topics = learndash_get_topic_list( $lesson['post']->ID, $course->ID );
+                                            if( !empty($topics) ){
+	                                            $has_topics = true;
+                                            }
+
+                                            ?>
 											<div id="post-<?php echo absint( $lesson['post']->ID ); ?>"
 											     class="<?php echo wp_kses( $lesson['sample'], $allowed_html ); ?>">
 												<h4>
 													<a class="<?php echo wp_kses( $lesson['status'], $allowed_html ); ?>"
-													   href="<?php echo esc_url( $lesson['permalink'] ) ?>"><?php echo wp_kses( $lesson['post']->post_title, $allowed_html ); ?>
+													   href="<?php echo esc_attr( learndash_get_step_permalink( $lesson['post']->ID, $course_id ) ); ?>"><?php echo wp_kses( $lesson['post']->post_title, $allowed_html ); ?>
 														<?php
 														/* Not available message for drip feeding lessons */
 														if ( ! empty( $lesson['lesson_access_from'] ) ) {
@@ -166,8 +175,8 @@ if ( class_exists( 'SFWD_LMS' ) ) {
 														<?php }
 														?></a>
 													<?php
-													/* Lesson Topics */
-													$topics = $lesson_topics[ $lesson['post']->ID ];
+//													/* Lesson Topics */
+//													$topics = $lesson_topics[ $lesson['post']->ID ];
 													if ( ! empty( $topics ) ) {
 														?>
 														<div id="learndash_lesson_topics_list">
@@ -182,7 +191,7 @@ if ( class_exists( 'SFWD_LMS' ) ) {
 																		<li>
                                                                             <span class="topic_item">
                                                                                 <a class="<?php echo wp_kses( $completed_class, $allowed_html ); ?>"
-                                                                                   href="<?php echo esc_url( get_permalink( $topic->ID ) ); ?>"
+                                                                                   href="<?php echo esc_attr( learndash_get_step_permalink( $topic->ID, $course_id ) ); ?>"
                                                                                    title="<?php echo wp_kses( $topic->post_title, $allowed_html ); ?>">
                                                                                     <span><?php echo wp_kses( $topic->post_title, $allowed_html ); ?></span>
                                                                                 </a>
@@ -214,7 +223,7 @@ if ( class_exists( 'SFWD_LMS' ) ) {
 											<div id="post-<?php echo absint( $quiz['post']->ID ); ?>"
 											     class="<?php echo wp_kses( $quiz['sample'], $allowed_html ); ?>">
 												<h4><a class="<?php echo wp_kses( $quiz['status'], $allowed_html ); ?>"
-												       href="<?php echo esc_url( $quiz['permalink'] ) ?>">[<?php echo LearnDash_Custom_Label::get_label( 'quiz' ); ?>
+												       href="<?php echo esc_attr( learndash_get_step_permalink(  absint( $quiz['post']->ID ), $course_id ) ); ?>">[<?php echo LearnDash_Custom_Label::get_label( 'quiz' ); ?>
 														] <?php echo wp_kses( $quiz['post']->post_title, $allowed_html ); ?></a>
 												</h4>
 											</div>
@@ -254,7 +263,7 @@ if ( class_exists( 'SFWD_LMS' ) ) {
 
 										$status     = empty( $quiz_attempt['pass'] ) ? 'failed' : 'passed';
 										$quiz_title = ! empty( $quiz_attempt['post']->post_title ) ? $quiz_attempt['post']->post_title : $quiz_attempt['quiz_title'];
-										$quiz_link  = ! empty( $quiz_attempt['post']->ID ) ? get_permalink( $quiz_attempt['post']->ID ) : '#';
+										$quiz_link  = ! empty( $quiz_attempt['post']->ID ) ? learndash_get_step_permalink( $quiz_attempt['post']->ID, $course_id ) : '#';
 										if ( ! empty( $quiz_title ) ) {
 											?>
 											<div class="<?php echo wp_kses( $status, $allowed_html ); ?>">

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Uncanny LearnDash Toolkit Pro
-Version: 2.1.11
+Version: 2.1.12
 Description: This plugin adds the Pro suite of modules to the Uncanny LearnDash Toolkit.
 Author: Uncanny Owl
 Author URI: uncannyowl.com
@@ -14,7 +14,7 @@ Domain Path: /languages
 if ( class_exists( '\uncanny_learndash_toolkit\Boot' ) ) {
 
 	define( 'UO_FILE', __FILE__ );
-	define( 'UNCANNY_TOOLKIT_PRO_VERSION', '2.1.11' );
+	define( 'UNCANNY_TOOLKIT_PRO_VERSION', '2.1.12' );
 
 	//check version of the public toolkit is at least 1.3
 	$compare_version = version_compare( UNCANNY_TOOLKIT_VERSION, '1.3' );

@@ -221,7 +221,7 @@ if(!( function_exists('ebor_register_required_plugins') )){
 				'source'   				=> 'http://www.madeinebor.com/plugin-downloads/Variant-WP-Page-Builder-master.zip',
 				'required' 				=> false,
 				'external_url' 			=> 'http://www.madeinebor.com/plugin-downloads/Variant-WP-Page-Builder-master.zip',
-				'version' 				=> '1.5.3',
+				'version' 				=> '1.5.5',
 			)
 		);
 		$config = array(

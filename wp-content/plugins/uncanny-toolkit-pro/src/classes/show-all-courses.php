@@ -934,7 +934,7 @@ class ShowAllCourses extends toolkit\Config implements toolkit\RequiredFunctions
 			foreach ( $percentage_array as $key => $value ) {
 				$course                         = get_post( $key );
 				$completed                      = false;
-				$status_icon                    = 'Course Status';
+				$status_icon                    = __( 'Course Status', 'uncanny-pro-toolkit' );
 				$course_progress[ $course->ID ] = array(
 					'status_icon'  => $status_icon,
 					'grid_classes' => $grid_classes,
@@ -1209,7 +1209,7 @@ class ShowAllCourses extends toolkit\Config implements toolkit\RequiredFunctions
 								<div class="course_progress" style="width: <?php echo $percentage ?>%;">
 								</div>
 							</dd>
-							<div class="list-tag-container"><?php echo $status_icon; ?></div>
+							<div class="list-tag-container <?php echo sanitize_title( $status_icon ) ?>"><?php echo $status_icon; ?></div>
 						<?php } elseif ( 'View Course Outline' !== $status_icon ) { ?>
 							<h3 class="percentage"></h3>
 							<dd class="uo-course-progress" title="" style="visibility: hidden">
@@ -1217,7 +1217,7 @@ class ShowAllCourses extends toolkit\Config implements toolkit\RequiredFunctions
 								</div>
 							</dd>
 							<h4><?php esc_html_e( 'Coming Soon', 'uncanny-pro-toolkit' ); ?></h4>
-							<div class="list-tag-container" style="visibility: hidden">&nbsp;</div>
+							<div class="list-tag-container <?php echo sanitize_title( 'Coming Soon' ) ?>" style="visibility: hidden">&nbsp;</div>
 						<?php } elseif ( 'View Course Outline' === $status_icon ) { ?>
 							<h3 class="percentage"></h3>
 							<dd class="uo-course-progress" title="" style="visibility: hidden">
@@ -1227,7 +1227,7 @@ class ShowAllCourses extends toolkit\Config implements toolkit\RequiredFunctions
 							<h4 class="view-course-outline">
 								<?php esc_html_e( 'View Course Outline', 'uncanny-pro-toolkit' ); ?>
 							</h4>
-							<div class="list-tag-container" style="visibility: hidden">&nbsp;</div>
+							<div class="list-tag-container <?php echo sanitize_title( 'View Course Outline' ) ?>" style="visibility: hidden">&nbsp;</div>
 						<?php } ?>
 					</div>
 				</a>

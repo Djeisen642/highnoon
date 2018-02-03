@@ -251,7 +251,10 @@ class WC_Gateway_Stripe_Sofort extends WC_Stripe_Payment_Gateway {
 		$post_data['type']     = 'sofort';
 		$post_data['owner']    = $this->get_owner_details( $order );
 		$post_data['redirect'] = array( 'return_url' => $return_url );
-		$post_data['sofort']   = array( 'country' => $bank_country );
+		$post_data['sofort']   = array(
+			'country'            => $bank_country,
+			'preferred_language' => substr( get_locale(), 0, 2 ),
+		);
 
 		if ( ! empty( $this->statement_descriptor ) ) {
 			$post_data['statement_descriptor'] = WC_Stripe_Helper::clean_statement_descriptor( $this->statement_descriptor );
@@ -259,7 +262,7 @@ class WC_Gateway_Stripe_Sofort extends WC_Stripe_Payment_Gateway {
 
 		WC_Stripe_Logger::log( 'Info: Begin creating SOFORT source' );
 
-		return WC_Stripe_API::request( $post_data, 'sources' );
+		return WC_Stripe_API::request( apply_filters( 'wc_stripe_sofort_source', $post_data, $order ), 'sources' );
 	}
 
 	/**
@@ -294,7 +297,15 @@ class WC_Gateway_Stripe_Sofort extends WC_Stripe_Payment_Gateway {
 			if ( ! empty( $response->error ) ) {
 				$order->add_order_note( $response->error->message );
 
-				throw new WC_Stripe_Exception( print_r( $response, true ), $response->error->message );
+				$localized_messages = WC_Stripe_Helper::get_localized_messages();
+
+				if ( 'invalid_sofort_country' === $response->error->code ) {
+					$localized_message = isset( $localized_messages[ $response->error->code ] ) ? $localized_messages[ $response->error->code ] : $response->error->message;
+				} else {
+					$localized_message = isset( $localized_messages[ $response->error->type ] ) ? $localized_messages[ $response->error->type ] : $response->error->message;
+				}
+
+				throw new WC_Stripe_Exception( print_r( $response, true ), $localized_message );
 			}
 
 			if ( WC_Stripe_Helper::is_pre_30() ) {

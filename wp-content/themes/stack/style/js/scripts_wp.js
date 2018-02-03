@@ -65,18 +65,19 @@ jQuery(document).ready(function(){
 	});
 	
 	if( jQuery('.page-navigator').length && !jQuery('body').hasClass('variant-active') ){
+		
 		jQuery('.page-navigator').prependTo('body');
 		
 		if( jQuery('body').hasClass('variant-content') ){
 			
 			jQuery('.in-page-link').each(function(){
 				var $this = jQuery(this),
-					$id = $this.attr('id');
+					$id   = $this.attr('id');
 				
 				if(!( '' == $id )){
-					var content = '<li><a href="#'+ $id +'" class="inner-link" data-title="'+ makeTitle($id) +'"></a></li>';
+					var content = '<li><a href="#'+ $id.trim() +'" class="inner-link" data-title="'+ makeTitle($id).trim() +'"></a></li>';
 					jQuery('.page-navigator ul').append(content);
-					jQuery(this).next('section').attr('id', $id);
+					jQuery(this).next('section').attr('id', $id.trim());
 					$this.remove();
 				}
 				

@@ -15,6 +15,7 @@ if(!( function_exists('ebor_get_blog_layouts') )){
 			'Grid Detailed'                                     => 'cards-detailed',
 			'Grid Detailed & Sidebar'                           => 'cards-sidebar-detailed',
 			'Portfolio Style'                                   => 'portfolio',
+			'Search'                                            => 'search'
 		);
 		
 		if( has_filter('ebor_add_blog_layouts') ) {

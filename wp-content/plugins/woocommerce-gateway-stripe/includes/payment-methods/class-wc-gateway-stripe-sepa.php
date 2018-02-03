@@ -241,15 +241,15 @@ class WC_Gateway_Stripe_Sepa extends WC_Stripe_Payment_Gateway {
 		<fieldset id="wc-<?php echo esc_attr( $this->id ); ?>-form" class="wc-payment-form">
 			<?php do_action( 'woocommerce_credit_card_form_start', $this->id ); ?>
 			<p class="wc-stripe-sepa-mandate" style="margin-bottom:40px;"><?php $this->mandate_display(); ?></p>
-			<p class="form-row form-row-wide validate-required">
+			<p class="form-row form-row-wide">
 				<label for="stripe-sepa-owner">
-					<?php esc_html_e( 'IBAN Account Name.', 'woocommerce-gateway-stripe' ); ?>
+					<?php esc_html_e( 'IBAN Account Name.', 'woocommerce-gateway-stripe' ); ?> <span class="required">*</span>
 				</label>
 				<input id="stripe-sepa-owner" name="stripe_sepa_owner" value="" style="border:1px solid #ddd;margin:5px 0;padding:10px 5px;background-color:#fff;outline:0;" />
 			</p>
-			<p class="form-row form-row-wide validate-required">
+			<p class="form-row form-row-wide">
 				<label for="stripe-sepa-iban">
-					<?php esc_html_e( 'IBAN Account Number.', 'woocommerce-gateway-stripe' ); ?>
+					<?php esc_html_e( 'IBAN Account Number.', 'woocommerce-gateway-stripe' ); ?> <span class="required">*</span>
 				</label>
 				<input id="stripe-sepa-iban" name="stripe_sepa_iban" value="" style="border:1px solid #ddd;margin:5px 0;padding:10px 5px;background-color:#fff;outline:0;" />
 			</p>
@@ -333,10 +333,9 @@ class WC_Gateway_Stripe_Sepa extends WC_Stripe_Payment_Gateway {
 				$new_stripe_customer->create_customer();
 			}
 
-			$prepared_source = $this->prepare_source( $this->create_source_object(), get_current_user_id(), $force_save_source );
+			$prepared_source = $this->prepare_source( $this->get_source_object(), get_current_user_id(), $force_save_source );
 
-			// Store source to order meta.
-			$this->save_source( $order, $prepared_source );
+			$this->save_source_to_order( $order, $prepared_source );
 
 			// Result from Stripe API request.
 			$response = null;
@@ -365,7 +364,14 @@ class WC_Gateway_Stripe_Sepa extends WC_Stripe_Payment_Gateway {
 
 					// Customer param wrong? The user may have been deleted on stripe's end. Remove customer_id. Can be retried without.
 					if ( preg_match( '/No such customer/i', $response->error->message ) && $retry ) {
-						delete_user_meta( WC_Stripe_Helper::is_pre_30() ? $order->customer_user : $order->get_customer_id(), '_stripe_customer_id' );
+						if ( WC_Stripe_Helper::is_pre_30() ) {
+							delete_user_meta( $order->customer_user, '_stripe_customer_id' );
+							delete_post_meta( $order_id, '_stripe_customer_id' );
+						} else {
+							delete_user_meta( $order->get_customer_id(), '_stripe_customer_id' );
+							$order->delete_meta_data( '_stripe_customer_id' );
+							$order->save();
+						}
 
 						return $this->process_payment( $order_id, false, $force_save_source );
 					} elseif ( preg_match( '/No such token/i', $response->error->message ) && $prepared_source->token_id ) {

@@ -29,7 +29,7 @@
         <?php endif; ?>
         
         <div class="col-sm-4 col-xs-12">
-            <a href="<?php echo get_post_type_archive_link( 'portfolio' ); ?>" class="block">
+            <a href="<?php echo get_post_type_archive_link( 'team' ); ?>" class="block">
                 <div class="feature feature-7 boxed imagebg" data-overlay="5">
                     <div class="background-image-holder">
                         <?php 

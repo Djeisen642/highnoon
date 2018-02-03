@@ -219,6 +219,9 @@ $preset = '<h2>Sound like the job for you?</h2>
 	$ebor_options->add_section('smooth_scroll_section', 'In Page Scrolling Settings', 35, $theme_name . ': Site Settings', 'If you\'re using # links in a page to scroll to sections of a page, this control will allow you to offset that scroll. A positive number will have the scroll end further up the page, above your linked element. A negative number will have the scroll end further down the page.');
 	$ebor_options->add_setting('input', 'stack_scroll_offset', 'In Page Scrolling Offset', 'smooth_scroll_section', '0', 5);
 	
+	$ebor_options->add_section('search_section', 'Search Settings', 45, $theme_name . ': Site Settings', '');
+	$ebor_options->add_setting('select', 'search_layout', 'Search Page Layout', 'search_section', 'search', 20, $blog_options);
+	
 	/**
 	 * All Header Settings
 	 */
