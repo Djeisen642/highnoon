@@ -25,10 +25,10 @@ function learndash_previous_post_link( $prevlink='', $url = false ) {
 	}
 
 	if ( $post->post_type == 'sfwd-lessons' ) {
-		$link_name = sprintf( _x( 'Previous %s', 'Previous Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
+		$link_name = sprintf( esc_html_x( 'Previous %s', 'Previous Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
 		$posts = learndash_get_lesson_list();
 	} else if ( $post->post_type == 'sfwd-topic' ) {
-		$link_name = sprintf( _x( 'Previous %s', 'Previous Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
+		$link_name = sprintf( esc_html_x( 'Previous %s', 'Previous Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
 		
 		if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {
 			$course_id = learndash_get_course_id( $post );
@@ -101,11 +101,11 @@ function learndash_next_post_link( $prevlink='', $url = false, $post = null ) {
 	}
 
 	if ( $post->post_type == 'sfwd-lessons' ) {
-		$link_name = sprintf( _x( 'Next %s', 'Next Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
+		$link_name = sprintf( esc_html_x( 'Next %s', 'Next Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
 		$course_id = learndash_get_course_id( $post );
 		$posts = learndash_get_lesson_list( $course_id );
 	} else if ( $post->post_type == 'sfwd-topic' ) {
-		$link_name = sprintf( _x( 'Next %s', 'Next Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
+		$link_name = sprintf( esc_html_x( 'Next %s', 'Next Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
 
 		if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {
 			$course_id = learndash_get_course_id( $post->ID );
@@ -463,7 +463,8 @@ function learndash_get_lesson_list( $id = null ){
 	}
 
 	$lessons_args = array(
-		'array' => true, 
+		'array' => true,
+		'course_id' => $course_id,
 		'post_type' => 'sfwd-lessons',
 		'meta_key' => 'course_id', 
 		'meta_value' => $course_id,
@@ -750,7 +751,7 @@ function learndash_get_global_quiz_list_OLD( $id = null ){
  * @param  int|obj $course course id or course WP_Post
  * @return string          html output of lesson list for course
  */
-function learndash_get_course_lessons_list( $course = null, $user_id = null ) {
+function learndash_get_course_lessons_list( $course = null, $user_id = null, $lessons_args = array() ) {
 	if ( empty( $course ) ) {
 		$course_id = learndash_get_course_id();
 	}
@@ -763,12 +764,25 @@ function learndash_get_course_lessons_list( $course = null, $user_id = null ) {
 	if ( empty( $course->ID ) ) {
 		return array();
 	}
-	
+
 	$course_settings = learndash_get_setting( $course );
 	$lessons_options = learndash_get_option( 'sfwd-lessons' );
 
 	$orderby = ( empty( $course_settings['course_lesson_orderby'] ) ) ? @$lessons_options['orderby'] : $course_settings['course_lesson_orderby'];
 	$order = ( empty( $course_settings['course_lesson_order'] ) ) ? @$lessons_options['order'] : $course_settings['course_lesson_order'];
+	
+	$lesson_query_pagination = 'true';
+	$posts_per_page = learndash_get_course_lessons_per_page( $course->ID );
+	if (empty( $posts_per_page ) ) {
+		$posts_per_page = -1;
+		$lesson_query_pagination = '';
+	}
+
+	if ( isset( $_GET['ld-lesson-page'] ) ) {
+		$lesson_paged = intval( $_GET['ld-lesson-page'] );
+	} else {
+		$lesson_paged = 1;
+	}
 
 	$opt = array(
 		'post_type' => 'sfwd-lessons',
@@ -776,10 +790,14 @@ function learndash_get_course_lessons_list( $course = null, $user_id = null ) {
 		'meta_value' => $course->ID,
 		'order' => $order,
 		'orderby' => $orderby,
-		'posts_per_page' => empty( $lessons_options['posts_per_page'] ) ? -1 : $lessons_options['posts_per_page'],
+		'posts_per_page' => $posts_per_page,
+		'paged' => $lesson_paged,
+		'pagination' => $lesson_query_pagination,
+		'prder_context' => 'course_lessons',
 		'return' => 'array',
 		'user_id' => $user_id
 	);
+	$opt = wp_parse_args( $lessons_args, $opt );
 
 	if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {	
 		$ld_course_steps_object = LDLMS_Factory_Post::course_steps( $course->ID );

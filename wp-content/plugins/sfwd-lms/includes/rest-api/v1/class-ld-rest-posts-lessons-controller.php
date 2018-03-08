@@ -47,7 +47,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' 	=> __( 'Unique identifier for the Course object.' ),
+							'description' 	=> esc_html__( 'Unique identifier for the Course object.' ),
 							'required'		=> true,
 							'type'        	=> 'integer',
 						),
@@ -74,7 +74,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 			);
 			if ( isset( $schema['properties']['password'] ) ) {
 				$get_item_args['password'] = array(
-					'description' => __( 'The password for the post if it is password protected.' ),
+					'description' => esc_html__( 'The password for the post if it is password protected.' ),
 					'type'        => 'string',
 				);
 			}
@@ -84,11 +84,11 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'id' => array(
-							'description' => __( 'Unique identifier for the Lesson object.' ),
+							'description' => esc_html__( 'Unique identifier for the Lesson object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -112,7 +112,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),
@@ -126,12 +126,12 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Course ID.' ),
+							'description' => esc_html__( 'Course ID.' ),
 							'required' => true,
 							'type' => 'integer',
 						),
 						'id' => array(
-							'description' => __( 'Lesson ID.' ),
+							'description' => esc_html__( 'Lesson ID.' ),
 							'required' => true,
 							'type' => 'integer',
 						),
@@ -154,22 +154,22 @@ if ( ( !class_exists( 'LD_REST_Posts_Lessons_Controller' ) ) && ( class_exists( 
 			//error_log('lesson_id['. $lesson_id .']');
 
 			if ( empty( $course_id ) ) {
-				return new WP_Error( 'rest_post_invalid_id_X', __( 'Invalid Course ID.' ), array( 'status' => 404 ) );
+				return new WP_Error( 'rest_post_invalid_id_X', esc_html__( 'Invalid Course ID.' ), array( 'status' => 404 ) );
 			}
 			
 			if ( empty( $lesson_id ) ) {
-				return new WP_Error( 'rest_post_invalid_id_Y', __( 'Invalid Lesson ID.' ), array( 'status' => 404 ) );
+				return new WP_Error( 'rest_post_invalid_id_Y', esc_html__( 'Invalid Lesson ID.' ), array( 'status' => 404 ) );
 			}
 
 			$current_user_id = get_current_user_id();
 			if ( empty( $current_user_id ) ) {
-				return new WP_Error( 'rest_not_logged_in', __( 'You are not currently logged in.', 'learndash' ), array( 'status' => 401 ) );
+				return new WP_Error( 'rest_not_logged_in', esc_html__( 'You are not currently logged in.', 'learndash' ), array( 'status' => 401 ) );
 			}
 			//$current_user = wp_get_current_user();
 
 			$has_access = sfwd_lms_has_access( $course->ID, $current_user->ID );
 			if ( ( ! $has_access ) && ( $course_price_type != 'open' ) ) {
-				return new WP_Error( 'rest_cannot_view', __( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
+				return new WP_Error( 'rest_cannot_view', esc_html__( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 
 			$return = learndash_process_mark_complete( $current_user_id, $lesson_id );

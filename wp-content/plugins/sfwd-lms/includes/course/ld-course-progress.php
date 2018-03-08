@@ -1299,7 +1299,7 @@ function learndash_course_status( $id, $user_id = null ) {
 
 	$completed_on = get_user_meta( $user_id, 'course_completed_' . $id, true );
 	if ( !empty( $completed_on ) ) {
-		return __( 'Completed', 'learndash' );
+		return esc_html__( 'Completed', 'learndash' );
 	}
 
 
@@ -1337,11 +1337,11 @@ function learndash_course_status( $id, $user_id = null ) {
 
 	$course_status_str = '';
 	if ( ( empty( $course_progress[ $id ] ) || empty( $course_progress[ $id ]['lessons'] ) && ! $has_completed_topic ) && $quiz_notstarted ) {
-		$course_status_str = __( 'Not Started', 'learndash' );
+		$course_status_str = esc_html__( 'Not Started', 'learndash' );
 	} else if ( empty( $course_progress[ $id ] ) || @$course_progress[ $id ]['completed'] < @$course_progress[ $id ]['total'] ) {
-		$course_status_str = __( 'In Progress', 'learndash' );
+		$course_status_str = esc_html__( 'In Progress', 'learndash' );
 	} else {
-		$course_status_str = __( 'Completed', 'learndash' );
+		$course_status_str = esc_html__( 'Completed', 'learndash' );
 	}
 	return apply_filters( 
 		'learndash_course_status', 
@@ -1420,7 +1420,7 @@ function learndash_course_progress( $atts ) {
 
 		$percentage = intVal( $completed * 100 / $total );
 		$percentage = ( $percentage > 100 ) ? 100 : $percentage;
-		$message = sprintf( __('%d out of %d steps completed', 'learndash' ), $completed, $total );
+		$message = sprintf( esc_html_x('%1$d out of %1$d steps completed', 'placeholders: completed count, total count', 'learndash' ), $completed, $total );
 	}
 
 	if ( $array ) {
@@ -1726,10 +1726,10 @@ class LearnDash_Course_Progress_Widget extends WP_Widget {
 	function __construct() {
 		$widget_ops = array( 
 			'classname' => 'widget_ldcourseprogress',
-			'description' => sprintf( _x( 'LearnDash %s progress bar', 'placeholders: course', 'learndash' ), LearnDash_Custom_Label::label_to_lower( 'course' ) )
+			'description' => sprintf( esc_html_x( 'LearnDash %s progress bar', 'placeholders: course', 'learndash' ), LearnDash_Custom_Label::label_to_lower( 'course' ) )
 		);
 		$control_ops = array(); //'width' => 400, 'height' => 350);
-		parent::__construct( 'ldcourseprogress', sprintf( _x( '%s Progress Bar', 'Course Progress Bar Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), $widget_ops, $control_ops );
+		parent::__construct( 'ldcourseprogress', sprintf( esc_html_x( '%s Progress Bar', 'Course Progress Bar Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), $widget_ops, $control_ops );
 	}
 
 
@@ -1802,14 +1802,16 @@ class LearnDash_Course_Progress_Widget extends WP_Widget {
 		$title = strip_tags( $instance['title'] );
 		//$text = format_to_edit( $instance['text'] );
 		?>
-			<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'learndash' ); ?></label>
+			<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'learndash' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
 		<?php
 	}
 
 }
 
-add_action( 'widgets_init', create_function( '', 'return register_widget("LearnDash_Course_Progress_Widget");' ) );
+add_action( 'widgets_init', function() {
+	return register_widget("LearnDash_Course_Progress_Widget");
+} );
 
 
 
@@ -1877,7 +1879,7 @@ function learndash_forced_lesson_time() {
  * @return bool
  */
 function learndash_course_completed( $user_id, $course_id ) {
-	if ( learndash_course_status( $course_id, $user_id ) == __( 'Completed', 'learndash' ) ) {
+	if ( learndash_course_status( $course_id, $user_id ) == esc_html__( 'Completed', 'learndash' ) ) {
 		return true;
 	} else {
 		return false;
@@ -2009,7 +2011,7 @@ function learndash_process_mark_incomplete( $user_id = 0, $course_id = 0, $step_
 		
 	// Ensure the course is not completed
 //	$course_status = learndash_course_status( $course_id, $user_id );
-//	if ( $course_status == __( 'Completed', 'learndash' ) ) {
+//	if ( $course_status == esc_html__( 'Completed', 'learndash' ) ) {
 //		return;
 //	}
 		

@@ -40,57 +40,57 @@ if (!class_exists('Learndash_Course_Video' ) ) {
 					$post_args['sfwd-lessons']['fields'],
 					array(
 						'lesson_video_enabled' => array( 
-							'name' => __( 'Enable Video Progression', 'learndash' ), 
+							'name' => esc_html__( 'Enable Video Progression', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want to show a video as part of the progression.', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to show a video as part of the progression.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_url' => array( 
-							'name' => __( 'Video URL', 'learndash' ), 
+							'name' => esc_html__( 'Video URL', 'learndash' ),
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'URL to video. The video will be added above the %s content. Use the shortcode %s to position the player within content. Supported URL formats are YouTube (youtu.be, youtube.com), Vimeo (vimeo.com), Wistia (wistia.com), or Local videos. The value for this field can be a simple URL to the video, an iframe or either [video] or [embed] shortcodes.', 'placeholder: Lesson, admin URL to [ld_video] shortcode.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), '<a href="'. admin_url('admin.php?page=courses-shortcodes#shortcode_ld_video' ) .'">[ld_video]</a>' ),
+							'help_text' => sprintf( esc_html_x( 'URL to video. The video will be added above the %s content. Use the shortcode %s to position the player within content. Supported URL formats are YouTube (youtu.be, youtube.com), Vimeo (vimeo.com), Wistia (wistia.com), or Local videos. The value for this field can be a simple URL to the video, an iframe or either [video] or [embed] shortcodes.', 'placeholder: Lesson, admin URL to [ld_video] shortcode.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), '<a href="'. admin_url('admin.php?page=courses-shortcodes#shortcode_ld_video' ) .'">[ld_video]</a>' ),
 							'default' => '',
 						),
 						'lesson_video_auto_start' => array( 
-							'name' => __( 'Auto Start Video', 'learndash' ), 
+							'name' => esc_html__( 'Auto Start Video', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want the video to auto-start on page load.', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want the video to auto-start on page load.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_show_controls' => array( 
-							'name' => __( 'Show Video Controls', 'learndash' ), 
+							'name' => esc_html__( 'Show Video Controls', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Show Video Controls. By default controls are disabled. Only used for YouTube and local videos.', 'learndash' ), 
+							'help_text' => esc_html__( 'Show Video Controls. By default controls are disabled. Only used for YouTube and local videos.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_shown' => array(
-							'name' => __( 'When to show video', 'learndash' ), 
+							'name' => esc_html__( 'When to show video', 'learndash' ),
 							'type' => 'select',
 							'initial_options' => array(	
-								'AFTER'	=> __( 'After (default) - Video is shown after completing sub-steps', 'learndash' ),
-								'BEFORE' => __( 'Before - Video is shown before completing sub-steps', 'learndash' ),
+								'AFTER'	=> esc_html__( 'After (default) - Video is shown after completing sub-steps', 'learndash' ),
+								'BEFORE' => esc_html__( 'Before - Video is shown before completing sub-steps', 'learndash' ),
 							),
 							'default' => '',
-							'help_text' => __( 'Select when to show video in relation to sub-steps.', 'learndash' )
+							'help_text' => esc_html__( 'Select when to show video in relation to sub-steps.', 'learndash' )
 						),
 						'lesson_video_auto_complete' => array( 
-							'name' => sprintf( _x( 'Auto Complete %s', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'name' => sprintf( esc_html_x( 'Auto Complete %s', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'checkbox', 
-							'help_text' => sprintf( _x( 'Check this if you want the %s to auto-complete after the video completes.', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Check this if you want the %s to auto-complete after the video completes.', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'default' => 0,
 						),
 						'lesson_video_auto_complete_delay' => array( 
-							'name' => __( 'Auto Complete Delay', 'learndash' ), 
+							'name' => esc_html__( 'Auto Complete Delay', 'learndash' ),
 							'type' => 'number', 
 							'class' => 'small-text',
 							'min' => '0',
-							'help_text' => __( 'Time delay in second between the time the video finishes and the auto complete occurs. Example 0 no delay, 5 for five seconds.', 'learndash' ),
+							'help_text' => esc_html__( 'Time delay in second between the time the video finishes and the auto complete occurs. Example 0 no delay, 5 for five seconds.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_hide_complete_button' => array( 
-							'name' => __( 'Hide Complete Button', 'learndash' ), 
+							'name' => esc_html__( 'Hide Complete Button', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this to hide the complete button.', 'learndash' ),
+							'help_text' => esc_html__( 'Check this to hide the complete button.', 'learndash' ),
 							'default' => 0,
 						),
 					)
@@ -102,58 +102,58 @@ if (!class_exists('Learndash_Course_Video' ) ) {
 					$post_args['sfwd-topic']['fields'],
 					array(
 						'lesson_video_enabled' => array( 
-							'name' => __( 'Enable Video Progression', 'learndash' ), 
+							'name' => esc_html__( 'Enable Video Progression', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want to show a video as part of the progression.', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to show a video as part of the progression.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_url' => array( 
-							'name' => __( 'Video URL', 'learndash' ), 
+							'name' => esc_html__( 'Video URL', 'learndash' ),
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'URL to video. The video will be added above the %s content. Use the shortcode %s to position the player within content. Supported URL formats are YouTube (youtu.be, youtube.com), Vimeo (vimeo.com), Wistia (wistia.com), or Local videos. The value for this field can be a simple URL to the video, an iframe or either [video] or [embed] shortcodes.', 'placeholder: Topic, admin URL to [ld_video] shortcode.', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), '<a href="'. admin_url('admin.php?page=courses-shortcodes#shortcode_ld_video' ) .'">[ld_video]</a>' ),
+							'help_text' => sprintf( esc_html_x( 'URL to video. The video will be added above the %s content. Use the shortcode %s to position the player within content. Supported URL formats are YouTube (youtu.be, youtube.com), Vimeo (vimeo.com), Wistia (wistia.com), or Local videos. The value for this field can be a simple URL to the video, an iframe or either [video] or [embed] shortcodes.', 'placeholder: Topic, admin URL to [ld_video] shortcode.', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), '<a href="'. admin_url('admin.php?page=courses-shortcodes#shortcode_ld_video' ) .'">[ld_video]</a>' ),
 							'default' => '',
 						),
 						'lesson_video_auto_start' => array( 
-							'name' => __( 'Auto Start Video', 'learndash' ), 
+							'name' => esc_html__( 'Auto Start Video', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want the video to auto-start on page load.', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want the video to auto-start on page load.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_show_controls' => array( 
-							'name' => __( 'Show Video Controls', 'learndash' ), 
+							'name' => esc_html__( 'Show Video Controls', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Show Video Controls. By default controls are disabled. Only used for YouTube and local videos.', 'learndash' ), 
+							'help_text' => esc_html__( 'Show Video Controls. By default controls are disabled. Only used for YouTube and local videos.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_shown' => array(
-							'name' => __( 'When to show video', 'learndash' ), 
+							'name' => esc_html__( 'When to show video', 'learndash' ),
 							'type' => 'select',
 							'initial_options' => array(	
-								'AFTER'	=> __( 'After (default) - Video is shown after completing sub-steps', 'learndash' ),
-								'BEFORE' => __( 'Before - Video is shown before completing sub-steps', 'learndash' ),
+								'AFTER'	=> esc_html__( 'After (default) - Video is shown after completing sub-steps', 'learndash' ),
+								'BEFORE' => esc_html__( 'Before - Video is shown before completing sub-steps', 'learndash' ),
 							),
 							'default' => '',
-							'help_text' => __( 'Select when to show video in relation to sub-steps.', 'learndash' )
+							'help_text' => esc_html__( 'Select when to show video in relation to sub-steps.', 'learndash' )
 						),
 						
 						'lesson_video_auto_complete' => array( 
-							'name' => sprintf( _x( 'Auto Complete %s', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
+							'name' => sprintf( esc_html_x( 'Auto Complete %s', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 							'type' => 'checkbox', 
-							'help_text' => sprintf( _x( 'Check this if you want the %s to auto-complete after the video completes.', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Check this if you want the %s to auto-complete after the video completes.', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 							'default' => 0,
 						),
 						'lesson_video_auto_complete_delay' => array( 
-							'name' => __( 'Auto Complete Delay', 'learndash' ), 
+							'name' => esc_html__( 'Auto Complete Delay', 'learndash' ),
 							'type' => 'number', 
 							'class' => 'small-text',
 							'min' => '0',
-							'help_text' => __( 'Time delay in second between the time the video finishes and the auto complete occurs. Example 0 no delay, 5 for five seconds.', 'learndash' ),
+							'help_text' => esc_html__( 'Time delay in second between the time the video finishes and the auto complete occurs. Example 0 no delay, 5 for five seconds.', 'learndash' ),
 							'default' => 0,
 						),
 						'lesson_video_hide_complete_button' => array( 
-							'name' => __( 'Hide Complete Button', 'learndash' ), 
+							'name' => esc_html__( 'Hide Complete Button', 'learndash' ),
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this to hide the complete button.', 'learndash' ),
+							'help_text' => esc_html__( 'Check this to hide the complete button.', 'learndash' ),
 							'default' => 0,
 						),
 					)
@@ -479,7 +479,7 @@ if (!class_exists('Learndash_Course_Video' ) ) {
 											);
 										}
 										
-										if ( $ld_video_params['controls'] !== true ) {
+										if ( $ld_video_params['controls'] != true ) {
 											$this->video_content .="<style>.ld-video .mejs-controls { display: none !important; visibility: hidden !important;}</style>";
 										}
 									}
@@ -499,7 +499,7 @@ if (!class_exists('Learndash_Course_Video' ) ) {
 												$post_type_obj = get_post_type_object( $post->post_type );
 												$post_type_name = $post_type_obj->labels->name;
 												$this->video_data['videos_auto_complete_delay_message'] = 
-												sprintf( _x('<p class="ld-video-delay-message">%s will auto complete in %s seconds</p>', 'placeholders: 1. Lesson or Topic label, 2. span for counter', 'learndash' ), $post_type_obj->labels->singular_name, '<span class="time-countdown">'. $this->video_data['videos_auto_complete_delay'] . '</span>'
+												sprintf( wp_kses_post( _x('<p class="ld-video-delay-message">%s will auto complete in %s seconds</p>', 'placeholders: 1. Lesson or Topic label, 2. span for counter', 'learndash' ) ), $post_type_obj->labels->singular_name, '<span class="time-countdown">'. $this->video_data['videos_auto_complete_delay'] . '</span>'
 												);
 											}
 										}

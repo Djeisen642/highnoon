@@ -23,7 +23,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 			);
 			if ( isset( $schema['properties']['password'] ) ) {
 				$get_item_args['password'] = array(
-					'description' => __( 'The password for the post if it is password protected.' ),
+					'description' => esc_html__( 'The password for the post if it is password protected.' ),
 					'type'        => 'string',
 				);
 			}
@@ -54,7 +54,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'id' => array(
-							'description' 	=> __( 'Unique identifier for the object.' ),
+							'description' 	=> esc_html__( 'Unique identifier for the object.' ),
 							'required'		=> true,
 							'type'        	=> 'integer',
 						),
@@ -79,7 +79,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),
@@ -93,7 +93,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'id' => array(
-							'description' => __( 'Course ID to enroll user into.' ),
+							'description' => esc_html__( 'Course ID to enroll user into.' ),
 							'required' => true,
 							'type' => 'integer',
 						),
@@ -132,7 +132,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 		function course_enroll_user( $request ) {
 			$current_user_id = get_current_user_id();
 			if ( empty( $current_user_id ) ) {
-				return new WP_Error( 'rest_not_logged_in', __( 'You are not currently logged in.', 'learndash' ), array( 'status' => 401 ) );
+				return new WP_Error( 'rest_not_logged_in', esc_html__( 'You are not currently logged in.', 'learndash' ), array( 'status' => 401 ) );
 			}
 			$current_user = wp_get_current_user();
 
@@ -142,12 +142,12 @@ if ( ( !class_exists( 'LD_REST_Posts_Courses_Controller' ) ) && ( class_exists( 
 			}
 
 //			if ( $course->post_type != $this->post_type ) {
-//				return new WP_Error( 'rest_post_invalid_id', __( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
+//				return new WP_Error( 'rest_post_invalid_id', esc_html__( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
 //			}
 //			
 //			$course_price_type = get_course_meta_setting( $course->ID, 'course_price_type' );
 //			if ( $course_price_type == 'closed' ) {
-//				return new WP_Error( 'rest_course_enroll_closed', __( 'Course Enroll Closed.', 'learndash' ), array( 'status' => 403 ) );
+//				return new WP_Error( 'rest_course_enroll_closed', esc_html__( 'Course Enroll Closed.', 'learndash' ), array( 'status' => 403 ) );
 //			}
 			
 			// At this point we have a valid course and valid user

@@ -181,7 +181,7 @@ if ( !class_exists( 'LearnDash_Settings_Section' ) ) {
 				);
 				?>
 				<p class="delete-action sfwd_input">
-					<a href="<?php echo esc_url( $reset_url ); ?>" class="button-secondary submitdelete deletion" data-confirm="<?php echo esc_html( $this->reset_confirm_message ) ?>"><?php echo __( 'Reset Settings', 'learndash' ); ?></a>
+					<a href="<?php echo esc_url( $reset_url ); ?>" class="button-secondary submitdelete deletion" data-confirm="<?php echo esc_html( $this->reset_confirm_message ) ?>"><?php esc_html_e( 'Reset Settings', 'learndash' ); ?></a>
 				</p>
 				<?php
 			}
@@ -193,7 +193,7 @@ if ( !class_exists( 'LearnDash_Settings_Section' ) ) {
 				self::$shown = true;
 				?>
 		    	<div class="notice notice-success is-dismissible">
-		        	<p><?php _e( 'Settings Cleared!', 'learndash' ); ?></p>
+		        	<p><?php esc_html_e( 'Settings Cleared!', 'learndash' ); ?></p>
 				</div>
 				<?php
 			}

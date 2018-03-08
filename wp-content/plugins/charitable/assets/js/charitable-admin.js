@@ -372,6 +372,11 @@ CHARITABLE_ADMIN = window.CHARITABLE_ADMIN || {};
 				return;
 			}
 
+			$form.find( '.charitable-action-fields' ).each( function() {
+				var $el = $( this );
+				$el.toggle( action === $el.data( 'type' ) );
+			});
+
 			if ( text ) {
 				$button.text( text );
 			} else {

@@ -51,7 +51,7 @@ if ( ! class_exists( 'SFWD_CPT_Instance' ) ) {
 			SFWD_CPT_Instance::$instances[ $post_type ] =& $this;
 
 			if ( empty( $name ) ) {
-				$name = ! empty( $options_page_title)? $options_page_title:$post_name.__( ' Options', 'learndash' );
+				$name = ! empty( $options_page_title)? $options_page_title:$post_name . esc_html__( ' Options', 'learndash' );
 			}
 
 			if ( empty( $prefix ) ) {
@@ -79,32 +79,32 @@ if ( ! class_exists( 'SFWD_CPT_Instance' ) ) {
 
 				$this->default_options = array(
 					'orderby' => array(
-						'name' => __( 'Sort By', 'learndash' ),
-						'type' => __( 'select', 'learndash' ),
+						'name' => esc_html__( 'Sort By', 'learndash' ),
+						'type' => esc_html__( 'select', 'learndash' ),
 						'initial_options' => array(	
-							''		=> __( 'Select a choice...', 'learndash' ),
-							'title'	=> __( 'Title', 'learndash' ),
-							'date'	=> __( 'Date', 'learndash' ),
-							'menu_order' => __( 'Menu Order', 'learndash' )
+							''		=> esc_html__( 'Select a choice...', 'learndash' ),
+							'title'	=> esc_html__( 'Title', 'learndash' ),
+							'date'	=> esc_html__( 'Date', 'learndash' ),
+							'menu_order' => esc_html__( 'Menu Order', 'learndash' )
 						),
 						'default' => 'date',
-						'help_text' => __( 'Choose the sort order.', 'learndash' )
+						'help_text' => esc_html__( 'Choose the sort order.', 'learndash' )
 					),
 					'order' => array(
-						'name' => __( 'Sort Direction', 'learndash' ),
+						'name' => esc_html__( 'Sort Direction', 'learndash' ),
 						'type' => 'select',
 						'initial_options' => array(	
-							''		=> __( 'Select a choice...', 'learndash' ),
-							'ASC'	=> __( 'Ascending', 'learndash' ),
-							'DESC'	=> __( 'Descending', 'learndash' )
+							''		=> esc_html__( 'Select a choice...', 'learndash' ),
+							'ASC'	=> esc_html__( 'Ascending', 'learndash' ),
+							'DESC'	=> esc_html__( 'Descending', 'learndash' )
 						),
 						'default' => 'DESC',
-						'help_text' => __( 'Choose the sort order.', 'learndash' )
+						'help_text' => esc_html__( 'Choose the sort order.', 'learndash' )
 					),
 					'posts_per_page' => array(
-						'name' => __( 'Posts Per Page', 'learndash' ),
+						'name' => esc_html__( 'Posts Per Page', 'learndash' ),
 						'type' => 'text',
-						'help_text' => __( 'Enter the number of posts to display per page.', 'learndash' ),
+						'help_text' => esc_html__( 'Enter the number of posts to display per page.', 'learndash' ),
 						'default' => $posts_per_page
 					),
 				);
@@ -345,23 +345,10 @@ if ( ! class_exists( 'SFWD_CPT_Instance' ) ) {
 
 						learndash_check_convert_settings_to_single( $post->ID, $this->post_type );
 
-						/*
-						$atts = array(
-							'pagination'	=>	true,
-							'return'		=>	'WP_Query'
-						);
-						
-						if ( isset( $_GET['ld-lesson-page'] ) ) {
-							$paged = intval( $_GET['ld-lesson-page'] );
-							if ( ( empty( $paged ) ) || ( $paged < 1 ) ) {
-								$atts['posts_paged'] = 1;
-							} else {
-								$atts['posts_paged'] = $paged;
-							}
-						}
-						*/
-						
 						$lessons = learndash_get_course_lessons_list( $course_id );
+
+						// For now no paginiation on the course quizzes. Can't think of a scenario where there will be more 
+						// than the pager count. 
 						$quizzes = learndash_get_course_quiz_list( $course );
 
 						$has_course_content = ( ! empty( $lessons) || ! empty( $quizzes ) );
@@ -797,7 +784,7 @@ if ( ! class_exists( 'SFWD_CPT_Instance' ) ) {
 					
 								$course_status = learndash_course_status( $course_id, $cert_user_id );
 								// Bug: Why are we comparing a string value for Complete. 
-								if ( $course_status == __( 'Completed', 'learndash' ) ) {
+								if ( $course_status == esc_html__( 'Completed', 'learndash' ) ) {
 							
 									if ( ( ( learndash_is_admin_user() ) || ( learndash_is_group_leader_user() ) ) && ( $cert_user_id != $view_user_id ) ) {
 										wp_set_current_user( $cert_user_id );
@@ -895,7 +882,7 @@ if ( ! class_exists( 'SFWD_CPT_Instance' ) ) {
 						die();
 					} else {
 						if ( ! current_user_can( 'level_8' ) ) {
-							echo __( 'Access to certificate page is disallowed.', 'learndash' );
+							esc_html_e( 'Access to certificate page is disallowed.', 'learndash' );
 							die();
 						}
 					}

@@ -80,7 +80,7 @@ if ( !class_exists( 'LearnDash_Shortcodes_Section' ) ) {
 			?>
 				</div>
 				<?php $this->show_shortcodes_section_footer_extra(); ?>
-				<p style="clear:left"><input type="submit" class="button-primary" value="<?php _e( 'Insert Shortcode', 'learndash' ); ?>"></p>
+				<p style="clear:left"><input type="submit" class="button-primary" value="<?php esc_html_e( 'Insert Shortcode', 'learndash' ); ?>"></p>
 			</form>
 			<?php
 		}

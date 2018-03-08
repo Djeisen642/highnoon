@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Admin_Donation_Form
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.0
+ * @version   1.5.11
  */
 
 // Exit if accessed directly.
@@ -39,6 +39,15 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 * @var   string
 		 */
 		protected $form_action;
+
+		/**
+		 * Merged fields.
+		 *
+		 * @since 1.5.11
+		 *
+		 * @var   array
+		 */
+		protected $merged_fields;
 
 		/**
 		 * Create a donation form object.
@@ -73,7 +82,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 * @return boolean
 		 */
 		public function has_donation() {
-			return $this->donation && 'auto-draft' != $this->donation->get_status();
+			return $this->donation && ! in_array( $this->donation->get_status(), array( 'auto-draft', 'draft' ) );
 		}
 
 		/**
@@ -95,8 +104,8 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 					'type'     => 'heading',
 					'level'    => 'h3',
 					'title'    => __( 'Donor', 'charitable' ),
-					'priority' => 40,					
-				),				
+					'priority' => 40,
+				),
 				'user_fields' => array(
 					'type'     => 'fieldset',
 					'fields'   => $this->get_section_fields( 'user' ),
@@ -123,10 +132,11 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 				);
 			} else {
 				$fields['donor_id'] = array(
-					'type'     => 'select',
-					'options'  => $this->get_all_donors(),
-					'priority' => 41,
-					'value'    => '',
+					'type'        => 'select',
+					'options'     => $this->get_all_donors(),
+					'priority'    => 41,
+					'value'       => '',
+					'description' => __( 'Select an existing donor or choose "Add a New Donor" to create a new donor.', 'charitable' ),
 				);
 
 				$fields['user_fields']['attrs'] = array(
@@ -163,7 +173,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 *
 		 * @return array
 		 */
-		public function get_donation_fields() {			
+		public function get_donation_fields() {
 			if ( ! $this->donation ) {
 				$value = array();
 			} else {
@@ -187,7 +197,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 * @return array
 		 */
 		public function get_section_fields( $section ) {
-			$fields = charitable()->donation_fields()->get_admin_form_fields( $section );			
+			$fields = charitable()->donation_fields()->get_admin_form_fields( $section );
 			$keys   = array_keys( $fields );
 			$fields = array_combine(
 				$keys,
@@ -202,7 +212,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 					'required' => false,
 				);
 
-				if ( ! $this->has_donation() ) {
+				if ( $this->should_add_donation_receipt_checkbox() ) {
 					$fields['send_donation_receipt'] = array(
 						'type'     => 'checkbox',
 						'label'    => __( 'Send an email receipt to the donor.', 'charitable' ),
@@ -215,7 +225,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 
 			uasort( $fields, 'charitable_priority_sort' );
 
-			return $fields;		
+			return $fields;
 		}
 
 		/**
@@ -226,17 +236,19 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 * @return array
 		 */
 		public function get_merged_fields() {
-			$fields = array();
+			if ( ! isset( $this->merged_fields ) ) {
+				$this->merged_fields = array();
 
-			foreach ( $this->get_fields() as $section_id => $section ) {
-				if ( array_key_exists( 'fields', $section ) ) {
-					$fields = array_merge( $fields, $section['fields'] );
-				} else {
-					$fields[ $section_id ] = $section;
+				foreach ( $this->get_fields() as $section_id => $section ) {
+					if ( array_key_exists( 'fields', $section ) ) {
+						$this->merged_fields = array_merge( $this->merged_fields, $section['fields'] );
+					} else {
+						$this->merged_fields[ $section_id ] = $section;
+					}
 				}
 			}
 
-			return $fields;
+			return $this->merged_fields;
 		}
 
 		/**
@@ -279,7 +291,7 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			if ( isset( $this->validated ) ) {
 				return $this->valid;
 			}
-			
+
 			$this->valid = $this->check_required_fields( $this->get_merged_fields() );
 
 			$campaign_donations          = array_key_exists( 'campaign_donations', $_POST ) ? $_POST['campaign_donations'] : array();
@@ -320,11 +332,11 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 */
 		public function get_donation_values() {
 			$values = array(
-				'ID'        => $this->get_submitted_value( 'ID' ),
-				'donor_id'  => abs( $this->get_submitted_value( 'donor_id' ) ),				
-				'status'    => $this->get_submitted_value( 'status' ),
-				'log_note'  => $this->get_submitted_value( 'log_note' ),
-				'user_id'   => 0,
+				'ID'       => $this->get_submitted_value( 'ID' ),
+				'donor_id' => abs( $this->get_submitted_value( 'donor_id' ) ),
+				'status'   => $this->get_submitted_value( 'status' ),
+				'log_note' => $this->get_submitted_value( 'log_note' ),
+				'user_id'  => 0,
 			);
 
 			if ( 'add_donation' == $this->get_submitted_value( 'charitable_action' ) ) {
@@ -428,8 +440,8 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		protected function sanitize_submitted_donor( $values ) {
 			/* Shortcircuit for new donations. */
 			if ( ! $values['donor_id'] ) {
-				if ( $values['ID'] ) {
-					$values['donor_id'] = charitable_get_donation( $values['ID'] )->get_donor_id();
+				if ( $values['ID'] && $this->has_donation() ) {
+					$values['user'] = $this->get_donor_data_to_preserve();
 				}
 
 				return $values;
@@ -452,6 +464,38 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			);
 
 			return $values;
+		}
+
+		/**
+		 * Returns any of the current donor data that should be preserved
+		 * after saving. This is any data that exists that doesn't have a
+		 * field in the admin donation form.
+		 *
+		 * @since  1.5.11
+		 *
+		 * @return array
+		 */
+		protected function get_donor_data_to_preserve() {
+			$data = $this->donation->get_donor_data();
+
+			foreach ( $this->get_merged_fields() as $key => $field ) {
+				if ( ! array_key_exists( 'data_type', $field ) || 'user' != $field['data_type'] ) {
+					continue;
+				}
+
+				if ( ! array_key_exists( $key, $data ) ) {
+					continue;
+				}
+
+				unset( $data[ $key ] );
+
+				/* There is no data left to preserve, so return an empty array. */
+				if ( empty( $data ) ) {
+					return $data;
+				}
+			}
+
+			return $data;
 		}
 
 		/**
@@ -495,6 +539,16 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			}
 
 			$values['campaigns'] = $campaigns;
+
+			if ( $this->has_donation() ) {
+				$old_campaign_ids = wp_list_pluck( $this->donation->get_campaign_donations(), 'campaign_id' );
+
+				foreach ( $campaigns as $campaign_donation ) {
+					if ( ! in_array( $campaign_donation['campaign_id'], $old_campaign_ids ) ) {
+						Charitable_Campaign::flush_donations_cache( $campaign_donation['campaign_id'] );
+					}
+				}
+			}
 
 			return $values;
 		}
@@ -591,11 +645,28 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 				$value = $this->donation->get( $key );
 			}
 
-			if ( $value ) {
+			if ( ! $value ) {
+				return $field;
+			}
+
+			if ( 'checkbox' == $field['type'] ) {
+				$field['checked'] = $value;
+			} else {
 				$field['value'] = $value;
 			}
 
 			return $field;
+		}
+
+		/**
+		 * Returns whether a checkbox should be included for sending the donation receipt.
+		 *
+		 * @since  1.5.9
+		 *
+		 * @return boolean
+		 */
+		protected function should_add_donation_receipt_checkbox() {
+			return ! $this->has_donation() && charitable_get_helper( 'emails' )->is_enabled_email( 'donation_receipt' );
 		}
 	}
 

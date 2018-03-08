@@ -89,15 +89,15 @@ margin-right: 10px;
 }
 
  
-#course_navigation .learndash_topic_widget_list  a > span {
+.course_navigation .learndash_topic_widget_list  a > span {
 	overflow: hidden;
 	margin: 0 0 0 5px;
 }
-#course_navigation .learndash_topic_widget_list > ul {
+.course_navigation .learndash_topic_widget_list > ul {
 	margin: 0;
 }
 
-#course_navigation .learndash-current-menu-item a {
+.course_navigation .learndash-current-menu-item a {
 	font-weight: bold;
 }
 
@@ -371,7 +371,7 @@ margin-right: 10px;
 	background-color : #ddd;
 	padding: 10px;
 }*/
-#course_navigation a {
+.course_navigation a {
 	text-decoration: none;
 }
 	
@@ -464,8 +464,9 @@ small.notavailable_message {
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
+	clear: both;
 }
-/*#course_navigation {
+/*.course_navigation {
 	background-color: #FFFFFF;
 	border: 1px solid #DDDDDD;
     border-radius: 4px;
@@ -584,23 +585,23 @@ small.notavailable_message {
 .learndash_navigation_lesson_topics_list .learndash_topic_dots.type-list a > span {
 	padding: 0 0 0 25px;
 }
-#course_navigation .learndash_navigation_lesson_topics_list .lesson {
+.course_navigation .learndash_navigation_lesson_topics_list .lesson {
 	margin: 5px;
 }
 
-#course_navigation .learndash_navigation_lesson_topics_list ul li {
+.course_navigation .learndash_navigation_lesson_topics_list ul li {
 	margin-left: 0;
 	list-style: none;
 	background: none;
 }
-#course_navigation .learndash_navigation_lesson_topics_list .learndash_topic_dots.type-list ul > li {
+.course_navigation .learndash_navigation_lesson_topics_list .learndash_topic_dots.type-list ul > li {
 	padding-left: 10px;
 }
 
 .widget ul.learndash-topic-quiz-list {
 	margin-left: 15px;
 }
-#course_navigation .learndash-current-menu-item ul li a {
+.course_navigation .learndash-current-menu-item ul li a {
 	font-weight: normal;
 }
 
@@ -610,7 +611,7 @@ small.notavailable_message {
 	border-top: 1px solid #ddd;
 	padding: 0;
 }
-.widget_course_return,#course_navigation .widget_course_return a{
+.widget_course_return, .course_navigation .widget_course_return a{
 	font-size: 12px;
 }
 .widget_course_return {
@@ -821,12 +822,12 @@ dd.course_progress div.course_progress_blue {
 	overflow: hidden ;
 }
 
-#course_navigation ul.learndash-course-quiz-list {
+.course_navigation ul.learndash-course-quiz-list {
 	margin-left: 0;
 	list-style: none;
 }
 
-#course_navigation ul.learndash-course-quiz-list li {
+.course_navigation ul.learndash-course-quiz-list li {
 	margin-left: 0;
 	list-style: none;
 }

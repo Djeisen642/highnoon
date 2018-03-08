@@ -30,7 +30,7 @@ class Lesson_Widget extends WP_Widget {
 	public function __construct() {
 		$args = array();
 
-		$args['description'] = sprintf( _x('Displays a list of %s for a %s and tracks %s progress.', 'Displays a list of lessons for a course and tracks lesson progress.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ));
+		$args['description'] = sprintf( esc_html_x('Displays a list of %1$s for a %2$s and tracks %3$s progress.', 'Displays a list of lessons for a course and tracks lesson progress.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ));
 
 		if ( empty( $this->post_args) ) {
 			$this->post_args = array( 'post_type' => $this->post_type, 'numberposts' => -1, 'order' => 'DESC', 'orderby' => 'date' );
@@ -158,7 +158,7 @@ class Lesson_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php _e( 'Title:', 'learndash' );?></label>
+			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php esc_html_e( 'Title:', 'learndash' );?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' );?>" name="<?php echo $this->get_field_name( 'title' );?>" type="text" value="<?php echo $title;?>" />
 		</p>
 		<?php
@@ -190,8 +190,10 @@ class Course_Widget extends WP_Widget {
 	public function __construct() {
 		$args = array();
 
+		$this->post_name = LearnDash_Custom_Label::get_label( 'course' );
+
 		if ( empty( $args['description'] ) ) {
-			$args['description'] = sprintf( __( 'Displays a list of %s', 'learndash' ), $this->post_name );
+			$args['description'] = sprintf( esc_html_x( 'Displays a list of %s', 'placeholder: Course', 'learndash' ), $this->post_name );
 		}
 
 		if ( empty( $this->post_args) ) {
@@ -288,7 +290,7 @@ class Course_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php _e( 'Title:', 'learndash' );?></label>
+			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php esc_html_e( 'Title:', 'learndash' );?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' );?>" name="<?php echo $this->get_field_name( 'title' );?>" type="text" value="<?php echo $title;?>" />
 		</p>
 		<?php
@@ -319,9 +321,11 @@ class Quiz_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$args = array();
-
+		
+		$this->post_name = LearnDash_Custom_Label::get_label( 'quiz' );
+		
 		if ( empty( $args['description'] ) ) {
-			$args['description'] = sprintf( __( 'Displays a list of %s', 'learndash' ), $this->post_name );
+			$args['description'] = sprintf( esc_html_x( 'Displays a list of %s', 'placeholder: Quiz', 'learndash' ), $this->post_name );
 		}
 
 		if ( empty( $this->post_args) ) {
@@ -418,7 +422,7 @@ class Quiz_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php _e( 'Title:', 'learndash' );?></label>
+			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php esc_html_e( 'Title:', 'learndash' );?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' );?>" name="<?php echo $this->get_field_name( 'title' );?>" type="text" value="<?php echo $title;?>" />
 		</p>
 		<?php
@@ -451,7 +455,7 @@ class Transactions_Widget extends WP_Widget {
 		$args = array();
 
 		if ( empty( $args['description'] ) ) {
-			$args['description'] = sprintf( __( 'Displays a list of %s', 'learndash' ), $this->post_name );
+			$args['description'] = sprintf( esc_html_x( 'Displays a list of %s', 'placeholder: Transactions', 'learndash' ), $this->post_name );
 		}
 
 		if ( empty( $this->post_args) ) {
@@ -548,7 +552,7 @@ class Transactions_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php _e( 'Title:', 'learndash' );?></label>
+			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php esc_html_e( 'Title:', 'learndash' );?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' );?>" name="<?php echo $this->get_field_name( 'title' );?>" type="text" value="<?php echo $title;?>" />
 		</p>
 		<?php
@@ -582,7 +586,7 @@ class Certificates_Widget extends WP_Widget {
 		$args = array();
 
 		if ( empty( $args['description'] ) ) {
-			$args['description'] = sprintf( __( 'Displays a list of %s', 'learndash' ), $this->post_name );
+			$args['description'] = sprintf( esc_html_x( 'Displays a list of %s', 'placeholder: Certificates', 'learndash' ), $this->post_name );
 		}
 
 		if ( empty( $this->post_args) ) {
@@ -679,7 +683,7 @@ class Certificates_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php _e( 'Title:', 'learndash' );?></label>
+			<label for="<?php echo $this->get_field_id( 'title' );?>"><?php esc_html_e( 'Title:', 'learndash' );?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' );?>" name="<?php echo $this->get_field_name( 'title' );?>" type="text" value="<?php echo $title;?>" />
 		</p>
 		<?php

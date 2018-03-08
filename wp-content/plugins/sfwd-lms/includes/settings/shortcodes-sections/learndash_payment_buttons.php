@@ -6,9 +6,9 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 			$this->fields_args = $fields_args;
 
 			$this->shortcodes_section_key 			= 	'learndash_payment_buttons';
-			$this->shortcodes_section_title 		= 	__( 'Payment Buttons', 'learndash' );
+			$this->shortcodes_section_title 		= 	esc_html__( 'Payment Buttons', 'learndash' );
 			$this->shortcodes_section_type			=	1;
-			$this->shortcodes_section_description	=	__( 'This shortcode can show the payment buttons on any page.', 'learndash' );
+			$this->shortcodes_section_description	=	esc_html__( 'This shortcode can show the payment buttons on any page.', 'learndash' );
 			
 			parent::__construct(); 
 		}
@@ -19,8 +19,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_course_id',
 					'name'  		=> 	'course_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	sprintf( _x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'		=>	sprintf( _x( 'Enter single %s ID', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'label' 		=> 	sprintf( esc_html_x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'		=>	sprintf( esc_html_x( 'Enter single %s ID', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text',
 					'required'		=>	'required'

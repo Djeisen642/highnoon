@@ -39,6 +39,12 @@ $allowed_html = array(
 	'strong' => array(),
 );
 
+if( ! function_exists('learndash_get_step_permalink')){
+	function learndash_get_step_permalink($module_id,$course_id){
+		return get_permalink($module_id);
+	}
+}
+
 $uo_dashboard_heading = apply_filters( 'uo_dashboard_heading', 'Registered ' . LearnDash_Custom_Label::get_label( 'courses' ) );
 
 // Add Statistics Modal Window

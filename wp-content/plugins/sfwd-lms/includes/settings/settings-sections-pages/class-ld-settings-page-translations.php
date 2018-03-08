@@ -7,7 +7,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 			$this->parent_menu_page_url		=	'admin.php?page=learndash_lms_settings';
 			$this->menu_page_capability		=	LEARNDASH_ADMIN_CAPABILITY_CHECK;
 			$this->settings_page_id 		= 	'learndash_lms_translations';
-			$this->settings_page_title 		= 	__( 'Translations', 'learndash' );
+			$this->settings_page_title 		= 	esc_html__( 'Translations', 'learndash' );
 			$this->settings_tab_title		=	$this->settings_page_title;
 			$this->settings_tab_priority	=	40;
 			
@@ -68,7 +68,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 						<div class="notice notice-success is-dismissible"> 
 							<?php echo $reply['message']; ?>
 							<button type="button" class="notice-dismiss">
-								<span class="screen-reader-text"><?php _e('Dismiss this notice.') ?></span>
+								<span class="screen-reader-text"><?php esc_html_e('Dismiss this notice.') ?></span>
 							</button>
 						</div>
 						<?php
@@ -78,7 +78,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 						<div class="notice notice-error is-dismissible"> 
 							<?php echo $reply['message']; ?>
 							<button type="button" class="notice-dismiss">
-								<span class="screen-reader-text"><?php _e('Dismiss this notice.') ?></span>
+								<span class="screen-reader-text"><?php esc_html_e('Dismiss this notice.') ?></span>
 							</button>
 						</div>
 						<?php
@@ -118,7 +118,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 					case 'install':
 						if ( ( !empty( $project ) ) && ( !empty( $locale ) ) && ( !empty( $nonce ) ) ) {
 							if ( wp_verify_nonce( $nonce, 'ld-translation-'. $action .'-'. $project .'-'. $locale ) ) {
-								$reply = Learndash_Translations::install_translation( $project, $locale );
+								$reply = LearnDash_Translations::install_translation( $project, $locale );
 							} 
 						}
 						break;
@@ -126,7 +126,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 					case 'update':
 						if ( ( !empty( $project ) ) && ( !empty( $locale ) ) && ( !empty( $nonce ) ) ) {
 							if ( wp_verify_nonce( $nonce, 'ld-translation-'. $action .'-'. $project .'-'. $locale ) ) {
-								$reply = Learndash_Translations::update_translation( $project, $locale );
+								$reply = LearnDash_Translations::update_translation( $project, $locale );
 							} 
 						}
 						break;
@@ -134,14 +134,14 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 					case 'remove':
 						if ( ( !empty( $project ) ) && ( !empty( $locale ) ) && ( !empty( $nonce ) ) ) {
 							if ( wp_verify_nonce( $nonce, 'ld-translation-'. $action .'-'. $project .'-'. $locale ) ) {
-								$reply = Learndash_Translations::remove_translation( $project, $locale );
+								$reply = LearnDash_Translations::remove_translation( $project, $locale );
 							} 
 						}
 						break;
 
 					case 'refresh':
 						if ( wp_verify_nonce( $nonce, 'ld-translation-'. $action ) ) {
-							$reply = Learndash_Translations::refresh_translations( );
+							$reply = LearnDash_Translations::refresh_translations( );
 						} 
 						break;
 				

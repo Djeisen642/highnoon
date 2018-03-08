@@ -452,12 +452,41 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			
 			$ld_admin_settings_data_upgrades_db = new Learndash_Admin_Data_Upgrades_User_Activity_DB_Table();
 			$ld_admin_settings_data_upgrades_db->upgrade_data_settings();
+
+			$this->ld_admin_settings_data_upgrades->set_data_settings( 'translations_installed', false );
+			
 			
 			/**
 			 * Ensure we call WPProQuiz activate functions
 			 * @since 2.4.6.1
 			 */
 			WpProQuiz_Helper_Upgrade::upgrade();
+			
+			/** 
+			 * Secure the Assignments & Essay uploads directory from browseing
+			 *
+			 * @since 2.5.5
+			 */
+			$wp_upload_dir = wp_upload_dir();
+			$wp_upload_base_dir = str_replace( '\\', '/', $wp_upload_dir['basedir'] );
+
+			$ld_dirs = array( 'assignments', 'essays' );
+			foreach( array( 'assignments', 'essays' ) as $ld_dir ) {
+			
+				$_dir = trailingslashit( $wp_upload_base_dir ) . $ld_dir;
+				if ( !file_exists( $_dir ) ) {
+					if ( is_writable( dirname( $_dir ) ) ) {
+						wp_mkdir_p( $_dir );
+					}
+				}
+			
+				if ( file_exists( $_dir ) ) {
+					$_index = trailingslashit( $_dir ) . 'index.php';
+					if ( !file_exists( $_index ) ) {
+						file_put_contents ( $_index , '//LearnDash is THE Best LMS' );
+					}
+				}
+			}
 			
 			do_action( 'learndash_activated' );
 		}
@@ -628,15 +657,15 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$lesson_topic_labels = array(
 				'name' 					=> 	$lcl_topics,
 				'singular_name' 		=> 	$lcl_topic,
-				'add_new' 				=> 	_x( 'Add New', 'Add New Topic Label', 'learndash' ),
-				'add_new_item' 			=> 	sprintf( _x( 'Add New %s', 'Add New Topic Label', 'learndash' ), $lcl_topic ),
-				'edit_item' 			=> 	sprintf( _x( 'Edit %s', 'Edit Topic Label', 'learndash' ), $lcl_topic ),
-				'new_item' 				=> 	sprintf( _x( 'New %s', 'New Topic Label', 'learndash' ), $lcl_topic ),
+				'add_new' 				=> 	esc_html_x( 'Add New', 'Add New Topic Label', 'learndash' ),
+				'add_new_item' 			=> 	sprintf( esc_html_x( 'Add New %s', 'Add New Topic Label', 'learndash' ), $lcl_topic ),
+				'edit_item' 			=> 	sprintf( esc_html_x( 'Edit %s', 'Edit Topic Label', 'learndash' ), $lcl_topic ),
+				'new_item' 				=> 	sprintf( esc_html_x( 'New %s', 'New Topic Label', 'learndash' ), $lcl_topic ),
 				'all_items' 			=> 	$lcl_topics,
-				'view_item' 			=> 	sprintf( _x( 'View %s', 'View Topic Label', 'learndash' ), $lcl_topic ),
-				'search_items' 			=> 	sprintf( _x( 'Search %s', 'Search Topic Label', 'learndash' ), $lcl_topics ),
-				'not_found' 			=> 	sprintf( _x( 'No %s found', 'No Topic found Label', 'learndash' ), $lcl_topics ),
-				'not_found_in_trash' 	=> 	sprintf( _x( 'No %s found in Trash', 'No Topic found in Trash', 'learndash' ), $lcl_topics ),
+				'view_item' 			=> 	sprintf( esc_html_x( 'View %s', 'View Topic Label', 'learndash' ), $lcl_topic ),
+				'search_items' 			=> 	sprintf( esc_html_x( 'Search %s', 'Search Topic Label', 'learndash' ), $lcl_topics ),
+				'not_found' 			=> 	sprintf( esc_html_x( 'No %s found', 'No Topic found Label', 'learndash' ), $lcl_topics ),
+				'not_found_in_trash' 	=> 	sprintf( esc_html_x( 'No %s found in Trash', 'No Topic found in Trash', 'learndash' ), $lcl_topics ),
 				'parent_item_colon' 	=> 	'',
 				'menu_name' 			=> 	$lcl_topics
 			);
@@ -647,15 +676,15 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$quiz_labels = array(
 				'name' 					=> 	$lcl_quizzes,
 				'singular_name' 		=> 	$lcl_quiz,
-				'add_new' 				=> 	_x( 'Add New', 'Add New Quiz Label', 'learndash' ),
-				'add_new_item' 			=> 	sprintf( _x( 'Add New %s', 'Add New Quiz Label', 'learndash' ), $lcl_quiz ),
-				'edit_item' 			=> 	sprintf( _x( 'Edit %s', 'Edit Quiz Label', 'learndash' ), $lcl_quiz ),
-				'new_item' 				=> 	sprintf( _x( 'New %s', 'New Quiz Label', 'learndash' ), $lcl_quiz ),
+				'add_new' 				=> 	esc_html_x( 'Add New', 'Add New Quiz Label', 'learndash' ),
+				'add_new_item' 			=> 	sprintf( esc_html_x( 'Add New %s', 'Add New Quiz Label', 'learndash' ), $lcl_quiz ),
+				'edit_item' 			=> 	sprintf( esc_html_x( 'Edit %s', 'Edit Quiz Label', 'learndash' ), $lcl_quiz ),
+				'new_item' 				=> 	sprintf( esc_html_x( 'New %s', 'New Quiz Label', 'learndash' ), $lcl_quiz ),
 				'all_items' 			=> 	$lcl_quizzes,
-				'view_item' 			=> 	sprintf( _x( 'View %s', 'View Quiz Label', 'learndash' ), $lcl_quiz ),
-				'search_items' 			=> 	sprintf( _x( 'Search %s', 'Search Quiz Label', 'learndash' ), $lcl_quizzes ),
-				'not_found' 			=> 	sprintf( _x( 'No %s found', 'No Quiz found Label', 'learndash' ), $lcl_quizzes ),
-				'not_found_in_trash' 	=> 	sprintf( _x( 'No %s found in Trash', 'No Quiz found in Trash Label', 'learndash' ), $lcl_quizzes ),
+				'view_item' 			=> 	sprintf( esc_html_x( 'View %s', 'View Quiz Label', 'learndash' ), $lcl_quiz ),
+				'search_items' 			=> 	sprintf( esc_html_x( 'Search %s', 'Search Quiz Label', 'learndash' ), $lcl_quizzes ),
+				'not_found' 			=> 	sprintf( esc_html_x( 'No %s found', 'No Quiz found Label', 'learndash' ), $lcl_quizzes ),
+				'not_found_in_trash' 	=> 	sprintf( esc_html_x( 'No %s found in Trash', 'No Quiz found in Trash Label', 'learndash' ), $lcl_quizzes ),
 				'parent_item_colon' 	=> 	'',
 			);
 
@@ -665,15 +694,15 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$lesson_labels = array(
 				'name' 					=> 	$lcl_lessons,
 				'singular_name' 		=> 	$lcl_lesson,
-				'add_new' 				=> 	_x( 'Add New', 'Add New Lesson Label', 'learndash' ),
-				'add_new_item' 			=> 	sprintf( _x( 'Add New %s', 'Add New Lesson Label', 'learndash' ), $lcl_lesson ),
-				'edit_item' 			=> 	sprintf( _x( 'Edit %s', 'Edit Lesson Label', 'learndash' ), $lcl_lesson ),
-				'new_item' 				=> 	sprintf( _x( 'New %s', 'New Lesson Label', 'learndash' ), $lcl_lesson ),
+				'add_new' 				=> 	esc_html_x( 'Add New', 'Add New Lesson Label', 'learndash' ),
+				'add_new_item' 			=> 	sprintf( esc_html_x( 'Add New %s', 'Add New Lesson Label', 'learndash' ), $lcl_lesson ),
+				'edit_item' 			=> 	sprintf( esc_html_x( 'Edit %s', 'Edit Lesson Label', 'learndash' ), $lcl_lesson ),
+				'new_item' 				=> 	sprintf( esc_html_x( 'New %s', 'New Lesson Label', 'learndash' ), $lcl_lesson ),
 				'all_items' 			=> 	$lcl_lessons,
-				'view_item' 			=> 	sprintf( _x( 'View %s', 'View Lesson Label', 'learndash' ), $lcl_lesson ),
-				'search_items' 			=> 	sprintf( _x( 'Search %s', 'Search Lesson Label', 'learndash' ), $lcl_lessons ),
-				'not_found' 			=> 	sprintf( _x( 'No %s found', 'No Lesson found Label', 'learndash' ), $lcl_lessons ),
-				'not_found_in_trash' 	=> 	sprintf( _x( 'No %s found in Trash', 'No Lesson found in Trash Label', 'learndash' ), $lcl_lessons ),
+				'view_item' 			=> 	sprintf( esc_html_x( 'View %s', 'View Lesson Label', 'learndash' ), $lcl_lesson ),
+				'search_items' 			=> 	sprintf( esc_html_x( 'Search %s', 'Search Lesson Label', 'learndash' ), $lcl_lessons ),
+				'not_found' 			=> 	sprintf( esc_html_x( 'No %s found', 'No Lesson found Label', 'learndash' ), $lcl_lessons ),
+				'not_found_in_trash' 	=> 	sprintf( esc_html_x( 'No %s found in Trash', 'No Lesson found in Trash Label', 'learndash' ), $lcl_lessons ),
 				'parent_item_colon' 	=> 	'',
 			);
 
@@ -683,15 +712,15 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$course_labels = array(
 				'name' 					=> 	$lcl_courses,
 				'singular_name' 		=> 	$lcl_course,
-				'add_new' 				=> 	_x( 'Add New', 'Add New Course Label', 'learndash' ),
-				'add_new_item' 			=> 	sprintf( _x( 'Add New %s', 'Add New Course Label', 'learndash' ), $lcl_course ),
-				'edit_item' 			=> 	sprintf( _x( 'Edit %s', 'Edit Course Label', 'learndash' ), $lcl_course ),
-				'new_item' 				=> 	sprintf( _x( 'New %s', 'New Course Label', 'learndash' ), $lcl_course ),
+				'add_new' 				=> 	esc_html_x( 'Add New', 'Add New Course Label', 'learndash' ),
+				'add_new_item' 			=> 	sprintf( esc_html_x( 'Add New %s', 'Add New Course Label', 'learndash' ), $lcl_course ),
+				'edit_item' 			=> 	sprintf( esc_html_x( 'Edit %s', 'Edit Course Label', 'learndash' ), $lcl_course ),
+				'new_item' 				=> 	sprintf( esc_html_x( 'New %s', 'New Course Label', 'learndash' ), $lcl_course ),
 				'all_items' 			=> 	$lcl_courses,
-				'view_item' 			=> 	sprintf( _x( 'View %s', 'View Course Label', 'learndash' ), $lcl_course ),
-				'search_items' 			=> 	sprintf( _x( 'Search %s', 'Search Courses Label', 'learndash' ), $lcl_courses ),
-				'not_found' 			=> 	sprintf( _x( 'No %s found', 'No Courses found Label', 'learndash' ), $lcl_courses ),
-				'not_found_in_trash' 	=> 	sprintf( _x( 'No %s found in Trash', 'No Courses found in Trash Label', 'learndash' ), $lcl_courses ),
+				'view_item' 			=> 	sprintf( esc_html_x( 'View %s', 'View Course Label', 'learndash' ), $lcl_course ),
+				'search_items' 			=> 	sprintf( esc_html_x( 'Search %s', 'Search Courses Label', 'learndash' ), $lcl_courses ),
+				'not_found' 			=> 	sprintf( esc_html_x( 'No %s found', 'No Courses found Label', 'learndash' ), $lcl_courses ),
+				'not_found_in_trash' 	=> 	sprintf( esc_html_x( 'No %s found in Trash', 'No Courses found in Trash Label', 'learndash' ), $lcl_courses ),
 				'parent_item_colon' 	=> 	'',
 			);
 
@@ -705,21 +734,32 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Taxonomies', 'wp_post_tag' ) == 'yes') {
 				$course_taxonomies['post_tag'] = 'post_tag';
 			}
-				
-			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Taxonomies', 'ld_course_category' ) == 'yes') {
+								
+			$learndash_settings_permalinks_taxonomies = get_option( 'learndash_settings_permalinks_taxonomies' );
+			if ( !is_array( $learndash_settings_permalinks_taxonomies ) ) $learndash_settings_permalinks_taxonomies = array();
+			$learndash_settings_permalinks_taxonomies = wp_parse_args(
+				$learndash_settings_permalinks_taxonomies, 
+				array(
+					'ld_course_category' 	=>	'course-category',
+					'ld_course_tag' 		=>	'course-tag',
+					'ld_lesson_category' 	=> 	'lesson-category',
+					'ld_lesson_tag' 		=> 	'lesson-tag',
+					'ld_topic_category'		=> 	'topic-category',
+					'ld_topic_tag' 			=> 	'topic-tag'
+				)
+			);
+							
+			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Taxonomies', 'ld_course_category' ) == 'yes') {				
 				$course_taxonomies['ld_course_category'] =	array(
-					'public'			=>	false,
-					'hierarchical'		=> 	true,
-					'show_ui'           => 	true,
-					'show_in_menu'		=> 	true,	
-					'show_admin_column' => 	true,
-					'query_var'         => 	true,
-					'show_in_rest'		=>	true,
-					'rewrite'           => 	array( 
-						'slug' 				=> 'course-category' 
-					),
-						
-					'capabilities' 		=> 	array(
+					'public'			=> true,
+					'hierarchical'		=> true,
+					'show_ui'           => true,
+					'show_in_menu'		=> true,	
+					'show_admin_column' => true,
+					'query_var'         => true,
+					'show_in_rest'		=> true,
+					'rewrite'           => array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_course_category'] ),
+					'capabilities' 		=> array(
 						'manage_terms' 		=> 'manage_categories',
 						'edit_terms'   		=> 'edit_categories',
 						'delete_terms' 		=> 'delete_categories',
@@ -727,48 +767,46 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					),
 					
 					'labels'           => 	array(
-						'name'              => sprintf( _x( '%s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'singular_name'     => sprintf( _x( '%s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'search_items'      => sprintf( _x( 'Search %s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'all_items'         => sprintf( _x( 'All %s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'parent_item'       => sprintf( _x( 'Parent %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Category:', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'edit_item'         => sprintf( _x( 'Edit %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'update_item'       => sprintf( _x( 'Update %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'new_item_name'     => sprintf( _x( 'New %s Category Name', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'menu_name'         => sprintf( _x( '%s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'name'              => sprintf( esc_html_x( '%s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'singular_name'     => sprintf( esc_html_x( '%s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Category:', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Category', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Category Name', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'menu_name'         => sprintf( esc_html_x( '%s Categories', 'placeholder: Course', 'learndash' ), $lcl_course ),
 					),
 				);
 			}
 			
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Taxonomies', 'ld_course_tag' ) == 'yes') {
 				$course_taxonomies['ld_course_tag'] = array(
-					'public'			=> false,
+					'public'			=> true,
 					'hierarchical'      => false,
 					'show_ui'           => true,
 					'show_in_menu'		=> true,	
 					'show_admin_column' => true,
 					'query_var'         => true,
 					'show_in_rest'		=>	true,
-					'rewrite'           => array( 'slug' => 'course-tag' ),
+					'rewrite'           => array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_course_tag'] ),
 					'labels'            => array(
-						'name'              => sprintf( _x( '%s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'singular_name'     => sprintf( _x( '%s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'search_items'      => sprintf( _x( 'Search %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'all_items'         => sprintf( _x( 'All %s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'parent_item'       => sprintf( _x( 'Parent %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Tag:', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'edit_item'         => sprintf( _x( 'Edit %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'update_item'       => sprintf( _x( 'Update %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'new_item_name'     => sprintf( _x( 'New %s Tag Name', 'placeholder: Course', 'learndash' ), $lcl_course ),
-						'menu_name'         => sprintf( _x( '%s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'name'              => sprintf( esc_html_x( '%s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'singular_name'     => sprintf( esc_html_x( '%s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Tag:', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Tag', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Tag Name', 'placeholder: Course', 'learndash' ), $lcl_course ),
+						'menu_name'         => sprintf( esc_html_x( '%s Tags', 'placeholder: Course', 'learndash' ), $lcl_course ),
 					),
 				);
 			}
-
-
 
 			$lesson_taxonomies = array();
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Lessons_Taxonomies', 'wp_post_category' ) == 'yes') {
@@ -781,13 +819,13 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Lessons_Taxonomies', 'ld_lesson_category' ) == 'yes') {
 				$lesson_taxonomies['ld_lesson_category'] =	array(
-					'public'			=>	false,
+					'public'			=>	true,
 					'hierarchical'		=> 	true,
 					'show_ui'           => 	true,
 					'show_in_menu'		=> 	true,	
 					'show_admin_column' => 	true,
 					'query_var'         => 	true,
-					'rewrite'           => 	array( 'slug' => 'lesson-category' ),
+					'rewrite'           => 	array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_lesson_category'] ),
 					'capabilities' 		=> 	array(
 						'manage_terms' => 'manage_categories',
 						'edit_terms'   => 'edit_categories',
@@ -795,42 +833,42 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						'assign_terms' => 'assign_categories',
 					),
 					'labels'            => 	array(
-						'name'              => sprintf( _x( '%s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'singular_name'     => sprintf( _x( '%s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'search_items'      => sprintf( _x( 'Search %s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'all_items'         => sprintf( _x( 'All %s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'parent_item'       => sprintf( _x( 'Parent %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Category:', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'edit_item'         => sprintf( _x( 'Edit %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'update_item'       => sprintf( _x( 'Update %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'new_item_name'     => sprintf( _x( 'New %s Category Name', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'menu_name'         => sprintf( _x( '%s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'name'              => sprintf( esc_html_x( '%s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'singular_name'     => sprintf( esc_html_x( '%s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Category:', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Category', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Category Name', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'menu_name'         => sprintf( esc_html_x( '%s Categories', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
 					),
 				);
 			}
 			
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Lessons_Taxonomies', 'ld_lesson_tag' ) == 'yes') {
 				$lesson_taxonomies['ld_lesson_tag'] = array(
-					'public'			=> false,
+					'public'			=> true,
 					'hierarchical'      => false,
 					'show_ui'           => true,
 					'show_in_menu'		=> true,	
 					'show_admin_column' => true,
 					'query_var'         => true,
-					'rewrite'           => array( 'slug' => 'lesson-tag' ),
+					'rewrite'           => array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_lesson_tag'] ),
 					'labels'            => array(
-						'name'              => sprintf( _x( '%s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'singular_name'     => sprintf( _x( '%s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'search_items'      => sprintf( _x( 'Search %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'all_items'         => sprintf( _x( 'All %s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'parent_item'       => sprintf( _x( 'Parent %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Tag:', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'edit_item'         => sprintf( _x( 'Edit %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'update_item'       => sprintf( _x( 'Update %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'new_item_name'     => sprintf( _x( 'New %s Tag Name', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
-						'menu_name'         => sprintf( _x( '%s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'name'              => sprintf( esc_html_x( '%s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'singular_name'     => sprintf( esc_html_x( '%s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Tag:', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Tag', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Tag Name', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
+						'menu_name'         => sprintf( esc_html_x( '%s Tags', 'placeholder: Lesson', 'learndash' ), $lcl_lesson ),
 					),
 				);
 			}
@@ -847,13 +885,13 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Topics_Taxonomies', 'ld_topic_category' ) == 'yes') {
 				$topic_taxonomies['ld_topic_category'] =	array(
-					'public'			=>	false,
+					'public'			=>	true,
 					'hierarchical'		=>	true,
 					'show_ui'           => 	true,
 					'show_in_menu'		=> 	true,	
 					'show_admin_column' => 	true,
 					'query_var'         => 	true,
-					'rewrite'           => 	array( 'slug' => 'topic-category' ),
+					'rewrite'           => 	array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_topic_category'] ),
 					'capabilities' 		=> 	array(
 						'manage_terms' => 'manage_categories',
 						'edit_terms'   => 'edit_categories',
@@ -861,42 +899,42 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						'assign_terms' => 'assign_categories',
 					),
 					'labels'            => 	array(
-						'name'              => sprintf( _x( '%s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'singular_name'     => sprintf( _x( '%s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'search_items'      => sprintf( _x( 'Search %s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'all_items'         => sprintf( _x( 'All %s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'parent_item'       => sprintf( _x( 'Parent %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Category:', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'edit_item'         => sprintf( _x( 'Edit %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'update_item'       => sprintf( _x( 'Update %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'new_item_name'     => sprintf( _x( 'New %s Category Name', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'menu_name'         => sprintf( _x( '%s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'name'              => sprintf( esc_html_x( '%s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'singular_name'     => sprintf( esc_html_x( '%s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Category:', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Category', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Category Name', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'menu_name'         => sprintf( esc_html_x( '%s Categories', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
 					),
 				);
 			}
 			
 			if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Topics_Taxonomies', 'ld_topic_tag' ) == 'yes' ) {
 				$topic_taxonomies['ld_topic_tag'] = array(
-					'public'			=> false,
+					'public'			=> true,
 					'hierarchical'      => false,
 					'show_ui'           => true,
 					'show_in_menu'		=> true,	
 					'show_admin_column' => true,
 					'query_var'         => true,
-					'rewrite'           => array( 'slug' => 'topic-tag' ),
+					'rewrite'           => array( 'slug' => $learndash_settings_permalinks_taxonomies['ld_topic_tag'] ),
 					'labels'            => array(
-						'name'              => sprintf( _x( '%s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'singular_name'     => sprintf( _x( '%s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'search_items'      => sprintf( _x( 'Search %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'all_items'         => sprintf( _x( 'All %s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'parent_item'       => sprintf( _x( 'Parent %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'parent_item_colon' => sprintf( _x( 'Parent %s Tag:', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'edit_item'         => sprintf( _x( 'Edit %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'update_item'       => sprintf( _x( 'Update %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'add_new_item'      => sprintf( _x( 'Add New %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'new_item_name'     => sprintf( _x( 'New %s Tag Name', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
-						'menu_name'         => sprintf( _x( '%s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'name'              => sprintf( esc_html_x( '%s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'singular_name'     => sprintf( esc_html_x( '%s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'search_items'      => sprintf( esc_html_x( 'Search %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'all_items'         => sprintf( esc_html_x( 'All %s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'parent_item'       => sprintf( esc_html_x( 'Parent %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'parent_item_colon' => sprintf( esc_html_x( 'Parent %s Tag:', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'edit_item'         => sprintf( esc_html_x( 'Edit %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'update_item'       => sprintf( esc_html_x( 'Update %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'add_new_item'      => sprintf( esc_html_x( 'Add New %s Tag', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'new_item_name'     => sprintf( esc_html_x( 'New %s Tag Name', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
+						'menu_name'         => sprintf( esc_html_x( '%s Tags', 'placeholder: Topic', 'learndash' ), $lcl_topic ),
 					),
 				);
 			}
@@ -926,12 +964,12 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						'capabilities' => $course_capabilities,
 						'map_meta_cap' => true
 					),
-					//'options_page_title' => __( 'PayPal Settings', 'learndash' ),
+					//'options_page_title' => esc_html__( 'PayPal Settings', 'learndash' ),
 					'fields' => array( 
 						'course_materials' => array(
-							'name' => sprintf( _x( '%s Materials', 'Course Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( '%s Materials', 'Course Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'textarea',
-							'help_text' => sprintf( _x( 'Options for %s materials', 'Options for course materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Options for %s materials', 'Options for course materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 							
 							'rest_args' => array(
@@ -941,17 +979,17 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							)
 						),
 						'course_price_type' => array(
-							'name' => sprintf( _x( '%s Price Type', 'Course Price Type Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( '%s Price Type', 'Course Price Type Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'select',
 							'initial_options' => array(	
-								'open' => __( 'Open', 'learndash' ),
-								'closed' => __( 'Closed', 'learndash' ),
-								'free' => __( 'Free', 'learndash' ),
-								'paynow' => __( 'Buy Now', 'learndash' ),
-								'subscribe'	=> __( 'Recurring', 'learndash' ),
+								'open' => esc_html__( 'Open', 'learndash' ),
+								'closed' => esc_html__( 'Closed', 'learndash' ),
+								'free' => esc_html__( 'Free', 'learndash' ),
+								'paynow' => esc_html__( 'Buy Now', 'learndash' ),
+								'subscribe'	=> esc_html__( 'Recurring', 'learndash' ),
 							),
 							'default' => 'open',
-							'help_text' => __( 'Is it open to all, free join, one time purchase, or a recurring subscription?', 'learndash' ),
+							'help_text' => esc_html__( 'Is it open to all, free join, one time purchase, or a recurring subscription?', 'learndash' ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -960,90 +998,80 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							)
 						),
 						'custom_button_url' => array(
-							'name' => __( 'Custom Button URL', 'learndash' ),
+							'name' => esc_html__( 'Custom Button URL', 'learndash' ),
 							'type' => 'text',
-							'placeholder'	=> __( 'Optional', 'learndash' ),
-							'help_text' => sprintf( _x( 'Entering a URL in this field will enable the "%s" button. The button will not display if this field is left empty.', 'placeholders: "Take This Course" button label', 'learndash' ), LearnDash_Custom_Label::get_label( 'button_take_this_course' )),
+							'placeholder'	=> esc_html__( 'Optional', 'learndash' ),
+							'help_text' => sprintf( esc_html_x( 'Entering a URL in this field will enable the "%s" button. The button will not display if this field is left empty.', 'placeholders: "Take This Course" button label', 'learndash' ), LearnDash_Custom_Label::get_label( 'button_take_this_course' )),
 							'show_in_rest' => false
 						),
 						'course_price' => array(
-							'name' => sprintf( _x( '%s Price', 'Course Price Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( '%s Price', 'Course Price Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'text',
-							'help_text' => sprintf( _x( 'Enter %s price here. Leave empty if the %s is free.', 'Enter course price here. Leave empty if the course is free.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Enter %s price here. Leave empty if the %s is free.', 'Enter course price here. Leave empty if the course is free.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 						),
 						'course_price_billing_cycle' => array(
-							'name' => __( 'Billing Cycle', 'learndash' ),
+							'name' => esc_html__( 'Billing Cycle', 'learndash' ),
 							'type' => 'html',
 							'default' => $this->learndash_course_price_billing_cycle_html(),
-							'help_text' => __( 'Billing Cycle for the recurring payments in case of a subscription.', 'learndash' ),
+							'help_text' => esc_html__( 'Billing Cycle for the recurring payments in case of a subscription.', 'learndash' ),
 							'show_in_rest' => false,
 						),
 						'course_access_list' => array(
-							'name' => sprintf( _x( '%s Access List', 'Course Access List Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( '%s Access List', 'Course Access List Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'textarea',
-							'help_text' => __( 'This field is auto-populated with the UserIDs of those who have access to this course.', 'learndash' ),
+							'help_text' => esc_html__( 'This field is auto-populated with the UserIDs of those who have access to this course.', 'learndash' ),
 							'show_in_rest' => false,
 						),
 						'course_lesson_orderby' => array(
-							'name' => sprintf( _x( 'Sort %s By', 'Sort Lesson By Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( 'Sort %s By', 'Sort Lesson By Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'select',
 							'initial_options' => array(	
-								''		=> __( 'Use Default', 'learndash' ) . ' ( '. $course_lessons_options_labels['orderby'] .' )',
-								'title'	=> __( 'Title', 'learndash' ),
-								'date'	=> __( 'Date', 'learndash' ),
-								'menu_order' => __( 'Menu Order', 'learndash' ),
+								''		=> esc_html__( 'Use Default', 'learndash' ) . ' ( '. $course_lessons_options_labels['orderby'] .' )',
+								'title'	=> esc_html__( 'Title', 'learndash' ),
+								'date'	=> esc_html__( 'Date', 'learndash' ),
+								'menu_order' => esc_html__( 'Menu Order', 'learndash' ),
 							),
 							'default' => '',
-							'help_text' => sprintf( _x( 'Choose the sort order of %s in this %s.', 'Choose the sort order of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course') ),
+							'help_text' => sprintf( esc_html_x( 'Choose the sort order of %1$s in this %2$s.', 'Choose the sort order of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course') ),
 							'show_in_rest' => false,
 						),
 						'course_lesson_order' => array(
-							'name' => sprintf( _x( 'Sort %s Direction', 'Sort Lesson Direction Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( 'Sort %s Direction', 'Sort Lesson Direction Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'select',
 							'initial_options' => array(	
-								''		=> __( 'Use Default', 'learndash' )  . ' ( '. $course_lessons_options_labels['order'] .' )',
-								'ASC'	=> __( 'Ascending', 'learndash' ),
-								'DESC'	=> __( 'Descending', 'learndash' ),
+								''		=> esc_html__( 'Use Default', 'learndash' )  . ' ( '. $course_lessons_options_labels['order'] .' )',
+								'ASC'	=> esc_html__( 'Ascending', 'learndash' ),
+								'DESC'	=> esc_html__( 'Descending', 'learndash' ),
 							),
 							'default' => '',
-							'help_text' => sprintf( _x( 'Choose the sort order of %s in this %s.', 'Choose the sort order of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Choose the sort order of %1$s in this %2$s.', 'Choose the sort order of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course' ) ),
 							'show_in_rest' => false,
 						),
-						/*
+						
 						'course_lesson_per_page' => array(
-							'name' => sprintf( _x( '%s Per Page', 'Lesson Per Page Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( '%s Per Page', 'placeholder: Lessons', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ) ),
 							'type' => 'select',
 							'initial_options' => array(	
-								''			=> __( 'Use Default', 'learndash' ) . ' ( '. LearnDash_Settings_Section_Lessons_Display_Order::get_setting('posts_per_page') . ' )',
-								'CUSTOM'	=> __( 'Custom', 'learndash' ),
+								''			=> esc_html__( 'Use Default', 'learndash' ) . ' ( '. LearnDash_Settings_Section_Lessons_Display_Order::get_setting('posts_per_page') . ' )',
+								'CUSTOM'	=> esc_html__( 'Custom', 'learndash' ),
 							),
 							'default' => '',
-							'help_text' => sprintf( _x( 'Choose the per page of %s in this %s.', 'Choose the per page of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course')),
+							'help_text' => sprintf( esc_html_x( 'Choose the per page of %s in this %s.', 'Choose the per page of lessons in this course.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons'), LearnDash_Custom_Label::label_to_lower('course')),
 						),
 						'course_lesson_per_page_custom' => array( 
-							'name' => sprintf( _x( 'Custom %s per page', 'Custom lessons per page', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons') ), 
+							'name' => sprintf( esc_html_x( 'Custom %s Per Page', 'Custom lessons per page', 'learndash' ), LearnDash_Custom_Label::get_label('lessons') ), 
 							'type' => 'number', 
 							'min' => '0',
-							'help_text' => sprintf( _x( 'Enter %s per page value. Set to zero for no paging', 'Enter lesson per page value. Set to zero for no paging', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'help_text' => sprintf( esc_html_x( 'Enter %s per page value. Set to zero for no paging', 'Enter lesson per page value. Set to zero for no paging', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'default' => 0,
 						),
-						*/
-						/*
-						'course_builder_enabled' => array(
-							'name' => sprintf( _x( 'Enable Builder to manage %s steps', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-							'type' => 'checkbox',
-							'checked_value' => 'on',
-							'help_text' => sprintf( _x( 'Builder uses a drag and drop interface to manage the associated %s %s, %s and %s and will no longer be managble within the inidividual steps.', 'placeholder: Course, Lessons, Topics, Quizzes, ', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lessons' ), LearnDash_Custom_Label::get_label( 'topics' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ),
-							'show_in_rest' => true,
-						),
-						*/
 						
 						'course_prerequisite_enabled' => array(
-							'name' => sprintf( _x( 'Enable %s Prerequisites', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( 'Enable %s Prerequisites', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'checkbox',
 							'checked_value' => 'on',
-							'help_text' => __( 'Leave this field unchecked if prerequisite not used.', 'learndash' ),
+							'help_text' => esc_html__( 'Leave this field unchecked if prerequisite not used.', 'learndash' ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -1052,29 +1080,29 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							)
 						),
 						'course_prerequisite' => array( 
-							'name' => sprintf( _x( '%s Prerequisites', 'Course prerequisites Label', 'learndash' ),LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'name' => sprintf( esc_html_x( '%s Prerequisites', 'Course prerequisites Label', 'learndash' ),LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'type' => 'multiselect', 
-							'help_text' => sprintf( _x( 'Select one or more %s as prerequisites to view this %s', 'Select one or more course as prerequisites to view this course', 'learndash' ), LearnDash_Custom_Label::label_to_lower('course'), LearnDash_Custom_Label::label_to_lower('course') ), 
+							'help_text' => sprintf( esc_html_x( 'Select one or more %1$s as prerequisites to view this %2$s', 'Select one or more course as prerequisites to view this course', 'learndash' ), LearnDash_Custom_Label::label_to_lower('course'), LearnDash_Custom_Label::label_to_lower('course') ), 
 							'lazy_load'	=>	true,
 							'initial_options' => '', 
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						'course_prerequisite_compare' => array(
-							'name' => sprintf( _x( '%s Prerequisites Compare', 'Course Prerequisites Compare Label', 'learndash' ),LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'name' => sprintf( esc_html_x( '%s Prerequisites Compare', 'Course Prerequisites Compare Label', 'learndash' ),LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'type' => 'select',
 							'initial_options' => array(	
-								'ANY'	=> __( 'ANY (default) - The student must complete at least one of the prerequisites', 'learndash' ),
-								'ALL'	=> __( 'ALL - The student must complete all the prerequisites', 'learndash' ),
+								'ANY'	=> esc_html__( 'ANY (default) - The student must complete at least one of the prerequisites', 'learndash' ),
+								'ALL'	=> esc_html__( 'ALL - The student must complete all the prerequisites', 'learndash' ),
 							),
 							'default' => 'ALL',
-							'help_text' => sprintf( _x( 'Select how to compare the selected prerequisite %s.', 'pleaceholder: Course', 'learndash' ),LearnDash_Custom_Label::label_to_lower('course')),
+							'help_text' => sprintf( esc_html_x( 'Select how to compare the selected prerequisite %s.', 'pleaceholder: Course', 'learndash' ),LearnDash_Custom_Label::label_to_lower('course')),
 							'show_in_rest' => true,
 						),
 						'course_points_enabled' => array(
-							'name' => sprintf( _x( 'Enable %s Points', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( 'Enable %s Points', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Leave this field unchecked if points not used.', 'learndash' ),
+							'help_text' => esc_html__( 'Leave this field unchecked if points not used.', 'learndash' ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -1083,59 +1111,59 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							)
 						),
 						'course_points' => array(
-							'name' => __( 'Course Points', 'learndash' ),
+							'name' => sprintf( esc_html_x( '%s Points', 'Course Points', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'number',
 							'step' => 'any',
 							'min' => '0',
-							'help_text' => sprintf( _x( 'Enter the number of points a user will receive for this %s.', 'placeholder: course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Enter the number of points a user will receive for this %s.', 'placeholder: course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 						),
 						'course_points_access' => array(
-							'name' => __( 'Course Points Access', 'learndash' ),
+							'name' => sprintf( esc_html_x( '%s Points Access', 'Course Points Access', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'number',
 							'step' => 'any',
 							'min' => '0',
-							'help_text' => sprintf( _x( 'Enter the number of points a user must have to access this %s.', 'placeholder: course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Enter the number of points a user must have to access this %s.', 'placeholder: course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 						),
 						'course_disable_lesson_progression' => array(
-							'name' => sprintf( _x( 'Disable %s Progression', 'Disable Lesson Progression Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( 'Disable %s Progression', 'Disable Lesson Progression Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'checkbox',
 							'default' => 0,
-							'help_text' => sprintf( _x( 'Disable the feature that allows attempting %s only in allowed order.', 'Disable the feature that allows attempting lessons only in allowed order.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons') ), 
+							'help_text' => sprintf( esc_html_x( 'Disable the feature that allows attempting %s only in allowed order.', 'Disable the feature that allows attempting lessons only in allowed order.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lessons') ), 
 							'show_in_rest' => true,
 						),
 						'expire_access' => array(
-							'name' => __( 'Expire Access', 'learndash' ),
+							'name' => esc_html__( 'Expire Access', 'learndash' ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Leave this field unchecked if access never expires.', 'learndash' ),
+							'help_text' => esc_html__( 'Leave this field unchecked if access never expires.', 'learndash' ),
 							'show_in_rest' => true,
 						),
 						'expire_access_days' => array(
-							'name' => __( 'Expire Access After (days)', 'learndash' ),
+							'name' => esc_html__( 'Expire Access After (days)', 'learndash' ),
 							'type' => 'number',
 							'min' => '0',
-							'help_text' => sprintf( _x( 'Enter the number of days a user has access to this %s.', 'Enter the number of days a user has access to this course.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Enter the number of days a user has access to this %s.', 'Enter the number of days a user has access to this course.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 						),
 						'expire_access_delete_progress' => array(
-							'name' => sprintf( _x( 'Delete %s and %s Data After Expiration', 'Delete Course and Quiz Data After Expiration Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+							'name' => sprintf( esc_html_x( 'Delete %1$s and %2$s Data After Expiration', 'Delete Course and Quiz Data After Expiration Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 							'type' => 'checkbox',
-							'help_text' => sprintf( _x( 'Select this option if you want the user\'s %s progress to be deleted when their access expires.', 'Select this option if you want the user\'s course progress to be deleted when their access expires.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( "Select this option if you want the user's %s progress to be deleted when their access expires.", 'placeholder: course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'show_in_rest' => true,
 						),
 						'course_disable_content_table' => array(
-							'name' => sprintf( _x( 'Hide %s Content Table', 'Hide Course Content Table Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'name' => sprintf( esc_html_x( 'Hide %s Content Table', 'Hide Course Content Table Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'type' => 'checkbox',
 							'default' => 0,
-							'help_text' => sprintf( _x( 'Hide %s Content table when user is not enrolled.', 'Hide Course Content table when user is not enrolled.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Hide %s Content table when user is not enrolled.', 'Hide Course Content table when user is not enrolled.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'show_in_rest' => true,
 						),
 						
 						'certificate' => array( 
-							'name' => __( 'Associated Certificate', 'learndash' ), 
+							'name' => esc_html__( 'Associated Certificate', 'learndash' ), 
 							'type' => 'select', 
-							'help_text' => sprintf( _x( 'Select a certificate to be awarded upon %s completion (optional).', 'Select a certificate to be awarded upon course completion (optional).', 'learndash' ), LearnDash_Custom_Label::label_to_lower('course') ), 
+							'help_text' => sprintf( esc_html_x( 'Select a certificate to be awarded upon %s completion (optional).', 'Select a certificate to be awarded upon course completion (optional).', 'learndash' ), LearnDash_Custom_Label::label_to_lower('course') ), 
 							'default' => '',
 							'show_in_rest' => true,
 						),
@@ -1146,9 +1174,8 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					'slug_name' => LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_Permalinks', 'lessons' ),
 					'post_type' => 'sfwd-lessons',
 					'template_redirect' => true,
-					 'taxonomies' => $lesson_taxonomies, //array( 'courses' => __( 'Manage Course Associations', 'learndash' ) ),
+					 'taxonomies' => $lesson_taxonomies,
 					'cpt_options' => array( 
-						'show_in_nav_menus' => false,
 						'has_archive' => false, 
 						'supports' => array( 'title', 'thumbnail', 'editor', 'page-attributes' , 'author', 'comments', 'revisions'), 
 						'labels' => $lesson_labels , 
@@ -1157,12 +1184,12 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						'capabilities' => $course_capabilities, 
 						'map_meta_cap' => true,
 					),
-					'options_page_title' => sprintf( _x( '%s Options', 'Lesson Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+					'options_page_title' => sprintf( esc_html_x( '%s Options', 'Lesson Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 					'fields' => array(
 						'lesson_materials' => array(
-							'name' => sprintf( _x( '%s Materials', 'Lesson Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( '%s Materials', 'Lesson Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'textarea',
-							'help_text' => sprintf( _x( 'Options for %s materials', 'Options for lesson materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'help_text' => sprintf( esc_html_x( 'Options for %s materials', 'Options for lesson materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -1171,41 +1198,41 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							)
 						),
 						'course' => array( 
-							'name' => sprintf( _x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'name' => sprintf( esc_html_x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'type' => 'select', 
 							'lazy_load'	=> true,
-							'help_text' => sprintf( _x( 'Associate this %s with a %s.', 'Associate this lesson with a course.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+							'help_text' => sprintf( esc_html_x( 'Associate this %1$s with a %2$s.', 'Associate this lesson with a course.', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 							'default' => '' , 
 							'required' => true,
 							//'initial_options' => $this->select_a_course( 'sfwd-lessons' ), // Move to lesson_display_settings
 							//'show_in_rest' => true,
 						),
 						'forced_lesson_time' => array( 
-							'name' => sprintf( _x( 'Forced %s Timer', 'Forced Lesson Timer Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'name' => sprintf( esc_html_x( 'Forced %s Timer', 'Forced Lesson Timer Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'Minimum time a user has to spend on %s page before it can be marked complete. Examples: 40 (for 40 seconds), 20s, 45sec, 2m 30s, 2min 30sec, 1h 5m 10s, 1hr 5min 10sec', 'Minimum time a user has to spend on Lesson page Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Minimum time a user has to spend on %s page before it can be marked complete. Examples: 40 (for 40 seconds), 20s, 45sec, 2m 30s, 2min 30sec, 1h 5m 10s, 1hr 5min 10sec', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						'lesson_assignment_upload' => array( 
-							'name' => __( 'Upload Assignment', 'learndash' ), 
+							'name' => esc_html__( 'Upload Assignment', 'learndash' ), 
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want to make it mandatory to upload assignment', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to make it mandatory to upload assignment', 'learndash' ), 
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'auto_approve_assignment' => array( 
-							'name' => __( 'Auto Approve Assignment', 'learndash' ), 
+							'name' => esc_html__( 'Auto Approve Assignment', 'learndash' ), 
 							'type' => 'checkbox',
-							'help_text' => __( 'Check this if you want to auto-approve the uploaded assignment', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to auto-approve the uploaded assignment', 'learndash' ), 
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'assignment_upload_limit_count' => array( 
-							'name' => __( 'Limit number of uploaded files', 'learndash' ), 
+							'name' => esc_html__( 'Limit number of uploaded files', 'learndash' ), 
 							'type' => 'number', 
-							'placeholder' => __('Default is 1', 'learndash' ),
-							'help_text' => __( 'Enter the maximum number of assignment uploads allowed. Default is 1. Use 0 to unlimited.', 'learndash' ), 
+							'placeholder' => esc_html__('Default is 1', 'learndash' ),
+							'help_text' => esc_html__( 'Enter the maximum number of assignment uploads allowed. Default is 1. Use 0 to unlimited.', 'learndash' ), 
 							'default' => '1',
 							'show_in_rest' => true,
 							'class' => 'small-text',
@@ -1213,65 +1240,65 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							'show_in_rest' => true,
 						),
 						'lesson_assignment_deletion_enabled' => array(
-							'name' => __( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
+							'name' => esc_html__( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
+							'help_text' => esc_html__( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						
 						'lesson_assignment_points_enabled' => array(
-							'name' => __( 'Award Points for Assignment', 'learndash' ),
+							'name' => esc_html__( 'Award Points for Assignment', 'learndash' ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Allow this assignment to be assigned points when it is approved.', 'learndash' ),
+							'help_text' => esc_html__( 'Allow this assignment to be assigned points when it is approved.', 'learndash' ),
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'lesson_assignment_points_amount' => array(
-							'name' => __( 'Set Number of Points for Assignment', 'learndash' ),
+							'name' => esc_html__( 'Set Number of Points for Assignment', 'learndash' ),
 							'type' => 'number',
 							'min' => 0,
-							'help_text' => __( 'Assign the max amount of points someone can earn for this assignment.', 'learndash' ),
+							'help_text' => esc_html__( 'Assign the max amount of points someone can earn for this assignment.', 'learndash' ),
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'assignment_upload_limit_extensions' => array( 
-							'name' => __( 'Allowed File Extensions', 'learndash' ), 
+							'name' => esc_html__( 'Allowed File Extensions', 'learndash' ), 
 							'type' => 'text', 
-							'placeholder' => __('Example: pdf,xls,zip', 'learndash' ),
-							'help_text' => __( 'Enter comma-separated list of allowed file extensions: pdf,xls,zip or leave blank for any.', 'learndash' ), 
+							'placeholder' => esc_html__('Example: pdf, xls, zip', 'learndash' ),
+							'help_text' => esc_html__( 'Enter comma-separated list of allowed file extensions: pdf, xls, zip or leave blank for any.', 'learndash' ), 
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						'assignment_upload_limit_size' => array( 
-							'name' => __( 'Allowed File Size', 'learndash' ), 
+							'name' => esc_html__( 'Allowed File Size', 'learndash' ), 
 							'type' => 'text', 
-							'placeholder' => sprintf( _x('Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash'), ini_get('upload_max_filesize') ),
-							'help_text' => sprintf( _x( 'Enter maximim file upload size. Example: 100KB, 2M, 2MB, 1G. Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  ini_get('upload_max_filesize') ),
+							'placeholder' => sprintf( esc_html_x('Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash'), ini_get('upload_max_filesize') ),
+							'help_text' => sprintf( esc_html_x( 'Enter maximim file upload size. Example: 100KB, 2M, 2MB, 1G. Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  ini_get('upload_max_filesize') ),
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						
 						'sample_lesson' => array( 
-							'name' => sprintf( _x( 'Sample %s', 'Sample Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'name' => sprintf( esc_html_x( 'Sample %s', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
 							'type' => 'checkbox', 
-							'help_text' => sprintf( _x( 'Check this if you want this %s and all its %s to be available for free.', 'Check this if you want this lesson and all its topics to be available for free.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lesson'), LearnDash_Custom_Label::label_to_lower('topics') ),
+							'help_text' => sprintf( esc_html_x( 'Check this if you want this %1$s and all its %2$s to be available for free.', 'Check this if you want this lesson and all its topics to be available for free.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lesson'), LearnDash_Custom_Label::label_to_lower('topics') ),
 							'default' => 0,
 						),
 						'visible_after' => array( 
-							'name' => sprintf( _x( 'Make %s visible X Days After Sign-up', 'Make Lesson Visible X Days After Sign-up', 'learndash' ), LearnDash_Custom_Label::get_label('lesson') ), 
+							'name' => sprintf( esc_html_x( 'Make %s visible X Days After Sign-up', 'Make Lesson Visible X Days After Sign-up', 'learndash' ), LearnDash_Custom_Label::get_label('lesson') ), 
 							'type' => 'number', 
 							'class' => 'small-text',
 							'min' => '0',
-							'help_text' => sprintf( _x( 'Make %s visible ____ days after sign-up', 'Make lesson visible ____ days after sign-up', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'help_text' => sprintf( esc_html_x( 'Make %s visible ____ days after sign-up', 'Make lesson visible ____ days after sign-up', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'default' => 0,
 							'show_in_rest' => false,
 						),
 						'visible_after_specific_date' => array( 
-							'name' => sprintf( _x( 'Make %s Visible on Specific Date', 'Make Lesson Visible on Specific Date', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+							'name' => sprintf( esc_html_x( 'Make %s Visible on Specific Date', 'Make Lesson Visible on Specific Date', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 							'type' => 'wp_date_selector', 
 							'class' => 'learndash-datepicker-field',
-							'help_text' => sprintf( _x( 'Set the date that you would like this %s to become available.', 'Set the date that you would like this lesson to become available.','learndash' ), LearnDash_Custom_Label::label_to_lower('lesson') ), 
+							'help_text' => sprintf( esc_html_x( 'Set the date that you would like this %s to become available.', 'Set the date that you would like this lesson to become available.','learndash' ), LearnDash_Custom_Label::label_to_lower('lesson') ), 
 							'show_in_rest' => false,
 						),
 					),
@@ -1281,46 +1308,45 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					/*
 					'default_options' => array(
 						'orderby' => array(
-							'name' => __( 'Sort By', 'learndash' ),
+							'name' => esc_html__( 'Sort By', 'learndash' ),
 							'type' => 'select',
 							'initial_options' => array(	
-								''		=> __( 'Select a choice...', 'learndash' ),
-								'title'	=> __( 'Title', 'learndash' ),
-								'date'	=> __( 'Date', 'learndash' ),
-								'menu_order' => __( 'Menu Order', 'learndash' ),
+								''		=> esc_html__( 'Select a choice...', 'learndash' ),
+								'title'	=> esc_html__( 'Title', 'learndash' ),
+								'date'	=> esc_html__( 'Date', 'learndash' ),
+								'menu_order' => esc_html__( 'Menu Order', 'learndash' ),
 							),
 							'default' => 'date',
-							'help_text' => __( 'Choose the sort order.', 'learndash' ),
+							'help_text' => esc_html__( 'Choose the sort order.', 'learndash' ),
 						),
 						'order' => array(
-							'name' => __( 'Sort Direction', 'learndash' ),
+							'name' => esc_html__( 'Sort Direction', 'learndash' ),
 							'type' => 'select',
 							'initial_options' => array(	
-								''		=> __( 'Select a choice...', 'learndash' ),
-								'ASC'	=> __( 'Ascending', 'learndash' ),
-								'DESC'	=> __( 'Descending', 'learndash' ),
+								''		=> esc_html__( 'Select a choice...', 'learndash' ),
+								'ASC'	=> esc_html__( 'Ascending', 'learndash' ),
+								'DESC'	=> esc_html__( 'Descending', 'learndash' ),
 							),
 							'default' => 'DESC',
-							'help_text' => __( 'Choose the sort order.', 'learndash' ),
+							'help_text' => esc_html__( 'Choose the sort order.', 'learndash' ),
 						),
 						'posts_per_page' => array(
-							'name' => __( 'Posts Per Page', 'learndash' ),
+							'name' => esc_html__( 'Posts Per Page', 'learndash' ),
 							'type' => 'text',
-							'help_text' => __( 'Enter the number of posts to display per page.', 'learndash' ),
+							'help_text' => esc_html__( 'Enter the number of posts to display per page.', 'learndash' ),
 							'default' => $posts_per_page,
 						),
 					)
 					*/
 				),
 				'sfwd-topic' => array(
-					'plugin_name' => sprintf( _x( '%s %s', 'Lesson Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'plugin_name' => sprintf( esc_html_x( '%s %s', 'Lesson Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 					'slug_name' => LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_Permalinks', 'topics' ),
 					'post_type' => 'sfwd-topic',
 					'template_redirect' => true,
-					'taxonomies' => $topic_taxonomies, //array( 'courses' => __( 'Manage Course Associations', 'learndash' ) ),
+					'taxonomies' => $topic_taxonomies, //array( 'courses' => esc_html__( 'Manage Course Associations', 'learndash' ) ),
 					'cpt_options' => array( 
 						'supports' => array( 'title', 'thumbnail', 'editor', 'page-attributes' , 'author', 'comments', 'revisions'),
-						'show_in_nav_menus' => false,
 						'has_archive' => false, 
 						'labels' => $lesson_topic_labels, 
 						'capability_type' => 'course', 
@@ -1329,12 +1355,12 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						'map_meta_cap' => true,
 						//'taxonomies' => array( 'post_tag'),
 					),
-					'options_page_title' => sprintf( _x( '%s %s Options', 'Lesson Topic Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'options_page_title' => sprintf( esc_html_x( '%s %s Options', 'Lesson Topic Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 					'fields' => array(
 						'topic_materials' => array(
-							'name' => sprintf( _x( '%s Materials', 'Topic Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+							'name' => sprintf( esc_html_x( '%s Materials', 'Topic Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 							'type' => 'textarea',
-							'help_text' => sprintf( _x( 'Options for %s materials', 'Options for topic materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+							'help_text' => sprintf( esc_html_x( 'Options for %s materials', 'Options for topic materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -1344,122 +1370,122 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						),
 						
 						'course' => array( 
-							'name' => sprintf( _x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'name' => sprintf( esc_html_x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'type' => 'select', 
 							'lazy_load'	=> true,
-							'help_text' => sprintf( _x( 'Associate this %s with a %s.', 'placeholders: topic, course', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Associate this %s with a %s.', 'placeholders: topic, course', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'default' => '', 
 							//'initial_options' => $this->select_a_course( 'sfwd-topic' ),	// Move to topic_display_settings
 							'show_in_rest' => false,
 						),
 						'lesson' => array( 
-							'name' => sprintf( _x( 'Associated %s', 'Associated Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'name' => sprintf( esc_html_x( 'Associated %s', 'Associated Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
 							'type' => 'select', 
 							'lazy_load'	=> true,
-							'help_text' => sprintf( _x( 'Associate this %s with a %s.', 'Associate this topic with a lesson.', 'learndash' ), LearnDash_Custom_Label::get_label('topic'), LearnDash_Custom_Label::get_label('lesson') ),
+							'help_text' => sprintf( esc_html_x( 'Associate this %s with a %s.', 'Associate this topic with a lesson.', 'learndash' ), LearnDash_Custom_Label::get_label('topic'), LearnDash_Custom_Label::get_label('lesson') ),
 							'default' => '' , 
 							//'initial_options' => $this->select_a_lesson(), // // Move to topic_display_settings
 							'show_in_rest' => false,
 						),
 						'forced_lesson_time' => array( 
-							'name' => sprintf( _x( 'Forced %s Timer', 'Forced Topic Timer Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
+							'name' => sprintf( esc_html_x( 'Forced %s Timer', 'Forced Topic Timer Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'Minimum time a user has to spend on %s page before it can be marked complete. Examples: 40 (for 40 seconds), 20s, 45sec, 2m 30s, 2min 30sec, 1h 5m 10s, 1hr 5min 10sec', 'Minimum time a user has to spend on Topic page Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
+							'help_text' => sprintf( esc_html_x( 'Minimum time a user has to spend on %s page before it can be marked complete. Examples: 40 (for 40 seconds), 20s, 45sec, 2m 30s, 2min 30sec, 1h 5m 10s, 1hr 5min 10sec', 'Minimum time a user has to spend on Topic page Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ), 
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						'lesson_assignment_upload' => array( 
-							'name' => __( 'Upload Assignment', 'learndash' ), 
+							'name' => esc_html__( 'Upload Assignment', 'learndash' ), 
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want to make it mandatory to upload assignment', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to make it mandatory to upload assignment', 'learndash' ), 
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'auto_approve_assignment' => array( 
-							'name' => __( 'Auto Approve Assignment', 'learndash' ), 
+							'name' => esc_html__( 'Auto Approve Assignment', 'learndash' ), 
 							'type' => 'checkbox', 
-							'help_text' => __( 'Check this if you want to auto-approve the uploaded assignment', 'learndash' ), 
+							'help_text' => esc_html__( 'Check this if you want to auto-approve the uploaded assignment', 'learndash' ), 
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'assignment_upload_limit_count' => array( 
-							'name' => __( 'Limit number of uploaded files', 'learndash' ), 
+							'name' => esc_html__( 'Limit number of uploaded files', 'learndash' ), 
 							'type' => 'number', 
-							'placeholder' => __('Default is 1', 'learndash' ),
-							'help_text' => __( 'Enter the maximum number of assignment uploads allowed. Default is 1. Use 0 to unlimited.', 'learndash' ), 
+							'placeholder' => esc_html__('Default is 1', 'learndash' ),
+							'help_text' => esc_html__( 'Enter the maximum number of assignment uploads allowed. Default is 1. Use 0 to unlimited.', 'learndash' ), 
 							'default' => '1',
 							'show_in_rest' => true,
 							'class' => 'small-text',
 							'min' => '1',
 						),
 						'lesson_assignment_deletion_enabled' => array(
-							'name' => __( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
+							'name' => esc_html__( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
+							'help_text' => esc_html__( 'Allow Student to Delete own Assignment(s)', 'learndash' ),
 							'default' => 0,
 						),
 						
 						'lesson_assignment_points_enabled' => array(
-							'name' => __( 'Award Points for Assignment', 'learndash' ),
+							'name' => esc_html__( 'Award Points for Assignment', 'learndash' ),
 							'type' => 'checkbox',
-							'help_text' => __( 'Allow this assignment to be assigned points when it is approved.', 'learndash' ),
+							'help_text' => esc_html__( 'Allow this assignment to be assigned points when it is approved.', 'learndash' ),
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						'lesson_assignment_points_amount' => array(
-							'name' => __( 'Set Number of Points for Assignment', 'learndash' ),
+							'name' => esc_html__( 'Set Number of Points for Assignment', 'learndash' ),
 							'type' => 'number',
 							'min' => 0,
-							'help_text' => __( 'Assign the max amount of points someone can earn for this assignment.', 'learndash' ),
+							'help_text' => esc_html__( 'Assign the max amount of points someone can earn for this assignment.', 'learndash' ),
 							'default' => 0,
 							'show_in_rest' => true,
 						),
 						
 						'assignment_upload_limit_extensions' => array( 
-							'name' => __( 'Allowed File Extensions', 'learndash' ), 
+							'name' => esc_html__( 'Allowed File Extensions', 'learndash' ), 
 							'type' => 'text', 
-							'placeholder' => __('Example: pdf,xls,zip', 'learndash' ),
-							'help_text' => __( 'Enter comma-separated list of allowed file extensions: pdf,xls,zip or leave blank for any.', 'learndash' ), 
+							'placeholder' => esc_html__('Example: pdf,xls,zip', 'learndash' ),
+							'help_text' => esc_html__( 'Enter comma-separated list of allowed file extensions: pdf,xls,zip or leave blank for any.', 'learndash' ), 
 							'default' => '',
 							'show_in_rest' => true,
 						),
 						'assignment_upload_limit_size' => array( 
-							'name' => __( 'Allowed File Size', 'learndash' ), 
+							'name' => esc_html__( 'Allowed File Size', 'learndash' ), 
 							'type' => 'text', 
-							'placeholder' => sprintf( _x('Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash'), ini_get('upload_max_filesize') ),
-							'help_text' => sprintf( _x( 'Enter maximim file upload size. Example: 100KB, 2M, 2MB, 1G. Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  ini_get('upload_max_filesize') ),
+							'placeholder' => sprintf( esc_html_x('Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash'), ini_get('upload_max_filesize') ),
+							'help_text' => sprintf( esc_html_x( 'Enter maximim file upload size. Example: 100KB, 2M, 2MB, 1G. Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  ini_get('upload_max_filesize') ),
 							'default' => '',
 							'show_in_rest' => true,
 						),
 
 						// 'visible_after' => array( 
-						// 	'name' => __( 'Make lesson visible X days after sign-up', 'learndash' ), 
+						// 	'name' => esc_html__( 'Make lesson visible X days after sign-up', 'learndash' ), 
 						// 	'type' => 'text', 
-						// 	'help_text' => __( 'Make lesson visible ____ days after sign-up', 'learndash' ), 
+						// 	'help_text' => esc_html__( 'Make lesson visible ____ days after sign-up', 'learndash' ), 
 						// 	'default' => 0,
 						// ),
 					),
 					'default_options' => array(
 						'orderby' => array(
-							'name' => __( 'Sort By', 'learndash' ),
+							'name' => esc_html__( 'Sort By', 'learndash' ),
 							'type' => 'select',
-							'initial_options' => array(	''		=> __( 'Select a choice...', 'learndash' ),
-								'title'	=> __( 'Title', 'learndash' ),
-								'date'	=> __( 'Date', 'learndash' ),
-								'menu_order' => __( 'Menu Order', 'learndash' ),
+							'initial_options' => array(	''		=> esc_html__( 'Select a choice...', 'learndash' ),
+								'title'	=> esc_html__( 'Title', 'learndash' ),
+								'date'	=> esc_html__( 'Date', 'learndash' ),
+								'menu_order' => esc_html__( 'Menu Order', 'learndash' ),
 							),
 							'default' => 'date',
-							'help_text' => __( 'Choose the sort order.', 'learndash' ),
+							'help_text' => esc_html__( 'Choose the sort order.', 'learndash' ),
 							),
 						'order' => array(
-							'name' => __( 'Sort Direction', 'learndash' ),
+							'name' => esc_html__( 'Sort Direction', 'learndash' ),
 							'type' => 'select',
-							'initial_options' => array(	''		=> __( 'Select a choice...', 'learndash' ),
-									'ASC'	=> __( 'Ascending', 'learndash' ),
-									'DESC'	=> __( 'Descending', 'learndash' ),
+							'initial_options' => array(	''		=> esc_html__( 'Select a choice...', 'learndash' ),
+									'ASC'	=> esc_html__( 'Ascending', 'learndash' ),
+									'DESC'	=> esc_html__( 'Descending', 'learndash' ),
 							),
 							'default' => 'DESC',
-							'help_text' => __( 'Choose the sort order.', 'learndash' ),
+							'help_text' => esc_html__( 'Choose the sort order.', 'learndash' ),
 						),
 					),
 				),
@@ -1475,19 +1501,18 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					'cpt_options' => array(	
 						'hierarchical' => false, 
 						'supports' => array( 'title', 'thumbnail', 'editor' , 'author', 'page-attributes' ,'comments', 'revisions' ), 
-						'show_in_nav_menus' => false,
 						'labels' => $quiz_labels, 
 						'capability_type' => 'course', 
 						'exclude_from_search' => true, 
 						'capabilities' => $course_capabilities, 
 						'map_meta_cap' => true
 					),
-					'options_page_title' => sprintf( _x( '%s Settings', 'Quiz Settings Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+					'options_page_title' => sprintf( esc_html_x( '%s Settings', 'Quiz Settings Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 					'fields' => array(
 						'quiz_materials' => array(
-							'name' => sprintf( _x( '%s Materials', 'Quiz Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+							'name' => sprintf( esc_html_x( '%s Materials', 'Quiz Materials Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 							'type' => 'textarea',
-							'help_text' => sprintf( _x( 'Options for %s materials', 'Options for quiz materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+							'help_text' => sprintf( esc_html_x( 'Options for %s materials', 'Options for quiz materials', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 							'show_in_rest' => true,
 							'rest_args' => array(
 								'schema' => array(
@@ -1497,53 +1522,53 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						),
 						
 						'repeats' => array( 
-							'name' => __( 'Repeats', 'learndash' ), 
+							'name' => esc_html__( 'Repeats', 'learndash' ), 
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'Number of repeats allowed for %s. Blank = unlimited attempts. 0 = 1 attempt, 1 = 2 attemtps, etc.', 'Number of repeats allowed for quiz', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
+							'help_text' => sprintf( esc_html_x( 'Number of repeats allowed for %s. Blank = unlimited attempts. 0 = 1 attempt, 1 = 2 attemtps, etc.', 'Number of repeats allowed for quiz', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
 							'default' => '',
 						),
 						'threshold' => array( 
-							'name' => __( 'Certificate Threshold', 'learndash' ), 
+							'name' => esc_html__( 'Certificate Threshold', 'learndash' ), 
 							'type' => 'text', 
-							'help_text' => __( 'Minimum score required to award a certificate, between 0 and 1 where 1 = 100%.', 'learndash' ), 
+							'help_text' => esc_html__( 'Minimum score required to award a certificate, between 0 and 1 where 1 = 100%.', 'learndash' ), 
 							'default' => '0.8',
 						),
 						'passingpercentage' => array( 
-							'name' => __( 'Passing Percentage', 'learndash' ), 
+							'name' => esc_html__( 'Passing Percentage', 'learndash' ), 
 							'type' => 'text', 
-							'help_text' => sprintf( _x( 'Passing percentage required to pass the %s (number only). e.g. 80 for 80%%.', 'Passing percentage required to pass the quiz (number only). e.g. 80 for 80%.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
+							'help_text' => sprintf( esc_html_x( 'Passing percentage required to pass the %s (number only). e.g. 80 for 80%%.', 'Passing percentage required to pass the quiz (number only). e.g. 80 for 80%.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
 							'default' => '80',
 						),
 						'course' => array( 
-							'name' => sprintf( _x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
+							'name' => sprintf( esc_html_x( 'Associated %s', 'Associated Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ), 
 							'type' => 'select', 
 							'lazy_load'	=> true,
-							'help_text' => sprintf( _x( 'Associate this %s with a %s.', 'Associate this %s with a course.', 'learndash' ), LearnDash_Custom_Label::get_label('quiz'), LearnDash_Custom_Label::get_label('course') ),
+							'help_text' => sprintf( esc_html_x( 'Associate this %s with a %s.', 'Associate this %s with a course.', 'learndash' ), LearnDash_Custom_Label::get_label('quiz'), LearnDash_Custom_Label::get_label('course') ),
 							'default' => '', 
 							//'initial_options' => $this->select_a_course( 'sfwd-quiz' ), // Move to quiz_display_settings
 						),
 						'lesson' => array( 
-							'name' => sprintf( _x( 'Associated %s', 'Associated Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
+							'name' => sprintf( esc_html_x( 'Associated %s', 'Associated Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ), 
 							'type' => 'select', 
-							'help_text' => sprintf( _x( 'Associate this %s with a %s.', 'Associate this quiz with a lesson.', 'learndash' ), LearnDash_Custom_Label::get_label('quiz'), LearnDash_Custom_Label::get_label('lesson') ),
+							'help_text' => sprintf( esc_html_x( 'Associate this %s with a %s.', 'Associate this quiz with a lesson.', 'learndash' ), LearnDash_Custom_Label::get_label('quiz'), LearnDash_Custom_Label::get_label('lesson') ),
 							'default' => '', 
 						),
 						'certificate' => array( 
-							'name' => __( 'Associated Certificate', 'learndash' ), 
+							'name' => esc_html__( 'Associated Certificate', 'learndash' ), 
 							'type' => 'select', 
-							'help_text' => sprintf( _x( 'Optionally associate a %s with a certificate.', 'Optionally associate a quiz with a certificate.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
+							'help_text' => sprintf( esc_html_x( 'Optionally associate a %s with a certificate.', 'Optionally associate a quiz with a certificate.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') ),
 							'default' => '',
 						),
 						'quiz_pro' => array( 
-							'name' => __( 'Associated Settings', 'learndash' ), 
+							'name' => esc_html__( 'Associated Settings', 'learndash' ), 
 							'type' => 'select', 
-							'help_text' => sprintf( _x( 'If you imported a %s, use this field to select it. Otherwise, create new settings below. After saving or publishing, you will be able to add questions.', 'If you imported a quiz, use this field to select it. Otherwise, create new settings below. After saving or publishing, you will be able to add questions.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') )  . '<a style="display:none" id="advanced_quiz_preview" class="wpProQuiz_prview" href="#">'.__( 'Preview', 'learndash' ).'</a>',
-							//'initial_options' => ( array( 0 => __( '-- Select Settings --', 'learndash' ) ) + LD_QuizPro::get_quiz_list() ), // Move to quiz_display_settings
+							'help_text' => sprintf( esc_html_x( 'If you imported a %s, use this field to select it. Otherwise, create new settings below. After saving or publishing, you will be able to add questions.', 'If you imported a quiz, use this field to select it. Otherwise, create new settings below. After saving or publishing, you will be able to add questions.', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz') )  . '<a style="display:none" id="advanced_quiz_preview" class="wpProQuiz_prview" href="#">'.esc_html__( 'Preview', 'learndash' ).'</a>',
+							//'initial_options' => ( array( 0 => esc_html__( '-- Select Settings --', 'learndash' ) ) + LD_QuizPro::get_quiz_list() ), // Move to quiz_display_settings
 							'default' => '',
 						),
 						/*
 						'quiz_pro_html' => array(
-							'name' => sprintf( _x( '%s Options', 'Quiz Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+							'name' => sprintf( esc_html_x( '%s Options', 'Quiz Options Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 							'type' => 'html',
 							'help_text' => '',
 							'label' => 'none',
@@ -1556,7 +1581,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				),
 				
 				/*	array(
-					  'plugin_name' => __( 'Assignment', 'learndash' ),
+					  'plugin_name' => esc_html__( 'Assignment', 'learndash' ),
 					  'slug_name' => 'assignment',
 					  'post_type' => 'sfwd-assignment',
 					  'template_redirect' => true,
@@ -1576,12 +1601,12 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			);
 
 			$this->post_args['sfwd-certificates'] = array(
-				'plugin_name' => __( 'Certificates', 'learndash' ),
+				'plugin_name' => esc_html__( 'Certificates', 'learndash' ),
 				'slug_name' => 'certificates',
 				'post_type' => 'sfwd-certificates',
 				'template_redirect' => false,
 				'fields' => array(),
-				'options_page_title' => __( 'Certificates Options', 'learndash' ),
+				'options_page_title' => esc_html__( 'Certificates Options', 'learndash' ),
 				'default_options' => $cert_defaults,
 				'cpt_options' => array( 
 					'exclude_from_search' => true, 
@@ -1597,11 +1622,11 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 			if ( learndash_is_admin_user( ) ) {
 				$this->post_args['sfwd-transactions'] = array(
-					'plugin_name' => __( 'Transactions', 'learndash' ),
+					'plugin_name' => esc_html__( 'Transactions', 'learndash' ),
 					'slug_name' => 'transactions',
 					'post_type' => 'sfwd-transactions',
 					'template_redirect' => false,
-					'options_page_title' => __( 'Transactions Options', 'learndash' ),
+					'options_page_title' => esc_html__( 'Transactions Options', 'learndash' ),
 					'cpt_options' => array( 
 						'supports' => array ( 'title', 'custom-fields' ), 
 						'exclude_from_search' => true, 
@@ -1615,12 +1640,19 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						null => array( 
 							'type' => 'html', 
 							'save' => false, 
-							'default' => __( 'Click the Export button below to export the transaction list.', 'learndash' ),
+							'default' => esc_html__( 'Click the Export button below to export the transaction list.', 'learndash' ),
 						)
 					)
 				);
 
 				add_action( 'admin_init', array( $this, 'trans_export_init' ) );
+			}
+			
+			// Added in v2.5.4 to hide the lesson, topic and quiz post type from nav menu when shared steps enabed. 
+			if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) == 'yes' ) {
+				$this->post_args['sfwd-lessons']['cpt_options']['show_in_nav_menus'] = false;
+				$this->post_args['sfwd-topic']['cpt_options']['show_in_nav_menus'] = false;
+				$this->post_args['sfwd-quiz']['cpt_options']['show_in_nav_menus'] = false;
 			}
 			
 			/**
@@ -1671,60 +1703,268 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 		 * @param  int 		$user_id 	user id
 		 * @return string          		output of course information
 		 */
-		static function get_course_info( $user_id ) {
-			$courses_registered = ld_get_mycourses( $user_id );
+		static function get_course_info( $user_id, $atts = array() ) {
 
-			$usermeta = get_user_meta( $user_id, '_sfwd-course_progress', true );
-			$course_progress = empty( $usermeta ) ? array() : $usermeta;
-			//error_log('course_progress<pre>'. print_r($course_progress, true) .'</pre>');
+			$atts = shortcode_atts( 
+				apply_filters( 
+					'learndash_ld_course_list_shortcode_defaults', 
+					array(
+						'return' => false, // Set to true to return the array data nstead of calling the template for output. 
+						// This function essentially produces the output of three sections. Registered Courses, 
+						// Course Progress and Quiz Attempts. This parameters lets us control which section to 
+						// return or all.  
+						'type' => array('registered','course','quiz' ), 
+						
+						// Defaults
+						'num' => false,
+						'orderby' => 'title',
+						'order' => 'ASC',
+						 
+						// Registered Courses 
+						'registered_num' => false, 
+						'registered_show_thumbnail' => 'true',
+						'registered_orderby' => 'title',
+						'registered_order' => 'ASC',
 
-			// The course_info_shortcode.php template is driven be the $courses_registered array. 
-			// We want to make sure we show ALL the courses from both the $courses_registered and 
-			// the course_progress. Also we want to run through WP_Query so we can ensure they still 
-			// exist as valid posts AND we want to sort these alphs by title
-			$courses_registered = array_merge( $courses_registered, array_keys($course_progress));
-			if ( !empty( $courses_registered ) ) {
-				$course_total_query_args = array(
-					'post_type'			=>	'sfwd-courses',
-					'fields'			=>	'ids',
-					'nopaging'			=>	true,
-					'orderby'			=>	'title',
-					'order'				=>	'ASC',
-					'post__in'			=>	$courses_registered
-				);
+						// Course Progress
+						'progress_num' => false, 
+						'progress_orderby' => 'title',
+						'progress_order' => 'ASC', 
+						
+						// Quizzes
+						'quiz_num' => false, 
+						'quiz_orderby' => 'title',
+						'quiz_order' => 'ASC', 
+					)
+				), 
+				$atts 
+			);
+
+			if ( !empty( $atts['type'] ) ) {
+				if ( is_string( $atts['type'] ) ) {
+					$atts['type'] = explode(',', $atts['type'] );
+				}
+				$atts['type'] = array_map( 'trim', $atts['type'] );
+			}
+			
+
+			$courses_registered_all = ld_get_mycourses( $user_id );
+			$courses_registered = array();
+			$courses_registered_pager = array();
+			if ( in_array( 'registered', $atts['type'] ) ) {
+			
+				if ( empty( $atts['registered_show_thumbnail'] ) ) {
+					$atts['registered_show_thumbnail'] = 'true';
+				}
+							
+				if ( !empty( $courses_registered_all ) ) {
+					if ( $atts['registered_num'] === false ) {
+						if ( $atts['num'] === false ) {
+							$atts['registered_num'] = LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Section_General_Per_Page', 'registered_num' );
+						} else {
+							$atts['registered_num'] = intval( $atts['num'] );
+						}
+					} else {
+						$atts['registered_num'] = intval( $atts['registered_num'] );
+					}
 				
-				$course_total_query = new WP_Query( $course_total_query_args );
+					if ( ( !isset( $atts['registered_orderby'] ) ) || ( empty( $atts['registered_orderby'] ) ) ) {
+						$atts['registered_orderby'] = $atts['orderby'];
+					}
+					if ( ( !isset( $atts['registered_order'] ) ) || ( empty( $atts['registered_order'] ) ) ) {
+						$atts['registered_order'] = $atts['order'];
+					}
 				
-				if ( ( isset( $course_total_query->posts ) ) && ( !empty( $course_total_query->posts ) ) ) {
-					$courses_registered = $course_total_query->posts;
+					$courses_registered_query_args = array(
+						'post_type'			=>	'sfwd-courses',
+						'fields'			=>	'ids',
+						'orderby'			=>	$atts['registered_orderby'],
+						'order'				=>	$atts['registered_order'],
+						'post__in'			=>	$courses_registered_all
+					);
+				
+					$courses_registered_per_page = apply_filters( 'learndash_course_info_per_page', intval( $atts['registered_num'] ), 'registered', $user_id, $atts );
+					if ( intval( $courses_registered_per_page ) > 0 ) {
+						$courses_registered_query_args['posts_per_page'] = intval( $courses_registered_per_page );
+						$courses_registered_query_args['paged'] = apply_filters('learndash_course_info_paged', 1, 'registered' );
+					} else {
+						$courses_registered_query_args['nopaging'] = true;
+					}
+				
+					$courses_registered_query_args = apply_filters( 'learndash_course_info_query_args', $courses_registered_query_args, 'registered', $user_id, $atts );
+					//error_log('courses_registered_query_args<pre>'. print_r($courses_registered_query_args, true) .'</pre>');
+				
+					if ( !empty( $courses_registered_query_args ) ) {
+						$course_registered_query = new WP_Query( $courses_registered_query_args );
+						if ( ( isset( $course_registered_query->posts ) ) && ( !empty( $course_registered_query->posts ) ) ) {
+							$courses_registered = $course_registered_query->posts;
+							
+							if ( isset( $course_registered_query->query_vars['paged'] ) )
+								$courses_registered_pager['paged'] = $course_registered_query->query_vars['paged'];
+							else 
+								$courses_registered_pager['paged'] = $course_registered_query_args['paged'];
+						
+							$courses_registered_pager['total_items'] = $course_registered_query->found_posts;
+							$courses_registered_pager['total_pages'] = $course_registered_query->max_num_pages;
+						} else {
+							$courses_registered = array();
+						}
+					} else {
+						$courses_registered = array();
+					}
 				}
 			}
 
-			$usermeta = get_user_meta( $user_id, '_sfwd-quizzes', true );
-			$quizzes = empty( $usermeta ) ? false : $usermeta;
+			$course_progress = array();
+			$course_progress_pager = array();
+			
+			if ( in_array( 'course', $atts['type'] ) ) {
 
-			// We need to re-query the quiz (posts). This is partly to validate the listing. We don't
-			// want to pass old or outdated quiz items to externals. 
-			if ( !empty( $quizzes ) ) {
-				$quiz_ids = wp_list_pluck( $quizzes, 'quiz' );
+				$usermeta = get_user_meta( $user_id, '_sfwd-course_progress', true );
+				$course_progress = empty( $usermeta ) ? array() : $usermeta;
+				//error_log('course_progress<pre>'. print_r($course_progress, true) .'</pre>');
 
-				$quiz_query_args = array(
-					'post_type'			=>	'sfwd-quiz',
-					'fields'			=>	'ids',
-					'nopaging'			=>	true,
-					'post__in'			=>	$quiz_ids
-				);
+				// The course_info_shortcode.php template is driven be the $courses_registered array. 
+				// We want to make sure we show ALL the courses from both the $courses_registered and 
+				// the course_progress. Also we want to run through WP_Query so we can ensure they still 
+				// exist as valid posts AND we want to sort these alphs by title
+				//$courses_registered = array_merge( $courses_registered, array_keys( $course_progress ) );
+				if ( !empty( $course_progress ) ) {
+					if ( $atts['progress_num'] === false ) {
+						if ( $atts['num'] === false ) {
+							$atts['progress_num'] = LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Section_General_Per_Page', 'registered_num' );
+						} else {
+							$atts['progress_num'] = intval( $atts['num'] );
+						}
+					} else {
+						$atts['progress_num'] = intval( $atts['progress_num'] );
+					}
 				
-				$quiz_query = new WP_Query( $quiz_query_args );
-				if ( ( $quiz_query ) && ( !is_wp_error( $quiz_query ) ) && is_a( $quiz_query, 'WP_Query' ) ) {
-					if ( ( property_exists( $quiz_query, 'posts' ) ) && ( !empty( $quiz_query->posts ) ) ) {
-						$quizzes_tmp = array();
-						foreach( $quizzes as $idx => $quiz ) {
-							if ( in_array( $quiz['quiz'], $quiz_query->posts ) ) {
-								$quizzes_tmp[] = $quiz;
+					if ( ( !isset( $atts['progress_orderby'] ) ) || ( empty( $atts['progress_orderby'] ) ) ) {
+						$atts['progress_orderby'] = $atts['orderby'];
+					}
+					if ( ( !isset( $atts['progress_order'] ) ) || ( empty( $atts['progress_order'] ) ) ) {
+						$atts['progress_order'] = $atts['order'];
+					}
+				
+					$course_progress_ids = array_merge( $courses_registered_all, array_keys( $course_progress ) );
+					
+					$course_progress_query_args = array(
+						'post_type'			=>	'sfwd-courses',
+						'fields'			=>	'ids',
+						'orderby'			=>	$atts['progress_orderby'],
+						'order'				=>	$atts['progress_order'],
+						'post__in'			=>	$course_progress_ids
+					);
+				
+					$courses_per_page = apply_filters( 'learndash_course_info_per_page', intval( $atts['progress_num'] ), 'courses', $user_id, $atts );
+					if ( intval( $courses_per_page ) > 0 ) {
+						$course_progress_query_args['posts_per_page'] = intval( $courses_per_page );
+						$course_progress_query_args['paged'] = apply_filters('learndash_course_info_paged', 1, 'courses' );
+					} else {
+						$course_progress_query_args['nopaging'] = true;
+					}
+				
+					$course_progress_query_args = apply_filters( 'learndash_course_info_query_args', $course_progress_query_args, 'courses', $user_id, $atts );
+				
+					if ( !empty( $course_progress_query_args ) ) {
+						$course_progress_query = new WP_Query( $course_progress_query_args );
+						if ( ( isset( $course_progress_query->posts ) ) && ( !empty( $course_progress_query->posts ) ) ) {
+							$course_p = $course_progress;
+							$course_progress = array();
+							foreach( $course_progress_query->posts as $course_id ) {
+								if ( isset( $course_p[$course_id] ) ) {
+									$course_progress[$course_id] = $course_p[$course_id];
+								} else {
+									$course_progress[$course_id] = array();
+								}
+							}
+							
+							$course_progress_pager = array();
+							if ( isset( $course_progress_query->query_vars['paged'] ) )
+								$course_progress_pager['paged'] = $course_progress_query->query_vars['paged'];
+							else 
+								$course_progress_pager['paged'] = $course_progress_query_args['paged'];
+							
+							$course_progress_pager['total_items'] = $course_progress_query->found_posts;
+							$course_progress_pager['total_pages'] = $course_progress_query->max_num_pages;
+						
+							//error_log('course_registered_pager<pre>'. print_r($courses_registered_pager, true) .'</pre>');
+						}
+					} else {
+						$course_progress = array();
+						$course_progress_pager = array();
+					}
+				}
+			}
+
+			$quizzes = array();
+			$quizzes_pager = array();
+			if ( in_array( 'quiz', $atts['type'] ) ) {
+			
+				$usermeta = get_user_meta( $user_id, '_sfwd-quizzes', true );
+				$quizzes = empty( $usermeta ) ? false : $usermeta;
+
+			
+				// We need to re-query the quiz (posts). This is partly to validate the listing. We don't
+				// want to pass old or outdated quiz items to externals. 
+				if ( !empty( $quizzes ) ) {
+					
+					if ( $atts['quiz_num'] === false ) {
+						if ( $atts['num'] === false ) {
+							$atts['quiz_num'] = LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Section_General_Per_Page', 'quiz_num' );
+						} else {
+							$atts['quiz_num'] = intval( $atts['num'] );
+						}
+					} else {
+						$atts['quiz_num'] = intval( $atts['quiz_num'] );
+					}
+				
+					if ( ( !isset( $atts['quiz_orderby'] ) ) || ( empty( $atts['quiz_orderby'] ) ) ) {
+						$atts['quiz_orderby'] = $atts['orderby'];
+					}
+					if ( ( !isset( $atts['quiz_order'] ) ) || ( empty( $atts['quiz_order'] ) ) ) {
+						$atts['quiz_order'] = $atts['order'];
+					}					
+					
+					$quiz_ids = wp_list_pluck( $quizzes, 'quiz' );
+
+					$quiz_total_query_args = array(
+						'post_type'			=>	'sfwd-quiz',
+						'fields'			=>	'ids',
+						'orderby'			=>	$atts['quiz_orderby'],
+						'order'				=>	$atts['quiz_order'],
+						'nopaging'			=>	true,
+						'post__in'			=>	$quiz_ids
+					);
+				
+					$quiz_query = new WP_Query( $quiz_total_query_args );
+					if ( ( $quiz_query ) && ( !is_wp_error( $quiz_query ) ) && is_a( $quiz_query, 'WP_Query' ) ) {
+						if ( ( property_exists( $quiz_query, 'posts' ) ) && ( !empty( $quiz_query->posts ) ) ) {
+							$quizzes_tmp = array();
+							foreach( $quiz_query->posts as $quiz_id ) {
+								foreach( $quizzes as $idx => $quiz_attempt ) {
+									if ( $quiz_attempt['quiz'] == $quiz_id ) {
+										$quiz_key = $quiz_attempt['quiz'] .'-'. $quiz_attempt['time'];
+										$quizzes_tmp[$quiz_key] = $quiz_attempt;
+										unset( $quizzes[$idx] ); 
+									}
+								}
+							}
+							$quizzes = $quizzes_tmp;
+
+							$quizzes_per_page = apply_filters( 'learndash_quiz_info_per_page', $atts['quiz_num'], 'quizzes', $user_id );
+							if ( $quizzes_per_page > 0 ) {
+							
+								//$quizzes_pager = array();
+								$quizzes_pager['paged'] = apply_filters('learndash_quiz_info_paged', 1 );
+								$quizzes_pager['total_items'] = count( $quizzes );
+								$quizzes_pager['total_pages'] = ceil( count( $quizzes ) / $quizzes_per_page );
+								//error_log('quizzes_pager<pre>'. print_r($quizzes_pager, true) .'</pre>');
+							
+								$quizzes = array_slice ( $quizzes, ( $quizzes_pager['paged'] * $quizzes_per_page ) - $quizzes_per_page, $quizzes_per_page, false );
 							}
 						}
-						$quizzes = $quizzes_tmp;
 					}
 				}
 			}
@@ -1790,13 +2030,35 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				}
 			}
 
-			return SFWD_LMS::get_template('course_info_shortcode', array(
+			if ( !empty( $atts['return'] ) ) {
+				return array(
 					'user_id' => $user_id,
 					'courses_registered' => $courses_registered,
+					'courses_registered_pager' => $courses_registered_pager,
 					'course_progress' => $course_progress,
-					'quizzes' => $quizzes
-				)
-			);
+					'course_progress_pager' => $course_progress_pager,
+					'quizzes' => $quizzes,
+					'quizzes_pager' => $quizzes_pager
+				);
+			} else {
+				
+				if ( ( !empty( $pagenow ) ) && ( $pagenow == 'profile.php' ) ) { 
+					$atts['pagenow'] = $pagenow;
+					$atts['pagenow_nonce'] = wp_create_nonce( $pagenow .'-'. $user_id );
+				}
+				
+				return SFWD_LMS::get_template('course_info_shortcode', array(
+						'user_id' => $user_id,
+						'courses_registered' => $courses_registered,
+						'courses_registered_pager' => $courses_registered_pager,
+						'course_progress' => $course_progress,
+						'course_progress_pager' => $course_progress_pager,
+						'quizzes' => $quizzes,
+						'quizzes_pager' => $quizzes_pager,
+						'shortcode_atts' => $atts
+					)
+				); 
+			} 
 		}
 
 
@@ -1887,10 +2149,10 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			${'selected_'.$course_price_billing_t3} = 'selected="selected"';
 			return '<input name="course_price_billing_p3" type="text" value="'.$course_price_billing_p3.'" size="2"/> 
 					<select class="select_course_price_billing_p3" name="course_price_billing_t3">
-						<option value="D" '.$selected_D.'>'.__( 'day(s)', 'learndash' ).'</option>
-						<option value="W" '.$selected_W.'>'.__( 'week(s)', 'learndash' ).'</option>
-						<option value="M" '.$selected_M.'>'.__( 'month(s)', 'learndash' ).'</option>
-						<option value="Y" '.$selected_Y.'>'.__( 'year(s)', 'learndash' ).'</option>
+						<option value="D" '.$selected_D.'>'.esc_html__( 'day(s)', 'learndash' ).'</option>
+						<option value="W" '.$selected_W.'>'.esc_html__( 'week(s)', 'learndash' ).'</option>
+						<option value="M" '.$selected_M.'>'.esc_html__( 'month(s)', 'learndash' ).'</option>
+						<option value="Y" '.$selected_Y.'>'.esc_html__( 'year(s)', 'learndash' ).'</option>
 					</select>';
 		}
 
@@ -2046,7 +2308,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					'user_id' => $user_id, 
 					'name' => $u->display_name, 
 					'email' => $u->user_email, 
-					'status' => __( 'No attempts', 'learndash' ),
+					'status' => esc_html__( 'No attempts', 'learndash' ),
 				);
 			}
 
@@ -2070,7 +2332,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 		 * @since 2.1.0
 		 */
 		function course_export_init() {
-			//error_reporting( 0 );
+			error_reporting( 0 );
 
 			if ( ! empty( $_REQUEST['courses_export_submit'] ) && ! empty( $_REQUEST['nonce-sfwd'] ) ) {
 				set_time_limit( 0 );
@@ -2082,13 +2344,13 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				$nonce = $_REQUEST['nonce-sfwd'];
 
 				if ( ! wp_verify_nonce( $nonce, 'sfwd-nonce' ) ) { 
-					die( __( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
+					die( esc_html__( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
 				}
 
 				$content = SFWD_LMS::course_progress_data();
 
 				if ( empty( $content ) ) {
-					$content[] = array( 'status' => __( 'No attempts', 'learndash' ) );
+					$content[] = array( 'status' => esc_html__( 'No attempts', 'learndash' ) );
 				}
 
 				/**
@@ -2133,7 +2395,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$submit['courses_export_submit'] = array( 
 				'type' => 'submit',
 				'class' => 'button-primary',
-				'value' => sprintf( _x( 'Export User %s Data &raquo;', 'Export User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) 
+				'value' => sprintf( esc_html_x( 'Export User %s Data &raquo;', 'Export User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) 
 			);
 			return $submit;
 		}
@@ -2146,7 +2408,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 		 * @since 2.1.0
 		 */
 		function quiz_export_init() {
-			//error_reporting( 0 );
+			error_reporting( 0 );
 			
 			global $wpdb;
 			$current_user = wp_get_current_user();
@@ -2165,7 +2427,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 					date_default_timezone_set( $timezone_string );
 
 				if ( ! wp_verify_nonce( $_REQUEST['nonce-sfwd'], 'sfwd-nonce' ) ) { 
-					die ( __( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
+					die ( esc_html__( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
 				}
 
 				/**
@@ -2372,12 +2634,12 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 						} else {
 
-							//	$content[] = array( 'user_id' => $user_id, 'name' => $u->display_name, 'email' => $u->user_email, 'status' => __( 'No attempts', 'learndash' ) );
+							//	$content[] = array( 'user_id' => $user_id, 'name' => $u->display_name, 'email' => $u->user_email, 'status' => esc_html__( 'No attempts', 'learndash' ) );
 							$content[] = array( 
 								'user_id' => $user_id,
 								'name' => $u->display_name,
 								'email' => $u->user_email,
-								'quiz_id' => __( 'No attempts',
+								'quiz_id' => esc_html__( 'No attempts',
 								'learndash' ),
 								'quiz_title' => '',
 								'rank' => '',
@@ -2393,7 +2655,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				} // end if
 
 				if ( empty( $content ) ) {
-					$content[] = array( 'status' => __( 'No attempts', 'learndash' ) );
+					$content[] = array( 'status' => esc_html__( 'No attempts', 'learndash' ) );
 				}
 
 				 /**
@@ -2433,7 +2695,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$submit['quiz_export_submit'] = array( 
 				'type' => 'submit',
 				'class' => 'button-primary',
-				'value' => sprintf( _x( 'Export %s Data &raquo;', 'Export Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ) 
+				'value' => sprintf( esc_html_x( 'Export %s Data &raquo;', 'Export Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ) 
 			);
 			return $submit;
 		}
@@ -2458,7 +2720,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 				$nonce = $_REQUEST['nonce-sfwd'];
 
 				if ( ! wp_verify_nonce( $nonce, 'sfwd-nonce' ) ) { 
-					die ( __( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
+					die ( esc_html__( 'Security Check - If you receive this in error, log out and back in to WordPress', 'learndash' ) );
 				}
 
 				/**
@@ -2524,7 +2786,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$submit['export_submit'] = array( 
 				'type' => 'submit',
 				'class' => 'button-primary',
-				'value' => __( 'Export &raquo;', 'learndash' ) 
+				'value' => esc_html__( 'Export &raquo;', 'learndash' ) 
 			);
 
 			return $submit;
@@ -2576,7 +2838,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 				if ( ! empty( $settings["{$quiz_prefix}certificate_post"] ) ) {
 					$posts = get_posts( array( 'post_type' => 'sfwd-certificates' , 'numberposts' => -1 ) );
-					$post_array = array( '0' => __( '-- Select a Certificate --', 'learndash' ) );
+					$post_array = array( '0' => esc_html__( '-- Select a Certificate --', 'learndash' ) );
 
 					if ( ! empty( $posts ) ) {
 						foreach ( $posts as $p ) {
@@ -2626,7 +2888,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 							
 							   $query_posts = new WP_Query( $query_options );
 
-							   $post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
+							   $post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
 						   
 							   if ( ! empty( $query_posts->posts ) ) {
 								   if ( count( $query_posts->posts ) >= $query_posts->found_posts ) {
@@ -2663,7 +2925,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						if ( ( isset( $settings["{$quiz_prefix}lesson"] ) ) && ( ! empty( $settings["{$quiz_prefix}lesson"] ) ) ) {
 							if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
 							
-								$post_array = array( '0' => sprintf( _x( '-- Select a %s or %s --', 'Select a Lesson or Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ) );
+								$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s or %s --', 'Select a Lesson or Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ) );
 								$course_id = get_post_meta(get_the_id(), 'course_id', true );
 							
 								$lessons_array = $this->select_a_lesson_or_topic( $course_id );
@@ -2683,7 +2945,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 						if ( ! empty( $settings["{$quiz_prefix}certificate"] ) ) {					
 							$posts = get_posts( array( 'post_type' => 'sfwd-certificates'  , 'numberposts' => -1 ) );
-							$post_array = array( '0' => __( '-- Select a Certificate --', 'learndash' ) );
+							$post_array = array( '0' => esc_html__( '-- Select a Certificate --', 'learndash' ) );
 
 							if ( ! empty( $posts ) ) {
 								foreach ( $posts as $p ) {
@@ -2695,7 +2957,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 						}
 				
 						if ( ! empty( $settings["{$quiz_prefix}quiz_pro"] ) ) {
-							$settings["{$quiz_prefix}quiz_pro"]['initial_options'] = array( 0 => __( '-- Select Settings --', 'learndash' ) ) + LD_QuizPro::get_quiz_list();
+							$settings["{$quiz_prefix}quiz_pro"]['initial_options'] = array( 0 => esc_html__( '-- Select Settings --', 'learndash' ) ) + LD_QuizPro::get_quiz_list();
 						}
 					}
 				}
@@ -2750,7 +3012,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			$options = apply_filters( 'learndash_select_a_course', $options );
 			$posts = ld_course_list( $options );
 
-			$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
+			$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
 
 			if ( ! empty( $posts ) ) {
 				foreach ( $posts as $p ){
@@ -2842,7 +3104,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 //					if ( $include_topics == true )
 //						$topics_array = learndash_get_topic_list();
 //
-//					$post_array = array( '0' => sprintf( _x( '-- Select a %s or %s --', 'Select a Lesson or Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ) );
+//					$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s or %s --', 'Select a Lesson or Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ) );
 //					if ( ! empty( $posts ) ) {
 //						foreach ( $posts as $p ){
 //							$post_array[ $p->ID ] = $p->post_title;
@@ -2928,7 +3190,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			}
 
 			$posts = get_posts( $opt );
-			$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) );
+			$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) );
 
 			if ( ! empty( $posts ) ) {
 				foreach ( $posts as $p ) {
@@ -3063,7 +3325,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 				$query_posts = new WP_Query( $query_options );
 
-				$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
+				$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
 
 				if ( ! empty( $query_posts->posts ) ) {
 					if ( count( $query_posts->posts ) >= $query_posts->found_posts ) {
@@ -3096,7 +3358,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 			if ( ! empty( $settings["{$courses_prefix}certificate"] ) ) {
 				$posts = get_posts( array( 'post_type' => 'sfwd-certificates'  , 'numberposts' => -1) );
-				$post_array = array( '0' => __( '-- Select a Certificate --', 'learndash' ) );
+				$post_array = array( '0' => esc_html__( '-- Select a Certificate --', 'learndash' ) );
 
 				if ( ! empty( $posts ) ) {
 					foreach ( $posts as $p ) {
@@ -3160,7 +3422,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 	 				$query_posts = new WP_Query( $query_options );
 				
-	 				$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
+	 				$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
 
 	 				if ( ! empty( $query_posts->posts ) ) {
 	 					if ( count( $query_posts->posts ) >= $query_posts->found_posts ) {
@@ -3244,7 +3506,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 
 	 				$query_posts = new WP_Query( $query_options );
 				
-	 				$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
+	 				$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) );
 
 	 				if ( ! empty( $query_posts->posts ) ) {
 	 					if ( count( $query_posts->posts ) >= $query_posts->found_posts ) {
@@ -3282,7 +3544,7 @@ if ( ! class_exists( 'SFWD_LMS' ) ) {
 			if ( ( isset( $settings["{$topics_prefix}lesson"] ) ) && ( ! empty( $settings["{$topics_prefix}lesson"] ) ) ) {
 				if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
 
-	 				$post_array = array( '0' => sprintf( _x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) );
+	 				$post_array = array( '0' => sprintf( esc_html_x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) );
 					$course_id = learndash_get_course_id( get_the_id() );
 					//error_log('course_id['. $course_id .']');
 					if ( !empty( $course_id ) ) {

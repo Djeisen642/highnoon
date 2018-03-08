@@ -5,7 +5,7 @@ class WpProQuiz_Helper_ImportXml {
 	
 	public function setImportFileUpload($file) {
 		if(!is_uploaded_file($file['tmp_name'])) {
-			$this->setError(__('File was not uploaded', 'wp-pro-quiz'));
+			$this->setError(__('File was not uploaded', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 	
@@ -28,7 +28,7 @@ class WpProQuiz_Helper_ImportXml {
 		$xml = @simplexml_load_string($this->_content);
 
 		if($xml === false) {
-			$this->_error = __('XML could not be loaded.', 'wp-pro-quiz');			
+			$this->_error = esc_html__('XML could not be loaded.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);			
 			return false;
 		}
 		
@@ -41,7 +41,7 @@ class WpProQuiz_Helper_ImportXml {
 		$i = 0;
 		
 		if($xml === false) {
-			$this->_error = __('XML could not be loaded.', 'wp-pro-quiz');
+			$this->_error = esc_html__('XML could not be loaded.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 			return false;
 		}
 		

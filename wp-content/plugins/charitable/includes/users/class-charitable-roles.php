@@ -2,11 +2,12 @@
 /**
  * Roles and Capabilities for Charitable
  *
- * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Roles
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2017, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Roles
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.5.9
  */
 
 // Exit if accessed directly.
@@ -30,40 +31,38 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
 		 */
 		public function add_roles() {
 			add_role( 'campaign_manager', __( 'Campaign Manager', 'charitable' ), array(
-				'read' 						=> true,
-				'delete_posts' 				=> true,
-				'edit_posts' 				=> true,
-				'delete_published_posts' 	=> true,
-				'publish_posts' 			=> true,
-				'upload_files' 				=> true,
-				'edit_published_posts' 		=> true,
-				'read_private_pages' 		=> true,
-				'edit_private_pages' 		=> true,
-				'delete_private_pages' 		=> true,
-				'read_private_posts' 		=> true,
-				'edit_private_posts' 		=> true,
-				'delete_private_posts' 		=> true,
-				'delete_others_posts' 		=> true,
-				'delete_published_pages' 	=> true,
-				'delete_others_pages' 		=> true,
-				'delete_pages' 				=> true,
-				'publish_pages' 			=> true,
-				'edit_published_pages' 		=> true,
-				'edit_others_pages' 		=> true,
-				'edit_pages' 				=> true,
-				'edit_others_posts' 		=> true,
-				'manage_links' 				=> true,
-				'manage_categories' 		=> true,
-				'moderate_comments' 		=> true,
-				'import' 					=> true,
-				'export' 					=> true,
-				'unfiltered_html'		 	=> true,
+				'read'                   => true,
+				'delete_posts'           => true,
+				'edit_posts'             => true,
+				'delete_published_posts' => true,
+				'publish_posts'          => true,
+				'upload_files'           => true,
+				'edit_published_posts'   => true,
+				'read_private_pages'     => true,
+				'edit_private_pages'     => true,
+				'delete_private_pages'   => true,
+				'read_private_posts'     => true,
+				'edit_private_posts'     => true,
+				'delete_private_posts'   => true,
+				'delete_others_posts'    => true,
+				'delete_published_pages' => true,
+				'delete_others_pages'    => true,
+				'delete_pages'           => true,
+				'publish_pages'          => true,
+				'edit_published_pages'   => true,
+				'edit_others_pages'      => true,
+				'edit_pages'             => true,
+				'edit_others_posts'      => true,
+				'manage_links'           => true,
+				'manage_categories'      => true,
+				'moderate_comments'      => true,
+				'import'                 => true,
+				'export'                 => true,
+				'unfiltered_html'        => true,
 			) );
 
 			add_role( 'donor', __( 'Donor', 'charitable' ), array(
-				'read' 						=> true,
-				'edit_posts' 				=> false,
-				'delete_posts' 				=> false,
+				'read' => true,
 			) );
 		}
 

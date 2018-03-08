@@ -192,7 +192,7 @@ class maxButtonsPlugin
  		register_setting( 'maxbuttons_settings', 'maxbuttons_hidedescription' );
  		register_setting( 'maxbuttons_settings', 'maxbuttons_forcefa') ;
  		register_setting( 'maxbuttons_settings', 'maxbuttons_borderbox');
-		register_setting( 'maxbuttons_settings', 'maxbuttons_protocol'); 
+		register_setting( 'maxbuttons_settings', 'maxbuttons_protocol');
 	}
 
 	protected function checkbox_option($options)
@@ -255,11 +255,6 @@ class maxButtonsPlugin
 		//$submenu_function = 'maxbuttons_button';
 		$admin_pages[] = add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, $submenu_function);
 
-		// Now add the submenu page for the Export page
-		$submenu_page_title = __('MaxButtons: Social Share', 'maxbuttons');
-		$submenu_title = __('Social Share', 'maxbuttons');
-		$submenu_slug = 'maxbuttons-collections';
-		$admin_pages[] = add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, $submenu_function);
 
 		// Now add the submenu page for the Go Pro page
 		$submenu_page_title = __('MaxButtons: Upgrade to Pro', 'maxbuttons');
@@ -281,6 +276,12 @@ class maxButtonsPlugin
 		$submenu_slug = 'maxbuttons-support';
 		//$submenu_function = 'maxbuttons_support';
 		$admin_pages[] = add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $admin_capability, $submenu_slug, $submenu_function);
+
+		// Now add the submenu page for the Export page
+		$submenu_page_title = __('MaxButtons: Share Buttons', 'maxbuttons');
+		$submenu_title = __('Share Buttons', 'maxbuttons');
+		$submenu_slug = 'maxbuttons-collections';
+		$admin_pages[] = add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, $submenu_function);
 
 	}
 

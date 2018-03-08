@@ -2,6 +2,7 @@
 	<custom-types>
 		<custom-type translate="1">sfwd-courses</custom-type>
 		<custom-type translate="1">sfwd-lessons</custom-type>
+		<custom-type translate="1">sfwd-topic</custom-type>
 		<custom-type translate="1">sfwd-quiz</custom-type>
 		<custom-type translate="1">sfwd-assignment</custom-type>
 		<custom-type translate="1">sfwd-essays</custom-type>
@@ -42,7 +43,7 @@
 				</key>
 			</key>
 		</key>
-		<key name="learndash_custom_label_settings" >
+		<key name="learndash_settings_custom_labels" >
 			<key name="course" />
 			<key name="courses" />
 			<key name="lesson" />

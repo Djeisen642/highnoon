@@ -5,7 +5,7 @@
  * @package     Charitable/Classes/Charitable_Endpoints
  * @version     1.5.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2017, Studio 164a
+ * @copyright   Copyright (c) 2018, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -65,7 +65,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 		public function register( Charitable_Endpoint $endpoint ) {
 			$endpoint_id = $endpoint->get_endpoint_id();
 
-			if ( array_key_exists( $endpoint_id, $this->endpoints ) ) {
+			if ( $this->endpoint_exists( $endpoint_id ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
 					sprintf( __( 'Endpoint %s has already been registered.', 'charitable' ), $endpoint_id ),
@@ -93,7 +93,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			$endpoint = $this->sanitize_endpoint( $endpoint );
 			$default  = '';
 
-			if ( array_key_exists( $endpoint, $this->endpoints ) ) {
+			if ( $this->endpoint_exists( $endpoint ) ) {
 				$default = $this->endpoints[ $endpoint ]->get_page_url( $args );
 			}
 
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			$endpoint = $this->sanitize_endpoint( $endpoint );
 			$default  = '';
 
-			if ( array_key_exists( $endpoint, $this->endpoints ) ) {
+			if ( $this->endpoint_exists( $endpoint ) ) {
 				$default = $this->endpoints[ $endpoint ]->is_page( $args );
 			}
 
@@ -158,7 +158,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 		public function get_endpoint_template( $endpoint, $default_template ) {
 			$endpoint = $this->sanitize_endpoint( $endpoint );
 
-			if ( ! array_key_exists( $endpoint, $this->endpoints ) ) {
+			if ( ! $this->endpoint_exists( $endpoint ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
 					sprintf( __( 'Endpoint %s has not been registered.', 'charitable' ), $endpoint ),
@@ -281,7 +281,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			if ( ! isset( $this->current_endpoint ) ) {
 
 				foreach ( $this->endpoints as $endpoint_id => $endpoint ) {
-					if ( $endpoint->is_page( array( 'strict' => true ) ) ) {
+					if ( $this->is_page( $endpoint_id, array( 'strict' => true ) ) ) {
 						$this->current_endpoint = $endpoint_id;
 
 						return $this->current_endpoint;
@@ -311,6 +311,18 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			}
 
 			return $endpoints;
+		}
+
+		/**
+		 * Checks whether a particular endpoint exists.
+		 *
+		 * @since  1.5.9
+		 *
+		 * @param  string $endpoint The endpoint ID.
+		 * @return boolean
+		 */
+		public function endpoint_exists( $endpoint ) {
+			return array_key_exists( $endpoint, $this->endpoints );
 		}
 
 		/**

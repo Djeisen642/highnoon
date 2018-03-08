@@ -3,23 +3,25 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.5.8
+ * Version:           1.5.11
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      4.9.1
+ * Tested up to:      4.9.4
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
  *
  * @package           Charitable
  * @author            Eric Daams
- * @copyright         Copyright (c) 2017, Studio 164a
+ * @copyright         Copyright (c) 2018, Studio 164a
  * @license           http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable' ) ) :
 
@@ -35,7 +37,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.5.8';
+		const VERSION = '1.5.11';
 
 		/**
 		 * Version of database schema.
@@ -99,7 +101,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 *
 		 * @since 1.0.0
 		 * @since 1.5.0 Changed to Charitable_Registry object. Previously it was an array.
-		 * 
+		 *
 		 * @var   Charitable_Registry
 		 */
 		private $registry;
@@ -197,7 +199,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			require_once( $includes_path . 'donations/charitable-donation-functions.php' );
 			require_once( $includes_path . 'emails/charitable-email-hooks.php' );
 			require_once( $includes_path . 'endpoints/charitable-endpoints-functions.php' );
-			require_once( $includes_path . 'public/charitable-template-helpers.php' );        
+			require_once( $includes_path . 'public/charitable-template-helpers.php' );
 			require_once( $includes_path . 'shortcodes/charitable-shortcodes-hooks.php' );
 			require_once( $includes_path . 'upgrades/charitable-upgrade-hooks.php' );
 			require_once( $includes_path . 'users/charitable-user-functions.php' );
@@ -214,7 +216,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @param  string $class_name The fully-qualified name of the class to load.
 		 * @return boolean
 		 */
-		public function autoloader( $class_name ) {            
+		public function autoloader( $class_name ) {
 			/* If the specified $class_name already exists, bail. */
 			if ( class_exists( $class_name ) ) {
 				return false;
@@ -232,7 +234,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			$file_path = isset( $this->classmap[ $class_name ] ) ? $this->get_path( 'includes' ) . $this->classmap[ $class_name ] : false;
 
-			if ( $file_path && file_exists( $file_path ) && is_file( $file_path ) ) {
+			if ( false !== $file_path && file_exists( $file_path ) && is_file( $file_path ) ) {
 				require_once( $file_path );
 				return true;
 			}
@@ -480,31 +482,31 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$base = $absolute_path ? $this->directory_path : $this->directory_url;
 
 			switch ( $type ) {
-				case 'includes' :
+				case 'includes':
 					$path = $base . 'includes/';
 					break;
 
-				case 'admin' :
+				case 'admin':
 					$path = $base . 'includes/admin/';
 					break;
 
-				case 'public' :
+				case 'public':
 					$path = $base . 'includes/public/';
 					break;
 
-				case 'assets' :
+				case 'assets':
 					$path = $base . 'assets/';
 					break;
 
-				case 'templates' :
+				case 'templates':
 					$path = $base . 'templates/';
 					break;
 
-				case 'directory' :
+				case 'directory':
 					$path = $base;
 					break;
 
-				default :
+				default:
 					$path = __FILE__;
 
 			}//end switch
@@ -592,9 +594,9 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$endpoints->register( new Charitable_Donation_Receipt_Endpoint );
 				$endpoints->register( new Charitable_Email_Preview_Endpoint );
 				$endpoints->register( new Charitable_Email_Verification_Endpoint );
-				$endpoints->register( new Charitable_Registration_Endpoint );
 				$endpoints->register( new Charitable_Forgot_Password_Endpoint );
 				$endpoints->register( new Charitable_Reset_Password_Endpoint );
+				$endpoints->register( new Charitable_Registration_Endpoint );
 				$endpoints->register( new Charitable_Login_Endpoint );
 				$endpoints->register( new Charitable_Profile_Endpoint );
 
@@ -614,7 +616,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 */
 		public function get_registered_object( $class ) {
 			return $this->registry->get( $class );
-		}        
+		}
 
 		/**
 		 * Returns the model for one of Charitable's database tables.
@@ -666,7 +668,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @since  1.4.6
 		 *
 		 * @param  int $blog_id The blog to activate Charitable on.
-		 * @return boolean
+		 * @return void
 		 */
 		public function maybe_activate_charitable_on_new_site( $blog_id ) {
 			if ( is_plugin_active_for_network( basename( $this->directory_path ) . '/charitable.php' ) ) {
@@ -812,7 +814,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 				'charitable()->registry()->register_object()'
 			);
 
-			return $this->registry->register_object( $object );
+			$this->registry->register_object( $object );
 		}
 
 		/**
@@ -876,6 +878,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 		}
 
 		/**
+		 * Returns the instance of Charitable_Currency.
+		 *
 		 * @deprecated 1.7.0
 		 *
 		 * @since 1.4.0 Deprecated.
@@ -886,6 +890,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 		}
 
 		/**
+		 * Returns the instance of Charitable_Locations.
+		 *
 		 * @deprecated 1.6.0
 		 *
 		 * @since 1.2.0 Deprecated.

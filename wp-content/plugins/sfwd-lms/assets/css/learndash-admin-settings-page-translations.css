@@ -34,7 +34,8 @@
 }
 
 .wrap-ld-translations table.ld-installed-translations td.column-actions-local a span.dashicons-download,
-.wrap-ld-translations table.ld-installed-translations td.column-actions-remote a span.dashicons-trash {
+.wrap-ld-translations table.ld-installed-translations td.column-actions-remote a span.dashicons-trash,
+a.learndash-translations-pot-file span.dashicons-download {
 	margin-top: 4px;
 }
 

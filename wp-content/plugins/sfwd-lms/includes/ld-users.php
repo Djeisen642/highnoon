@@ -101,19 +101,19 @@ function learndash_user_get_enrolled_courses( $user_id = 0, $course_query_args =
 	$course_ids = array();
 
 	if ( empty( $user_id ) ) 
-		return $courses_ids;
+		return $course_ids;
 
 	$bypass_transient = true;
 	$transient_key = "learndash_user_courses_" . $user_id;
 
 	if ( !$bypass_transient ) {
-		$courses_ids_transient = learndash_get_valid_transient( $transient_key );
+		$course_ids_transient = learndash_get_valid_transient( $transient_key );
 		//error_log('from transient: ['. $transient_key .']');
 	} else {
-		$courses_ids_transient = false;
+		$course_ids_transient = false;
 	}
 
-	if ( $courses_ids_transient === false ) {
+	if ( $course_ids_transient === false ) {
 	
 		$course_autoenroll_admin = LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_General_Admin_User', 'courses_autoenroll_admin_users' );
 		if ( $course_autoenroll_admin == 'yes' ) $course_autoenroll_admin = true;
@@ -192,7 +192,7 @@ function learndash_user_get_enrolled_courses( $user_id = 0, $course_query_args =
 		set_transient( $transient_key, $course_ids, MINUTE_IN_SECONDS );
 
 	} else {
-		$courses_ids = $courses_ids_transient;
+		$course_ids = $course_ids_transient;
 	}
 
 	//error_log('user_id['. $user_id .'] course_ids<pre>'. print_r($course_ids, true) .'</pre>');
@@ -982,15 +982,15 @@ function learndash_get_usermeta_shortcode_available_fields( $attr = array() ) {
 	return apply_filters( 
 		'learndash_usermeta_shortcode_available_fields', 
 		array(
-			'user_login'		=>	__('User Login', 'learndash'),
-			'display_name'		=>	__('User Display Name', 'learndash'),
-			'user_nicename'		=>	__('User Nicename', 'learndash'),
-			'first_name'		=>	__('User First Name', 'learndash'),
-			'last_name'			=>	__('User Last Name', 'learndash'),
-			'nickname'			=>	__('User Nickname', 'learndash'),
-			'user_email'		=>	__('User Email', 'learndash'),
-			'user_url'			=>	__('User URL', 'learndash'),
-			'description'		=>	__('User Description', 'learndash'),
+			'user_login'		=>	esc_html__('User Login', 'learndash'),
+			'display_name'		=>	esc_html__('User Display Name', 'learndash'),
+			'user_nicename'		=>	esc_html__('User Nicename', 'learndash'),
+			'first_name'		=>	esc_html__('User First Name', 'learndash'),
+			'last_name'			=>	esc_html__('User Last Name', 'learndash'),
+			'nickname'			=>	esc_html__('User Nickname', 'learndash'),
+			'user_email'		=>	esc_html__('User Email', 'learndash'),
+			'user_url'			=>	esc_html__('User URL', 'learndash'),
+			'description'		=>	esc_html__('User Description', 'learndash'),
 		), $attr 
 	);
 }

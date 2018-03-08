@@ -22,10 +22,10 @@ jQuery(document).ready(function($) {
 
 	maxModal.prototype.init = function()
 	{
-
 		this.windowHeight = $(window).height();
 		this.windowWidth = $(window).width();
 
+		$(document).off('click', '.maxmodal'); // should be on next update
 		$(document).on('click', '.maxmodal', $.proxy(this.buildModal, this));
 		$(window).on('resize', $.proxy(this.checkResize, this));
 

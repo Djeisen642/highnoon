@@ -5,7 +5,7 @@
  * @package   Charitable/Classes/Charitable_Campaign_List_Table
  * @version   1.5.0
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 

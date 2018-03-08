@@ -25,7 +25,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Upgrades' ) ) {
 			$this->parent_menu_page_url		=	'admin.php?page=learndash_lms_settings';
 			$this->menu_page_capability		=	LEARNDASH_ADMIN_CAPABILITY_CHECK;
 			$this->settings_page_id 		= 	'learndash_data_upgrades';
-			$this->settings_page_title 		= 	_x( 'Data Upgrades', 'Data Upgrades Tab Label', 'learndash' );
+			$this->settings_page_title 		=  esc_html__( 'Data Upgrades', 'learndash' );
 			$this->settings_tab_title		=	$this->settings_page_title;
 			$this->settings_tab_priority	=	30;
 
@@ -109,7 +109,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Upgrades' ) ) {
 			if ( $this->admin_notice_shown != true ) {
 				$this->admin_notice_shown = true;
 
-				$admin_notice_message = sprintf( _x("LearnDash Notice: Please perform a %s. This is a required step to ensure accurate reporting.", 'placeholder: link to LearnDash Data Upgrade admin page', 'learndash'), '<a href="'.  admin_url('admin.php?page=learndash_data_upgrades') .'">'. __('LearnDash Data Upgrade', 'learndash') . '</a>' );
+				$admin_notice_message = sprintf( esc_html_x("LearnDash Notice: Please perform a %s. This is a required step to ensure accurate reporting.", 'placeholder: link to LearnDash Data Upgrade admin page', 'learndash'), '<a href="'.  admin_url('admin.php?page=learndash_data_upgrades') .'">'. esc_html__('LearnDash Data Upgrade', 'learndash') . '</a>' );
 			
 				?>
 				<div id="ld-data-upgrade-notice-error" class="notice notice-info is-dismissible">
@@ -204,13 +204,13 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Upgrades' ) ) {
 		public function admin_page() {
 			?>
 			<div id="learndash-settings" class="wrap">
-				<h1><?php _e( 'Data Upgrades', 'learndash' ); ?></h1>
+				<h1><?php esc_html_e( 'Data Upgrades', 'learndash' ); ?></h1>
 				<form method="post" action="options.php">
 					<div class="sfwd_options_wrapper sfwd_settings_left">
 						<div id="advanced-sortables" class="meta-box-sortables">
 							<div id="sfwd-courses_metabox" class="postbox learndash-settings-postbox">
-								<div class="handlediv" title="<?php _e( 'Click to toggle', 'learndash' ); ?>"><br></div>
-								<h3 class="hndle"><span><?php _e( 'Data Upgrades', 'learndash' ); ?></span></h3>
+								<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'learndash' ); ?>"><br></div>
+								<h3 class="hndle"><span><?php esc_html_e( 'Data Upgrades', 'learndash' ); ?></span></h3>
 								<div class="inside">
 									<div class="sfwd sfwd_options sfwd-courses_settings">
 
@@ -260,7 +260,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Upgrades' ) ) {
 					learndash_adjust_date_time_display($data_settings['last_run']),
 					 $user->display_name); 
 			} else {
-			 	$last_run_info = __('Last run: none', 'learndash'); 
+			 	$last_run_info = esc_html__('Last run: none', 'learndash');
 			}
 
 			return $last_run_info;
@@ -353,10 +353,12 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Upgrades' ) ) {
 
 // Go ahead and inlcude out User Meta Courses upgrade class
 
+require_once( LEARNDASH_LMS_PLUGIN_DIR .'includes/admin/classes-data-uprades-actions/class-learndash-admin-data-upgrades-translations.php' );
 require_once( LEARNDASH_LMS_PLUGIN_DIR .'includes/admin/classes-data-uprades-actions/class-learndash-admin-data-upgrades-user-activity-db-table.php' );
 require_once( LEARNDASH_LMS_PLUGIN_DIR .'includes/admin/classes-data-uprades-actions/class-learndash-admin-data-upgrades-user-meta-courses.php' );
 require_once( LEARNDASH_LMS_PLUGIN_DIR .'includes/admin/classes-data-uprades-actions/class-learndash-admin-data-upgrades-user-meta-quizzes.php' );
 add_action('plugins_loaded', function() {
+	new Learndash_Admin_Data_Upgrades_Translations();
 	new Learndash_Admin_Data_Upgrades_User_Activity_DB_Table();
 	new Learndash_Admin_Data_Upgrades_User_Meta_Courses();
 	new Learndash_Admin_Settings_Upgrades_User_Meta_Quizzes();

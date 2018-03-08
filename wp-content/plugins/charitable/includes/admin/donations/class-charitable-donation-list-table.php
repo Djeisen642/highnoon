@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_List_Table
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
@@ -821,7 +821,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * @return string[]
 		 */
 		protected function get_parsed_date( $date ) {
-			$time = strtotime( $date );
+			$time = charitable_sanitize_date( $date );
 
 			return array(
 				'year'  => date( 'Y', $time ),

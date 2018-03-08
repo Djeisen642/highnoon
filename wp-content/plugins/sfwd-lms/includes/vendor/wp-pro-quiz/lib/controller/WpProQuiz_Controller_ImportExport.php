@@ -88,7 +88,7 @@ class WpProQuiz_Controller_ImportExport extends WpProQuiz_Controller_Controller 
 				}			
 			}
 		} else {
-			$this->view->error = __('File cannot be processed', 'wp-pro-quiz');
+			$this->view->error = esc_html__('File cannot be processed', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 		}
 		
 		$this->view->show();

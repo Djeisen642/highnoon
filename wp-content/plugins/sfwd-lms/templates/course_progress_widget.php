@@ -8,6 +8,6 @@
  */
 ?>
 
-<dd class="course_progress" title='<?php echo sprintf( __( '%s out of %s steps completed', 'learndash' ), $completed, $total ); ?>'>
+<dd class="course_progress" title='<?php printf( esc_html_x( '%1$d out of %2$d steps completed', 'placeholder: completed steps, total steps', 'learndash' ), $completed, $total ); ?>'>
 	<div class="course_progress_blue" style='width: <?php echo esc_attr( $percentage ); ?>%;'>
 </dd>

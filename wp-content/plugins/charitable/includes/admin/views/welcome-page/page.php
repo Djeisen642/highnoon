@@ -59,7 +59,7 @@ if ( 'en_ZA' == $locale || 'ZAR' == $currency ) {
         <sup class="version"><?php echo charitable()->get_version() ?></sup>
     </h1>
     <div class="badge">
-        <a href="https://www.wpcharitable.com/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=home&amp;utm_content=icon" target="_blank"><i class="icon-charitable"></i></a>
+        <a href="https://www.wpcharitable.com/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=home&amp;utm_content=icon" target="_blank"><i class="charitable-icon charitable-icon-charitable"></i></a>
     </div>
     <div class="intro">
         <?php

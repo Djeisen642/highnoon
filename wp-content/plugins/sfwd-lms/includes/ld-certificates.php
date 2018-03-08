@@ -114,7 +114,7 @@ function ld_course_certificate_shortcode( $atts ) {
 	 *
 	 * @param  string  markout of course certificate shortcode
 	 */
-	return apply_filters( 'ld_course_certificate', "<div id='learndash_course_certificate'><a href='".$link."' class='btn-blue' target='_blank'>". apply_filters('ld_certificate_link_label', __( 'PRINT YOUR CERTIFICATE', 'learndash' ), $user_id, $course_id ) . '</a></div>', $link, $course_id, $user_id );
+	return apply_filters( 'ld_course_certificate', "<div id='learndash_course_certificate'><a href='".$link."' class='btn-blue' target='_blank'>". apply_filters('ld_certificate_link_label', esc_html__( 'PRINT YOUR CERTIFICATE', 'learndash' ), $user_id, $course_id ) . '</a></div>', $link, $course_id, $user_id );
 }
 
 add_shortcode( 'ld_course_certificate', 'ld_course_certificate_shortcode' );
@@ -144,7 +144,7 @@ function learndash_get_course_certificate_link( $course_id, $cert_user_id = null
 	}
 
 	$course_status = learndash_course_status( $course_id, $cert_user_id );
-	if ( $course_status != __( 'Completed', 'learndash' ) ) {
+	if ( $course_status != esc_html__( 'Completed', 'learndash' ) ) {
 		return '';
 	}
 
@@ -206,7 +206,7 @@ function learndash_get_certificate_link( $quiz_id, $user_id = null ) {
 	foreach ( $usermeta as $quizdata ) {
 		if ( ! empty( $quizdata['quiz'] ) && $quizdata['quiz'] == $quiz_id ) {
 			if ( $c['certificate_threshold'] <= $quizdata['percentage'] / 100 ) {
-				return '<a target="_blank" href="'.$c['certificateLink'].'">'. apply_filters('ld_certificate_link_label', __( 'PRINT YOUR CERTIFICATE', 'learndash' ), $user_id, $quiz_id ) .'</a>';
+				return '<a target="_blank" href="'.$c['certificateLink'].'">'. apply_filters('ld_certificate_link_label', esc_html__( 'PRINT YOUR CERTIFICATE', 'learndash' ), $user_id, $quiz_id ) .'</a>';
 			}
 		}
 	}
@@ -269,7 +269,7 @@ add_filter( 'admin_footer', 'learndash_disable_editor_on_certificate_js', 99 );
 function learndash_certificates_add_meta_box( $post ) {
 	add_meta_box(
 		'learndash_certificate_options',
-		__( 'LearnDash Certificate Options', 'learndash' ), 
+		esc_html__( 'LearnDash Certificate Options', 'learndash' ),
 		'learndash_certificate_options_metabox',
 		'sfwd-certificates',
 		'advanced',
@@ -307,20 +307,20 @@ function learndash_certificate_options_metabox( $certificate ) {
 	wp_nonce_field( plugin_basename( __FILE__ ), 'learndash_certificates_nonce' );
 
 	$learndash_certificate_options['pdf_page_format'] = array(
-		"LETTER"	=>	__('Letter / USLetter (default)', 'learndash'),
-		"A4"		=>	__('A4', 'learndash')
+		"LETTER"	=>	esc_html__('Letter / USLetter (default)', 'learndash'),
+		"A4"		=>	esc_html__('A4', 'learndash')
 	);
 	$learndash_certificate_options['pdf_page_format'] = apply_filters('learndash_certificate_pdf_page_formats', $learndash_certificate_options['pdf_page_format']);
 
 	$learndash_certificate_options['pdf_page_orientation'] = array(
-		"L"		=>	__('Landscape (default)', 'learndash'),
-		"P"		=>	__('Portrait', 'learndash')
+		"L"		=>	esc_html__('Landscape (default)', 'learndash'),
+		"P"		=>	esc_html__('Portrait', 'learndash')
 	);
 	$learndash_certificate_options['pdf_page_orientation'] = apply_filters('learndash_certificate_pdf_page_orientations', $learndash_certificate_options['pdf_page_orientation']);	
 
 	if ( ( is_array( $learndash_certificate_options['pdf_page_format'] ) ) && ( !empty( $learndash_certificate_options['pdf_page_format'] ) ) ) {
 		?>
-		<p><label for="learndash_certificate_options_pdf_page_format"><?php _e('PDF Page Size', 'learndash') ?></label>
+		<p><label for="learndash_certificate_options_pdf_page_format"><?php esc_html_e('PDF Page Size', 'learndash') ?></label>
 			<select id="learndash_certificate_options_pdf_page_format" name="learndash_certificate_options[pdf_page_format]">
 			<?php
 				foreach( $learndash_certificate_options['pdf_page_format'] as $key => $label ) {
@@ -335,7 +335,7 @@ function learndash_certificate_options_metabox( $certificate ) {
 	if ( ( is_array( $learndash_certificate_options['pdf_page_orientation'] ) ) && ( !empty( $learndash_certificate_options['pdf_page_orientation'] ) ) ) {
 				
 		?>
-		<p><label for="learndash_certificate_options_pdf_page_orientation"><?php _e('PDF Page Orientation', 'learndash') ?></label>
+		<p><label for="learndash_certificate_options_pdf_page_orientation"><?php esc_html_e('PDF Page Orientation', 'learndash') ?></label>
 			<select id="learndash_certificate_options_pdf_page_orientation" name="learndash_certificate_options[pdf_page_orientation]">
 			<?php
 				foreach( $learndash_certificate_options['pdf_page_orientation'] as $key => $label ) {

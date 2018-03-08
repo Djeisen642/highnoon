@@ -7,14 +7,13 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 
 			$this->shortcodes_section_key 			= 	'ld_video';
 			$this->shortcodes_section_type			=	1;
-			//$this->shortcodes_section_description	=	__( 'Placeholder shortcode to allow control of video player within the content.', 'learndash' );
-			$this->shortcodes_section_description			=	sprintf( _x( 'This shortcode is used on %s and %s where Video Progression is enabled. The video player will be added above the content. This shortcode allows positioning the player elsewhere within the content. This shortcode does not take any parameters.', 'placeholders: Lessons, Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ), LearnDash_Custom_Label::get_label( 'topics' ) );
+			$this->shortcodes_section_description			=	sprintf( esc_html_x( 'This shortcode is used on %1$s and %2$s where Video Progression is enabled. The video player will be added above the content. This shortcode allows positioning the player elsewhere within the content. This shortcode does not take any parameters.', 'placeholders: Lessons, Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ), LearnDash_Custom_Label::get_label( 'topics' ) );
 			
 
 			if ( $this->fields_args['post_type'] == 'sfwd-lessons' ) {
-				$this->shortcodes_section_title 		= 	sprintf( _x( '%s Video', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
+				$this->shortcodes_section_title 		= 	sprintf( esc_html_x( '%s Video', 'placeholder: lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
 			} else if ( $this->fields_args['post_type'] == 'sfwd-topic' ) {
-				$this->shortcodes_section_title 		= 	sprintf( _x( '%s Video', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
+				$this->shortcodes_section_title 		= 	sprintf( esc_html_x( '%s Video', 'placeholder: topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) );
 			}
 			
 			parent::__construct(); 

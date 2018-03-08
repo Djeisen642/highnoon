@@ -7,7 +7,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 	public function route() {
 
 		if ( ! isset( $_GET['quiz_id'] ) || empty( $_GET['quiz_id'] ) ) {
-			WpProQuiz_View_View::admin_notices( sprintf( _x( '%s not found', 'Quiz not found', 'wp-pro-quiz' ), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error' );
+			WpProQuiz_View_View::admin_notices( sprintf( esc_html_x( '%s not found', 'Quiz not found', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error' );
 
 			return;
 		}
@@ -18,7 +18,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 		$m = new WpProQuiz_Model_QuizMapper();
 
 		if ( $m->exists( $this->_quizId ) == 0 ) {
-			WpProQuiz_View_View::admin_notices( sprintf( _x( '%s not found', 'Quiz not found', 'wp-pro-quiz' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),'error' );
+			WpProQuiz_View_View::admin_notices( sprintf( esc_html_x( '%s not found', 'Quiz not found', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), LearnDash_Custom_Label::get_label( 'quiz' ) ),'error' );
 
 			return;
 		}
@@ -64,11 +64,11 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 
 		if ( $questionId ) {
 			if ( ! current_user_can( 'wpProQuiz_edit_quiz' ) ) {
-				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+				wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 			}
 		} else {
 			if ( ! current_user_can( 'wpProQuiz_add_quiz' ) ) {
-				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+				wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 			}
 		}
 
@@ -78,7 +78,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 		$templateMapper = new WpProQuiz_Model_TemplateMapper();
 
 		if ( $questionId && $questionMapper->existsAndWritable( $questionId ) == 0 ) {
-			WpProQuiz_View_View::admin_notices( __( 'Question not found', 'wp-pro-quiz' ), 'error' );
+			WpProQuiz_View_View::admin_notices( esc_html__( 'Question not found', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), 'error' );
 
 			return;
 		}
@@ -101,11 +101,11 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 			}
 		} else if ( isset( $this->_post['submit'] ) ) {
 			$add_new_question_url = admin_url( "admin.php?page=ldAdvQuiz&module=question&action=addEdit&quiz_id=" . $quizId . "&post_id=" . @$_REQUEST["post_id"] );
-			$add_new_question     = "<a href='" . $add_new_question_url . "'>" . __( "Click here to add another question.", "learndash" ) . "</a>";
+			$add_new_question     = "<a href='" . $add_new_question_url . "'>" . esc_html__( "Click here to add another question.", LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ) . "</a>";
 			if ( $questionId ) {
-				WpProQuiz_View_View::admin_notices( __( 'Question edited', 'wp-pro-quiz' ) . ". " . $add_new_question, 'info' );
+				WpProQuiz_View_View::admin_notices( esc_html__( 'Question edited', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ) . ". " . $add_new_question, 'info' );
 			} else {
-				WpProQuiz_View_View::admin_notices( __( 'Question added', 'wp-pro-quiz' ) . ". " . $add_new_question, 'info' );
+				WpProQuiz_View_View::admin_notices( esc_html__( 'Question added', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ) . ". " . $add_new_question, 'info' );
 			}
 
 			$question   = $questionMapper->save( $this->getPostQuestionModel( $quizId, $questionId ), true );
@@ -124,7 +124,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 		$this->view->question   = $question;
 		$this->view->data       = $this->setAnswerObject( $question );
 
-		$this->view->header = $questionId ? __( 'Edit question', 'wp-pro-quiz' ) : __( 'New question', 'wp-pro-quiz' );
+		$this->view->header = $questionId ? esc_html__( 'Edit question', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ) : esc_html__( 'New question', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN );
 
 		if ( $this->view->question->isAnswerPointsActivated() ) {
 			$this->view->question->setPoints( 1 );
@@ -170,7 +170,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 
 		if ( empty( $post['title'] ) ) {
 			$count = $questionMapper->count( $quizId );
-			$post['title'] = sprintf( __( 'Question: %d', 'wp-pro-quiz' ), $count + 1 );
+			$post['title'] = sprintf( esc_html_x( 'Question: %d', 'placeholder: question count' , LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), $count + 1 );
 		}
 
 		if ( $post['answerType'] === 'assessment_answer' ) {
@@ -197,7 +197,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 	public function copyQuestion( $quizId ) {
 
 		if ( ! current_user_can( 'wpProQuiz_edit_quiz' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$m = new WpProQuiz_Model_QuestionMapper();
@@ -211,7 +211,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 			$m->save( $question );
 		}
 
-		WpProQuiz_View_View::admin_notices( __( 'questions copied', 'wp-pro-quiz' ), 'info' );
+		WpProQuiz_View_View::admin_notices( esc_html__( 'questions copied', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), 'info' );
 
 		$this->showAction();
 	}
@@ -276,7 +276,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 	public function deleteAction( $id ) {
 
 		if ( ! current_user_can( 'wpProQuiz_delete_quiz' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$mapper = new WpProQuiz_Model_QuestionMapper();
@@ -291,20 +291,12 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 	public function editAction( $id ) {
 
 		if ( ! current_user_can( 'wpProQuiz_edit_quiz' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$questionMapper = new WpProQuiz_Model_QuestionMapper();
 		$quizMapper     = new WpProQuiz_Model_QuizMapper();
 		$cateoryMapper  = new WpProQuiz_Model_CategoryMapper();
-
-
-// 		if($mapper->existsAndWritable($id) == 0) {
-// 			WpProQuiz_View_View::admin_notices(__('Question not found', 'wp-pro-quiz'), 'error');
-// 			return;
-// 		}
-
-// 		$this->editPostAction($id);
 
 		$this->view             = new WpProQuiz_View_QuestionEdit();
 		$this->view->quiz       = $quizMapper->fetch( $id );
@@ -312,7 +304,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 		$this->view->data       = $this->setAnswerObject( $this->view->question );
 		$this->view->categories = $cateoryMapper->fetchAll();
 
-		$this->view->header = __( 'Edit question', 'wp-pro-quiz' );
+		$this->view->header = esc_html__( 'Edit question', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN );
 
 		if ( $this->view->question->isAnswerPointsActivated() ) {
 			$this->view->question->setPoints( 1 );
@@ -340,7 +332,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 			if ( empty( $post['title'] ) ) {
 				$question = $mapper->fetch( $id );
 
-				$post['title'] = sprintf( __( 'Question: %d', 'wp-pro-quiz' ), $question->getSort() + 1 );
+				$post['title'] = sprintf( esc_html__( 'Question: %d', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), $question->getSort() + 1 );
 			}
 
 			if ( $post['answerType'] === 'assessment_answer' ) {
@@ -362,7 +354,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 			$post['categoryId'] = $post['category'] > 0 ? $post['category'] : 0;
 
 			$mapper->save( new WpProQuiz_Model_Question( $post ), true );
-			WpProQuiz_View_View::admin_notices( __( 'Question edited', 'wp-pro-quiz' ), 'info' );
+			WpProQuiz_View_View::admin_notices( esc_html__( 'Question edited', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), 'info' );
 		}
 	}
 
@@ -372,56 +364,12 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 	public function createAction() {
 
 		if ( ! current_user_can( 'wpProQuiz_add_quiz' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$quizMapper     = new WpProQuiz_Model_QuizMapper();
 		$cateoryMapper  = new WpProQuiz_Model_CategoryMapper();
 		$templateMapper = new WpProQuiz_Model_TemplateMapper();
-
-// 		$post = null;
-
-// 		if(isset($this->_post['submit'])) {
-
-// 			$questionMapper = new WpProQuiz_Model_QuestionMapper();
-
-// 			$post = WpProQuiz_Controller_Request::getPost();
-
-// 			$post['title'] = isset($post['title']) ? trim($post['title']) : '';
-// 			$post['quizId'] = $this->_quizId;
-
-// 			$clearPost = $this->clearPost($post);
-
-// 			$post['answerData'] = $clearPost['answerData'];
-
-// 			if(empty($post['title'])) {
-// 				$count = $questionMapper->count($this->_quizId);
-
-// 				$post['title'] = sprintf(__('Question: %d', 'wp-pro-quiz'), $count+1);
-// 			}
-
-// 			if($post['answerType'] === 'assessment_answer') {
-// 				$post['answerPointsActivated'] = 1;
-// 			}
-
-// 			if(isset($post['answerPointsActivated'])) {
-// 				if(isset($post['answerPointsDiffModusActivated'])) {
-// 					$post['points']	= $clearPost['maxPoints'];
-// 				} else {
-// 					$post['points'] = $clearPost['points'];
-// 				}
-// 			}
-
-// 			$post['categoryId'] = $post['category'] > 0 ? $post['category'] : 0;
-
-// 			$questionMapper->save(new WpProQuiz_Model_Question($post));
-
-// 			WpProQuiz_View_View::admin_notices(__('Question added', 'wp-pro-quiz'), 'info');
-
-// 			$this->showAction();
-
-// 			return;
-// 		}
 
 		$this->view             = new WpProQuiz_View_QuestionEdit();
 		$this->view->question   = new WpProQuiz_Model_Question();
@@ -430,7 +378,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 		$this->view->data       = $this->setAnswerObject();
 		$this->view->templates  = $templateMapper->fetchAll( WpProQuiz_Model_Template::TEMPLATE_TYPE_QUESTION, false );
 
-		$this->view->header = __( 'New question', 'wp-pro-quiz' );
+		$this->view->header = esc_html__( 'New question', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN );
 
 		if ( $this->view->question->isAnswerPointsActivated() ) {
 			$this->view->question->setPoints( 1 );
@@ -577,7 +525,7 @@ class WpProQuiz_Controller_Question extends WpProQuiz_Controller_Controller {
 
 	public function showAction() {
 		if ( ! current_user_can( 'wpProQuiz_show' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$m  = new WpProQuiz_Model_QuizMapper();

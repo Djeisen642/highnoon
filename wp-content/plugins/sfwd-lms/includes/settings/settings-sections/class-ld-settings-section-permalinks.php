@@ -22,13 +22,30 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
 			
-			parent::__construct(); 
-			
-			$this->save_settings_fields();
+			global $wp_rewrite;
+			if ( $wp_rewrite->using_permalinks() ) {
+				parent::__construct(); 			
+				$this->save_settings_fields();
+			} 
 		}
 		
 		function admin_init() {
 			do_action( 'learndash_settings_page_init', $this->settings_page_id );
+		}
+		
+		function add_meta_boxes( $settings_screen_id = '' ) {
+			global $wp_rewrite;
+			if ( $wp_rewrite->using_permalinks() ) {
+
+				add_meta_box(
+					$this->metabox_key,							/* Meta Box ID */
+					$this->settings_section_label,				/* Title */
+					array( $this, 'show_meta_box' ),  			/* Function Callback */
+					$this->settings_screen_id,               	/* Screen: Our Settings Page */
+					$this->metabox_context,                 	/* Context */
+					$this->metabox_priority                 	/* Priority */
+				);
+			}
 		}
 		
 		
@@ -80,28 +97,28 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'courses' => array(
 					'name'  		=> 	'courses',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Courses', 'learndash' ),
+					'label' 		=> 	sprintf( _x( '%s', 'placeholder: Courses', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
 					'value' 		=> 	$this->setting_option_values['courses'],
 					'class'			=>	'regular-text'
 				),
 				'lessons' => array(
 					'name'  		=> 	'lessons',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Lessons', 'learndash' ),
+					'label' 		=> 	sprintf( _x( '%s', 'placeholder: Lessons', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ) ),
 					'value' 		=> 	$this->setting_option_values['lessons'],
 					'class'			=>	'regular-text'
 				),
 				'topics' => array(
 					'name'  		=> 	'topics',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Topics', 'learndash' ),
+					'label' 		=> 	sprintf( _x( '%s', 'placeholder: Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'topics' ) ),
 					'value' 		=> 	$this->setting_option_values['topics'],
 					'class'			=>	'regular-text'
 				),
 				'quizzes' => array(
 					'name'  		=> 	'quizzes',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Quizzes', 'learndash' ),
+					'label' 		=> 	sprintf( _x( '%s', 'placeholder: Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ),
 					'value' 		=> 	$this->setting_option_values['quizzes'],
 					'class'			=>	'regular-text'
 				),
@@ -147,42 +164,42 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 		
 		function save_settings_fields() {
 
-			if ( isset( $_POST['learndash_settings_permalinks'] ) ) {
-				//error_log('_POST<pre>'. print_r($_POST, true) .'</pre>');
-				
-				if ( ( isset( $_POST['learndash_settings_permalinks']['nonce'] ) ) 
-				  && ( wp_verify_nonce( $_POST['learndash_settings_permalinks']['nonce'], 'learndash_permalinks_nonce' ) ) ) {
+			if ( isset( $_POST[$this->setting_field_prefix] ) ) {
+				if ( ( isset( $_POST[$this->setting_field_prefix]['nonce'] ) ) 
+				  && ( wp_verify_nonce( $_POST[$this->setting_field_prefix]['nonce'], 'learndash_permalinks_nonce' ) ) ) {
 
-					if ( ( isset( $_POST['learndash_settings_permalinks']['courses'] ) ) && ( !empty( $_POST['learndash_settings_permalinks']['courses'] ) ) ) {
-						$this->setting_option_values['courses'] = $this->esc_url( $_POST['learndash_settings_permalinks']['courses'] );
+  					$post_fields = $_POST[$this->setting_field_prefix];
+
+					if ( ( isset( $post_fields['courses'] ) ) && ( !empty( $post_fields['courses'] ) ) ) {
+						$this->setting_option_values['courses'] = $this->esc_url( $post_fields['courses'] );
 						
 						// We set a transient. This is checked during the 'shutdown' action where the rewrites will then be flushed. 
 						set_transient( 'sfwd_lms_rewrite_flush', true );
 					}
 
-					if ( ( isset( $_POST['learndash_settings_permalinks']['lessons'] ) ) && ( !empty( $_POST['learndash_settings_permalinks']['lessons'] ) ) ) {
-						$this->setting_option_values['lessons'] = $this->esc_url( $_POST['learndash_settings_permalinks']['lessons'] );
+					if ( ( isset( $post_fields['lessons'] ) ) && ( !empty( $post_fields['lessons'] ) ) ) {
+						$this->setting_option_values['lessons'] = $this->esc_url( $post_fields['lessons'] );
 						
 						// We set a transient. This is checked during the 'shutdown' action where the rewrites will then be flushed. 
 						set_transient( 'sfwd_lms_rewrite_flush', true );
 					}
 
-					if ( ( isset( $_POST['learndash_settings_permalinks']['topics'] ) ) && ( !empty( $_POST['learndash_settings_permalinks']['topics'] ) ) ) {
-						$this->setting_option_values['topics'] = $this->esc_url( $_POST['learndash_settings_permalinks']['topics'] );
+					if ( ( isset( $post_fields['topics'] ) ) && ( !empty( $post_fields['topics'] ) ) ) {
+						$this->setting_option_values['topics'] = $this->esc_url( $post_fields['topics'] );
 						
 						// We set a transient. This is checked during the 'shutdown' action where the rewrites will then be flushed. 
 						set_transient( 'sfwd_lms_rewrite_flush', true );
 					}
 
-					if ( ( isset( $_POST['learndash_settings_permalinks']['quizzes'] ) ) && ( !empty( $_POST['learndash_settings_permalinks']['quizzes'] ) ) ) {
-						$this->setting_option_values['quizzes'] = $this->esc_url( $_POST['learndash_settings_permalinks']['quizzes'] );
+					if ( ( isset( $post_fields['quizzes'] ) ) && ( !empty( $post_fields['quizzes'] ) ) ) {
+						$this->setting_option_values['quizzes'] = $this->esc_url( $post_fields['quizzes'] );
 						
 						// We set a transient. This is checked during the 'shutdown' action where the rewrites will then be flushed. 
 						set_transient( 'sfwd_lms_rewrite_flush', true );
 					}
 
-					if ( ( isset( $_POST['learndash_settings_permalinks']['nested_urls'] ) ) && ( !empty( $_POST['learndash_settings_permalinks']['nested_urls'] ) ) ) {
-						$this->setting_option_values['nested_urls'] = $this->esc_url( $_POST['learndash_settings_permalinks']['nested_urls'] );
+					if ( ( isset( $post_fields['nested_urls'] ) ) && ( !empty( $post_fields['nested_urls'] ) ) ) {
+						$this->setting_option_values['nested_urls'] = $this->esc_url( $post_fields['nested_urls'] );
 						
 						// We set a transient. This is checked during the 'shutdown' action where the rewrites will then be flushed. 
 						set_transient( 'sfwd_lms_rewrite_flush', true );

@@ -10,7 +10,7 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->setting_option_key 				= 	'submitdiv';
 		
 			// Section label/header
-			$this->settings_section_label			=	__( 'Refresh Translations', 'learndash' );
+			$this->settings_section_label			=	esc_html__( 'Refresh Translations', 'learndash' );
 		
 			$this->metabox_context					=	'side';
 			$this->metabox_priority					=	'high';
@@ -32,18 +32,18 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 						<input type="hidden" name="translations" value="refresh" />
 
 						<?php
-							if ( Learndash_Translations::is_language_directory_writable() !== true ) {
-								?><p class="error"><?php _e('The language directory is not writable: <code>'. Learndash_Translations::get_language_directory() .'</code>', 'learndash' ); ?></p><?php
+/*
+							if ( LearnDash_Translations::is_language_directory_writable() !== true ) {
+								?><p class="error"><?php esc_html_e('The language directory is not writable: <code>'. LearnDash_Translations::get_language_directory() .'</code>', 'learndash' ); ?></p><?php
 							}
-
-							$last_update_time = Learndash_Translations::get_last_update();
+*/
+							$last_update_time = LearnDash_Translations::get_last_update();
 
 						?>
 						<?php if ( !is_null( $last_update_time ) ) { ?>
-							<p class="learndash-translations-last-update"><span class="label"><?php echo __('Updated', 'learndash' ) . '</span>: <span class="value">' . learndash_adjust_date_time_display( $last_update_time, 'M d, Y h:ia' ); ?></span></p>
+							<p class="learndash-translations-last-update"><span class="label"><?php esc_html_e('Updated', 'learndash' ) ?></span>: <span class="value"><?php echo  learndash_adjust_date_time_display( $last_update_time, 'M d, Y h:ia' ); ?></span></p>
 						<?php }  ?>
-						<?php //submit_button( esc_attr( __( 'Refresh', 'learndash' ) ), 'primary', 'submit', false );?>
-						<a id="learndash-translation-refresh" class="button button-primary learndash-translations-refresh" href="<?php echo Learndash_Translations::get_action_url( 'refresh' );?> "><?php esc_html_e( 'Refresh', 'learndash' ); ?></a>
+						<a id="learndash-translation-refresh" class="button button-primary learndash-translations-refresh" href="<?php echo LearnDash_Translations::get_action_url( 'refresh' );?> "><?php esc_html_e( 'Refresh', 'learndash' ); ?></a>
 					</div>
 
 					<div class="clear"></div>

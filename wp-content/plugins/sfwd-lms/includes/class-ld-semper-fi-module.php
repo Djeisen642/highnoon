@@ -193,7 +193,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 			$location = substr( $name, 22 );
 			return $this->display_settings_page( $location );
 		}
-		throw new InvalidArgumentException( __( sprintf( "Method %s doesn't exist", $name ), 'learndash' ) );
+		throw new InvalidArgumentException( sprintf( esc_html_x( "Method %s doesn't exist", 'placeholder: method name', 'learndash' ), $name ) );
 	}
 
 
@@ -639,10 +639,10 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 			}
 		}
 
-		$this->script_data['learndash_categories_lang']     = __( 'LearnDash Categories', 'learndash' );
-		$this->script_data['loading_lang']                  = __( 'Loading...', 'learndash' );
-		$this->script_data['select_a_lesson_lang']          = sprintf( _x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
-		$this->script_data['select_a_lesson_or_topic_lang'] = sprintf( _x( '-- Select a %s or %s --', 'Select a Lesson Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) );
+		$this->script_data['learndash_categories_lang']     = esc_html__( 'LearnDash Categories', 'learndash' );
+		$this->script_data['loading_lang']                  = esc_html__( 'Loading...', 'learndash' );
+		$this->script_data['select_a_lesson_lang']          = sprintf( esc_html_x( '-- Select a %s --', 'Select a Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) );
+		$this->script_data['select_a_lesson_or_topic_lang'] = sprintf( esc_html_x( '-- Select a %s or %s --', 'Select a Lesson Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) );
 		$this->script_data['advanced_quiz_preview_link']    = admin_url( 'admin.php?page=ldAdvQuiz&module=preview&id=' );
 
 		global $post;
@@ -1093,7 +1093,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 					
 					$lazy_load_data = ' learndash_lazy_load_data="'. htmlspecialchars( json_encode( $args['options']['lazy_load_data'] ) ) .'" ';
 					
-					$lazy_load_spinner = '<br /><span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. __('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> '. __('loading', 'learndash') .'</span>';
+					$lazy_load_spinner = '<br /><span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. esc_html__('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> '. esc_html__('loading', 'learndash') .'</span>';
 				} 
 			} 
 			
@@ -1111,7 +1111,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 				} 
 			}
 			if ( $show_required === true ) {
-				$block .= '<span class="ld-error dashicons dashicons-warning" title="' . __( 'Required', 'learndash' ) . '"></span>';
+				$block .= '<span class="ld-error dashicons dashicons-warning" title="' . esc_html__( 'Required', 'learndash' ) . '"></span>';
 			}
 
 
@@ -1238,7 +1238,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 				break;
 			case 'textarea':$buf .= "<textarea name='$name' $attr>$value</textarea>";
 				break;
-			case 'image':$buf .= "<input class='sfwd_upload_image_button' type='button' value='" . __( 'Upload Image', 'learndash' ) . "' style='float:left;' />" .
+			case 'image':$buf .= "<input class='sfwd_upload_image_button' type='button' value='" . esc_html__( 'Upload Image', 'learndash' ) . "' style='float:left;' />" .
 				"<input class='sfwd_upload_image_label' name='$name' type='text' readonly $attr value='$value' size=57 style='float:left;clear:left;' />\n";
 				break;
 			case 'html':$buf .= $value;
@@ -1294,31 +1294,22 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 					$value_mn = '';
 					
 				}
-				$month_field = '<span class="screen-reader-text">' . __( 'Month', 'learndash' ) . '</span><select class="ld_date_mm" name="'. $name .'[mm]" ><option value=""></option>';
+				$month_field = '<span class="screen-reader-text">' . esc_html__( 'Month', 'learndash' ) . '</span><select class="ld_date_mm" name="'. $name .'[mm]" ><option value=""></option>';
 				for ( $i = 1; $i < 13; $i = $i +1 ) {
 					$monthnum = zeroise($i, 2);
 					$monthtext = $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) );
 					$month_field .= "\t\t\t" . '<option value="' . $monthnum . '" data-text="' . $monthtext . '" ' . selected( $monthnum, $value_mm, false ) . '>';
 					/* translators: 1: month number (01, 02, etc.), 2: month abbreviation */
-					$month_field .= sprintf( __( '%1$s-%2$s' ), $monthnum, $monthtext ) . "</option>\n";
+					$month_field .= sprintf( esc_html_x( '%1$s-%2$s', 'placeholder: month number, month text', 'learndash' ), $monthnum, $monthtext ) . "</option>\n";
 				}
 				$month_field .= '</select>';
 
-				$day_field = '<span class="screen-reader-text">' . __( 'Day', 'learndash' ) . '</span><input type="number" placeholder="DD" min="1" max="31" class="ld_date_jj" name="'. $name .'[jj]" value="' . $value_jj . '" size="2" maxlength="2" autocomplete="off" />';
-				$year_field = '<span class="screen-reader-text">' . __( 'Year', 'learndash' ) . '</span><input  type="number" placeholder="YYYY" min="'. date('Y') .'" max="9999" class="ld_date_aa" name="'. $name .'[aa]" value="' . $value_aa . '" size="4" maxlength="4" autocomplete="off" />';
-				$hour_field = '<span class="screen-reader-text">' . __( 'Hour', 'learndash' ) . '</span><input type="number" min="0" max="23" placeholder="HH" class="ld_date_hh" name="'. $name .'[hh]" value="' . $value_hh . '" size="2" maxlength="2" autocomplete="off" />';
-				$minute_field = '<span class="screen-reader-text">' . __( 'Minute', 'learndash' ) . '</span><input type="number" min="0" max="59" placeholder="MM" class="ld_date_mn" name="'. $name .'[mn]" value="' . $value_mn . '" size="2" maxlength="2" autocomplete="off" />';
+				$day_field = '<span class="screen-reader-text">' . esc_html__( 'Day', 'learndash' ) . '</span><input type="number" placeholder="DD" min="1" max="31" class="ld_date_jj" name="'. $name .'[jj]" value="' . $value_jj . '" size="2" maxlength="2" autocomplete="off" />';
+				$year_field = '<span class="screen-reader-text">' . esc_html__( 'Year', 'learndash' ) . '</span><input  type="number" placeholder="YYYY" min="0000" max="9999" class="ld_date_aa" name="'. $name .'[aa]" value="' . $value_aa . '" size="4" maxlength="4" autocomplete="off" />';
+				$hour_field = '<span class="screen-reader-text">' . esc_html__( 'Hour', 'learndash' ) . '</span><input type="number" min="0" max="23" placeholder="HH" class="ld_date_hh" name="'. $name .'[hh]" value="' . $value_hh . '" size="2" maxlength="2" autocomplete="off" />';
+				$minute_field = '<span class="screen-reader-text">' . esc_html__( 'Minute', 'learndash' ) . '</span><input type="number" min="0" max="59" placeholder="MM" class="ld_date_mn" name="'. $name .'[mn]" value="' . $value_mn . '" size="2" maxlength="2" autocomplete="off" />';
 
-				/*
-				$ampm_options = array( '', __('am', 'learndash'), __('pm', 'learndash') );
-				$ampm_field = '<span class="screen-reader-text">' . __( 'am/pm', 'learndash' ) . '</span><select class="ld_date_ampm" name="ld_date[ampm]" >';
-				foreach ( $ampm_options as $ampm_option ) {
-					$ampm_field .= "\t\t\t" . '<option value="' . $ampm_option . '" ' . selected( $ampm_option, $value_apmp, false ) . '>'. $ampm_option . "</option>\n";
-				}
-				$ampm_field .= '</select>';
-				*/
-				//$buf .= '<div class="ld_date_selector">'. sprintf( __( '%1$s %2$s, %3$s @ %4$s:%5$s %6$s' ), $month, $day, $year, $hour, $minute, $ampm_field ) .'</div>';
-				$buf .= '<div class="ld_date_selector">'. sprintf( __( '%1$s %2$s, %3$s @ %4$s:%5$s' ), 
+				$buf .= '<div class="ld_date_selector">'. sprintf( esc_html__( '%1$s %2$s, %3$s @ %4$s:%5$s' ),
 					$month_field, $day_field, $year_field, $hour_field, $minute_field ) .'</div>';
 				
 
@@ -1337,7 +1328,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 			}
 
 			$buf .= "<input readonly type='text' name='length$n' size='3' maxlength='3' style='width:53px;height:23px;margin:0px;padding:0px;' value='" . strlen( $value ) . "' />"
-			. sprintf( __( ' characters. Most search engines use a maximum of %s chars for the %s.', 'learndash' ), $size, strtolower( $options['name'] ) );
+			. sprintf( esc_html__( ' characters. Most search engines use a maximum of %s chars for the %s.', 'learndash' ), $size, strtolower( $options['name'] ) );
 		}
 
 		return $buf;
@@ -1399,7 +1390,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 
 		if ( $opts['label'] != 'none' ) {
 			if ( isset( $opts['help_text'] ) ) {
-				$help_text   = sprintf( Semper_Fi_Module::DISPLAY_HELP_START, __( 'Click for Help!', 'learndash' ), $name, $this->plugin_path['images_url'], $opts['name'] );
+				$help_text   = sprintf( Semper_Fi_Module::DISPLAY_HELP_START, esc_html__( 'Click for Help!', 'learndash' ), $name, $this->plugin_path['images_url'], $opts['name'] );
 				$help_text_2 = sprintf( Semper_Fi_Module::DISPLAY_HELP_END, $name, $opts['help_text'] );
 			} else {
 				$help_text = $opts['name'];
@@ -1657,7 +1648,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 			}
 
 			if ( isset( $_POST['Submit_Default'] ) || isset( $_POST['Submit_All_Default'] ) ) {
-				$message = __( 'Options Reset.', 'learndash' );
+				$message = esc_html__( 'Options Reset.', 'learndash' );
 
 				if ( isset( $_POST['Submit_All_Default'] ) ) {
 					$this->reset_options( $location, true );
@@ -1674,7 +1665,7 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 			}
 
 			if ( ! empty( $_POST['Submit'] ) ) {
-				$message = __( 'Options Updated.', 'learndash' );
+				$message = esc_html__( 'Options Updated.', 'learndash' );
 				$default_options = $this->default_options( $location );
 
 				foreach ( $default_options as $k => $v ) {
@@ -1818,12 +1809,12 @@ if ( ! class_exists( 'Semper_Fi_Module' ) ) {
 								'Submit'		 	=> array(
 									'type' => 'submit',
 									'class' => 'button-primary',
-									'value' => __( 'Update Options', 'learndash' ) . ' &raquo;',
+									'value' => esc_html__( 'Update Options', 'learndash' ) . ' &raquo;',
 								),
 								'Submit_Default' => array(
 									'type' => 'submit',
 									'class' => 'button-primary',
-									'value' => __( 'Reset to Defaults', 'learndash' ) . ' &raquo;',
+									'value' => esc_html__( 'Reset to Defaults', 'learndash' ) . ' &raquo;',
 								),
 							);
 

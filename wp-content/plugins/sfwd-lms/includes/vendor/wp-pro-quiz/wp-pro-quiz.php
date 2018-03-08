@@ -22,7 +22,7 @@ define('WPPROQUIZ_URL', plugins_url('', __FILE__));
 define('WPPROQUIZ_FILE', __FILE__);
 define('WPPROQUIZ_PPATH', dirname(plugin_basename(__FILE__)));
 define('WPPROQUIZ_PLUGIN_PATH', WPPROQUIZ_PATH.'/plugin');
-define('WPPROQUIZ_TEXT_DOMAIN', 'wp-pro-quiz' );
+//define('WPPROQUIZ_TEXT_DOMAIN', 'learndash' );
 
 $uploadDir = wp_upload_dir();
 
@@ -31,17 +31,8 @@ define('WPPROQUIZ_CAPTCHA_URL', $uploadDir['baseurl'].'/wp_pro_quiz_captcha');
 
 spl_autoload_register('wpProQuiz_autoload');
 
-$WpProQuiz_Answer_types_labels = array(
-	'single' 				=> 	__('Single choice', 'wp-pro-quiz'),
-	'multiple' 				=>	__('Multiple choice', 'wp-pro-quiz'),
-	'free_answer'			=>	__('"Free" choice', 'wp-pro-quiz'),
-	'sort_answer'			=>	__('"Sorting" choice', 'wp-pro-quiz'),
-	'matrix_sort_answer' 	=>	__('"Matrix Sorting" choice', 'wp-pro-quiz'),
-	'cloze_answer'			=>	__('Fill in the blank', 'wp-pro-quiz'),
-	'assessment_answer' 	=>	__('Assessment', 'wp-pro-quiz'),
-	'essay'					=>	__('Essay / Open Answer', 'wp-pro-quiz')
-);
-
+$WpProQuiz_Answer_types_labels = array();
+global $WpProQuiz_Answer_types_labels;
 
 // This is never called. 
 //register_activation_hook(__FILE__, array('WpProQuiz_Helper_Upgrade', 'upgrade'));
@@ -88,16 +79,29 @@ function wpProQuiz_autoload($class) {
 
 function wpProQuiz_pluginLoaded() {
 	
-	if ((defined('LD_LANG_DIR')) && (LD_LANG_DIR)) {
-		load_plugin_textdomain( WPPROQUIZ_TEXT_DOMAIN, false, LD_LANG_DIR );
-	} else {
-		load_plugin_textdomain( WPPROQUIZ_TEXT_DOMAIN, false, WPPROQUIZ_PPATH.'/languages');
+	if ( LEARNDASH_LMS_TEXT_DOMAIN !== LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ) {
+		if ((defined('LD_LANG_DIR')) && (LD_LANG_DIR)) {
+			load_plugin_textdomain( LEARNDASH_WPPROQUIZ_TEXT_DOMAIN, false, LD_LANG_DIR );
+		} else {
+			load_plugin_textdomain( LEARNDASH_WPPROQUIZ_TEXT_DOMAIN, false, WPPROQUIZ_PPATH.'/languages');
+		}
 	}
 	
 	if(get_option('wpProQuiz_version') !== WPPROQUIZ_VERSION) {
 		WpProQuiz_Helper_Upgrade::upgrade();
 	}
 	
+	global $WpProQuiz_Answer_types_labels;
+	$WpProQuiz_Answer_types_labels = array(
+		'single' 				=> 	esc_html__('Single choice', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'multiple' 				=>	esc_html__('Multiple choice', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'free_answer'			=>	esc_html__('"Free" choice', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'sort_answer'			=>	esc_html__('"Sorting" choice', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'matrix_sort_answer' 	=>	esc_html__('"Matrix Sorting" choice', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'cloze_answer'			=>	esc_html__('Fill in the blank', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'assessment_answer' 	=>	esc_html__('Assessment', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN),
+		'essay'					=>	esc_html__('Essay / Open Answer', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN)
+	);
 	
 	
 // 	//ACHIEVEMENTS Version 2.x.x

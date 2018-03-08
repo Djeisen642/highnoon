@@ -190,7 +190,6 @@ function learndash_get_lesson_id( $post_id = null, $course_id = null ) {
  */
 function ld_get_mycourses( $user_id = null, $atts = array() ) {
 
-
 	$defaults = array(
 		'order' 	=> 'DESC', 
 		'orderby' 	=> 'ID', 
@@ -328,8 +327,10 @@ function sfwd_lms_access_redirect( $post_id ) {
 
 	$link = get_permalink( learndash_get_course_id( $post_id ) );
 	$link = apply_filters( 'learndash_access_redirect' , $link, $post_id );
-	wp_redirect( $link );
-	exit();
+	if ( !empty( $link ) ) {
+		wp_redirect( $link );
+		exit();
+	}
 }
 
 
@@ -403,7 +404,7 @@ function ld_course_access_expired_alert() {
 		?>
 		<script>
 			setTimeout(function() {
-				alert("<?php echo sprintf( _x( 'Your access to this %s has expired.', 'Your access to this course has expired.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' )); ?>")
+				alert("<?php echo sprintf( esc_html_x( 'Your access to this %s has expired.', 'Your access to this course has expired.', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' )); ?>")
 			}, 2000);
 		</script>
 		<?php
@@ -625,16 +626,35 @@ function lesson_visible_after( $content, $post ) {
 			} else {
 				$lesson_id = learndash_get_setting( $post, 'lesson' );	
 			}
-			if ( empty( $lesson_id ) ) {
-				return $content; 
-			}
 		} else {
 			return $content; 
 		}
 	}
 
+	if ( empty( $lesson_id ) ) {
+		return $content; 
+	}
+
+	if ( is_user_logged_in() ) {
+		$user_id = get_current_user_id();
+	} else {
+		return $content; 
+	}
+
+	if ( learndash_is_admin_user( $user_id ) ) {
+		$bypass_course_limits_admin_users = LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_General_Admin_User', 'bypass_course_limits_admin_users' );
+		if ( $bypass_course_limits_admin_users == 'yes' ) $bypass_course_limits_admin_users = true;
+		else $bypass_course_limits_admin_users = false;
+								
+	} else {
+		$bypass_course_limits_admin_users = false;
+	}
+		
+	// For logged in users to allow an override filter. 
+	$bypass_course_limits_admin_users = apply_filters( 'learndash_prerequities_bypass', $bypass_course_limits_admin_users, $user_id, $post->ID, $post );
+
 	$lesson_access_from = ld_lesson_access_from( $lesson_id, get_current_user_id() );
-	if ( empty( $lesson_access_from) ) {
+	if ( ( empty( $lesson_access_from ) ) || ( $bypass_course_limits_admin_users ) ) {
 		return $content; 
 	} else {
 		$content = SFWD_LMS::get_template( 
@@ -721,7 +741,7 @@ function learndash_get_course_prerequisites( $post_id = 0 ) {
 				foreach( $course_pre as $c_id ) {
 					//Now check if the prerequities course is completed by user or not
 					$course_status = learndash_course_status( $c_id, null );
-					if ( $course_status == __( 'Completed','learndash' ) ) { 
+					if ( $course_status == esc_html__( 'Completed','learndash' ) ) { 
 						$courses_status_array[$c_id] = true;
 					} else {
 						$courses_status_array[$c_id] = false;
@@ -2181,3 +2201,94 @@ function learndash_get_page_by_path( $slug = '', $post_type = '' ) {
 	
 	return $course_post;
 }
+
+/**
+ * Utility function to get the Course Lessons per page setting. This function
+ * will initially source the per_page from the course. But if we are using the 
+ * default lessons options setting we will use that. Then if the lessons options
+ * is not set for some reason we use the default system option 'posts_per_page'. 
+ *
+ * @param $course_id int the course_id to get the per_page value from
+ * @return $course_lessons_per_page int will be the calculated lessons per page or zero
+ *
+ * @since 2.5.4
+ */
+function learndash_get_course_lessons_per_page( $course_id = 0 ) {
+	$course_lessons_per_page = 0;
+	
+	if ( !empty( $course_id ) ) {
+		$course_settings = learndash_get_setting( intval( $course_id ) );
+		$lessons_options = learndash_get_option( 'sfwd-lessons' );
+		
+		if ( ( isset( $course_settings['course_lesson_per_page'] ) ) && ( $course_settings['course_lesson_per_page'] == 'CUSTOM' ) && ( isset( $course_settings['course_lesson_per_page_custom'] ) ) ) {
+			$course_lessons_per_page = intval( $course_settings['course_lesson_per_page_custom'] );
+		} else {
+			if ( is_null( $lessons_options['posts_per_page'] ) ) {
+				$course_lessons_per_page = get_option( 'posts_per_page' );
+			} else {
+				$course_lessons_per_page = intval( $lessons_options['posts_per_page'] ) ;
+			}
+		}
+	}
+	
+	return $course_lessons_per_page;
+}
+
+
+/**
+ * When Course Lessons pagnination is enabled we want to advance the page to the next avaailable lesson page.
+ *
+ * For example we have a course with 100 lessons and the course has per page set to 10. The student can completed 
+ * up to lesson 73. When the student returns to the course we don't want to default to show the first page 
+ * (lessons 1-10). Instead we want to redirect the user to page 7 showing lessons 71-80. 
+ * 
+ * @since 2.5.4
+ */
+function learndash_course_set_lessons_start_page( ) {
+	// Last minute change to not use this for the v2.5.5 release. 
+	return;
+	if ( ( !is_admin() ) && ( is_single() ) ) {
+		$queried_object = get_queried_object();
+		if ( ( is_a( $queried_object, 'WP_Post' ) ) && ( is_user_logged_in() ) && ( !isset( $_GET['ld-lesson-page'] ) ) ) {
+			if ( $queried_object->post_type == 'sfwd-courses' ) {
+				if ( apply_filters( 'learndash_course_lessons_advance_progress_page', true, $queried_object->ID, get_current_user_id() ) ) {
+					$course_lessons_per_page = learndash_get_course_lessons_per_page( $queried_object->ID );
+					if ( $course_lessons_per_page > 0 ) {
+						$user_courses = get_user_meta( get_current_user_id(), '_sfwd-course_progress', true );
+						if ( ( isset( $user_courses[$queried_object->ID]['lessons'] ) ) && ( !empty( $user_courses[$queried_object->ID]['lessons'] ) ) ) {
+							$lesson_paged = ceil( ( count( $user_courses[$queried_object->ID]['lessons'] ) + 1 ) / $course_lessons_per_page );
+							if ( $lesson_paged > 1 ) {
+								$redirect_url = add_query_arg( 'ld-lesson-page', $lesson_paged );
+								wp_redirect( $redirect_url );
+								die();
+							}
+						}
+					}
+				}
+			} 
+		}
+	} 
+}
+//add_action( 'wp', 'learndash_course_set_lessons_start_page', 1 );
+
+/**
+ * Called from within the Coure Lessons List processing query SFWD_CPT::loop_shortcode.
+ * This action will setup a global pager array to be used in templates.  
+ */
+
+$course_lessons_results = array( 'pager' => array( ) );
+global $course_lessons_results;
+
+function learndash_course_lessons_list_pager( $query_result = null, $pager_context = '' ) {
+	global $course_lessons_results;
+
+	$course_lessons_results['pager']['paged'] = 1;
+	if ( ( isset( $query_result->query_vars['paged'] ) ) && ( $query_result->query_vars['paged'] > 1 ) ) {
+		$course_lessons_results['pager']['paged'] = $query_result->query_vars['paged'];
+	}
+	
+	$course_lessons_results['pager']['total_items'] = $query_result->found_posts;
+	$course_lessons_results['pager']['total_pages'] = $query_result->max_num_pages;
+}
+add_action( 'learndash_course_lessons_list_pager', 'learndash_course_lessons_list_pager', 10, 2 );
+

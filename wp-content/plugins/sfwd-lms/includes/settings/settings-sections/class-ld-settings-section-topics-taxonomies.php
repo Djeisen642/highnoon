@@ -19,10 +19,10 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'taxonomies';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Taxonomies', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic') );
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Taxonomies', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic') );
 		
 			// Used to show the section description above the fields. Can be empty
-			$this->settings_section_description		=	sprintf( _x( '<p>Control which Taxonomies can be used with the LearnDash %s.</p>', 'placeholder: Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'topics') ); 
+			$this->settings_section_description		=	sprintf( wp_kses_post( _x( '<p>Control which Taxonomies can be used with the LearnDash %s.</p>', 'placeholder: Topics', 'learndash' ) ), LearnDash_Custom_Label::get_label( 'topics') );
 
 			parent::__construct(); 
 		}
@@ -68,41 +68,41 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'ld_topic_category' => array(
 					'name'  		=> 	'ld_topic_category', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( 'LearnDash %s Categories', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Enable the builtin LearnDash %s Categories', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'label' 		=> 	sprintf( esc_html_x( 'LearnDash %s Categories', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Enable the builtin LearnDash %s Categories', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 					'value' 		=> 	$this->setting_option_values['ld_topic_category'],
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 				'ld_topic_tag' => array(
 					'name'  		=> 	'ld_topic_tag', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( 'LearnDash %s Tags', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Enable the builtin LearnDash %s Tags', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'label' 		=> 	sprintf( esc_html_x( 'LearnDash %s Tags', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Enable the builtin LearnDash %s Tags', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 					'value' 		=> 	$this->setting_option_values['ld_topic_tag'],
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 				'wp_post_category' => array(
 					'name'  		=> 	'wp_post_category', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'WordPress Post Categories', 'learndash' ),
-					'help_text'  	=> 	__( 'Enable the builtin WordPress Post Categories', 'learndash' ),
+					'label' 		=> 	esc_html__( 'WordPress Post Categories', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Enable the builtin WordPress Post Categories', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['wp_post_category'],
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 				'wp_post_tag' => array(
 					'name'  		=> 	'wp_post_tag', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'WordPress Post Tags', 'learndash' ),
-					'help_text'  	=> 	__( 'Enable the builtin WordPress Post Tags', 'learndash' ),
+					'label' 		=> 	esc_html__( 'WordPress Post Tags', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Enable the builtin WordPress Post Tags', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['wp_post_tag'],
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 			);

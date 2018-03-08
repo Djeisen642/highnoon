@@ -4,7 +4,7 @@
  *
  * @since 		1.0.0
  * @author 		Eric Daams
- * @copyright 	Copyright (c) 2017, Studio 164a
+ * @copyright 	Copyright (c) 2018, Studio 164a
  */
 
 $benefactor = $view_args['benefactor'];

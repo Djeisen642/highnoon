@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // First generate the message
-$message = sprintf( __( '<span class="ld-display-label">Available on:</span> <span class="ld-display-date">%s</span>', 'learndash' ), learndash_adjust_date_time_display( $lesson_access_from_int ) );
+$message = sprintf( wp_kses_post( __( '<span class="ld-display-label">Available on:</span> <span class="ld-display-date">%s</span>', 'learndash' ) ), learndash_adjust_date_time_display( $lesson_access_from_int ) );
 $wrap_start = '<small class="notavailable_message">';
 $wrap_end = '</small>';
 
 // The figure out how to display it
 if ( $context == 'lesson' ) {
 	// On the lesson single we display additional information. 
-	$message .= '<br><br><a href="'. get_permalink( $course_id) . '">'. sprintf( _x( 'Return to %s Overview', 'Return to Course Overview Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '</a>';
+	$message .= '<br><br><a href="'. get_permalink( $course_id) . '">'. sprintf( esc_html_x( 'Return to %s Overview', 'Return to Course Overview Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '</a>';
 	
 	$wrap_start = '<div class="notavailable_message">';
 	$wrap_end = '</div>';

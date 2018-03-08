@@ -11,7 +11,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Reports' ) ) {
 			$this->parent_menu_page_url		=	'admin.php?page=learndash-lms-reports';
 			$this->menu_page_capability		=	LEARNDASH_ADMIN_CAPABILITY_CHECK;
 			$this->settings_page_id 		= 	'learndash-lms-reports';
-			$this->settings_page_title 		= 	_x( 'Reports', 'Learndash Report Menu Label', 'learndash' );
+			$this->settings_page_title 		=  esc_html_x( 'Reports', 'Learndash Report Menu Label', 'learndash' );
 			$this->settings_tab_title		=	$this->settings_page_title;
 			$this->settings_tab_priority	=	0;
 			
@@ -153,13 +153,13 @@ if ( !class_exists( 'Learndash_Admin_Settings_Data_Reports' ) ) {
 
 			?>
 			<div id="learndash-settings" class="wrap">
-				<h1><?php _e( 'User Reports', 'learndash' ); ?></h1>
+				<h1><?php esc_html_e( 'User Reports', 'learndash' ); ?></h1>
 				<form method="post" action="options.php">
 					<div class="sfwd_options_wrapper sfwd_settings_left">
 						<div id="advanced-sortables" class="meta-box-sortables">
 							<div id="sfwd-courses_metabox" class="postbox learndash-settings-postbox">
-								<div class="handlediv" title="<?php _e( 'Click to toggle', 'learndash' ); ?>"><br></div>
-								<h3 class="hndle"><span><?php _e( 'User Reports', 'learndash' ); ?></span></h3>
+								<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'learndash' ); ?>"><br></div>
+								<h3 class="hndle"><span><?php esc_html_e( 'User Reports', 'learndash' ); ?></span></h3>
 								<div class="inside">
 									<div class="sfwd sfwd_options sfwd-courses_settings">
 

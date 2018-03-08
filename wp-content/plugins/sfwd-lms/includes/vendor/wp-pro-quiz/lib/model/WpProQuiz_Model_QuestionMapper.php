@@ -131,7 +131,7 @@ class WpProQuiz_Model_QuestionMapper extends WpProQuiz_Model_Mapper {
 		return $model;
 	}
 	
-	public function fetchById($id) {
+	public function fetchById($id, $online = 1 ) {
 		
 		$ids = array_map('intval', (array)$id);
 		$a = array();
@@ -139,13 +139,14 @@ class WpProQuiz_Model_QuestionMapper extends WpProQuiz_Model_Mapper {
 		if(empty($ids))
 			return null;
 		
+		$sql_str = 	"SELECT * FROM ". $this->_table. " WHERE id IN(". implode(', ', $ids) .") ";
+		
+		if ( ( $online === 1 ) || ( $online === 1 ) ) {
+			$sql_str .= " AND online = ". $online;
+		}
+		
 		$results = $this->_wpdb->get_results(
-				"SELECT
-					*
-				FROM
-					". $this->_table. "
-				WHERE
-					id IN(".implode(', ', $ids).") AND online = 1",
+				$sql_str,
 				ARRAY_A
 		);
 		

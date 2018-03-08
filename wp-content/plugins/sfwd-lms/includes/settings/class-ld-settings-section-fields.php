@@ -76,11 +76,11 @@ if ( !class_exists( 'LearnDash_Settings_Section_Fields' ) ) {
 			?>
 			<div id="<?php echo $field['args']['id'] ?>_field" class="sfwd_input <?php echo $field_class ?> <?php echo $field_error_class; ?>">
 				<span class="sfwd_option_label">
-					<a class="sfwd_help_text_link" style="cursor:pointer;" title="<?php _e( 'Click for Help!', 'learndash' ) ?>" 
+					<a class="sfwd_help_text_link" style="cursor:pointer;" title="<?php esc_html_e( 'Click for Help!', 'learndash' ) ?>"
 						onclick="toggleVisibility('<?php echo $field['args']['id'] ?>_tip');"><img 
 							alt="" src="<?php echo LEARNDASH_LMS_PLUGIN_URL ?>assets/images/question.png" /><label for="<?php echo esc_attr( $field['args']['label_for'] ) ?>" class="sfwd_label"><?php echo $field['title']; ?><?php 
 						if ( isset( $field['args']['required'] ) ) {
-							echo __(' <span class="learndash_required_field"><abbr title="Required">*</abbr></span>', 'learndash');
+							?><span class="learndash_required_field"><abbr title="<?php esc_html_e('Required', 'learndash' ) ?>">*</abbr></span><?php
 						}
 						?></label>
 					</a>

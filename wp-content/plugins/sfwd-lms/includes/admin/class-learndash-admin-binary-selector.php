@@ -47,8 +47,8 @@ if (!class_exists('Learndash_Binary_Selector')) {
 				'max_height'				=>	'250px',
 				'min_height'				=>	'250px',
 				'lazy_load'					=>	false,
-				'search_label_left'			=>	__( 'Search:', 'learndash' ),
-				'search_label_right'		=>	__( 'Search:', 'learndash' ),
+				'search_label_left'			=>  esc_html__( 'Search:', 'learndash' ),
+				'search_label_right'		=>	esc_html__( 'Search:', 'learndash' ),
 				'is_search'					=>	false,	
 				'is_pager'					=>	false
 			);
@@ -170,7 +170,7 @@ if (!class_exists('Learndash_Binary_Selector')) {
 			
 			?>
 			<td class="learndash-binary-selector-section learndash-binary-selector-section-<?php echo $position ?>">
-				<input placeholder="<?php echo $this->get_search_label($position) ?>" type="text" id="learndash-binary-selector-search-<?php echo $this->args['html_slug'] ?>" class="learndash-binary-selector-search learndash-binary-selector-search-<?php echo $position ?>" />
+				<input placeholder="<?php echo $this->get_search_label($position) ?>" type="text" id="learndash-binary-selector-search-<?php echo $this->args['html_slug'] ?>-<?php echo $position ?>" class="learndash-binary-selector-search learndash-binary-selector-search-<?php echo $position ?>" />
 				
 				<select multiple="multiple" class="learndash-binary-selector-items learndash-binary-selector-items-<?php echo $position ?>">
 					<?php $this->show_selections_section_items( $position ); ?>
@@ -203,9 +203,9 @@ if (!class_exists('Learndash_Binary_Selector')) {
 		
 		function show_selections_section_pager( $position = '' ) {
 			?>
-			<li class="learndash-binary-selector-pager-prev"><a class="learndash-binary-selector-pager-prev" style="display:none;" href="#"><?php _e('&lsaquo; prev', 'learndash') ?></a></li>
-			<li class="learndash-binary-selector-pager-info" style="display:none;"><?php _e('Page', 'learndash'); ?> <span class="current_page"></span> of <span class="total_pages"></span> <?php /* ?><span class="total_items">(<span class="total_items_count"></span> <?php _e('items', 'learndash');?>)</span><?php */ ?></li>
-			<li class="learndash-binary-selector-pager-next"><a class="learndash-binary-selector-pager-next" style="display:none;" href="#"><?php _e('next  &rsaquo;', 'learndash') ?></a></li>
+			<li class="learndash-binary-selector-pager-prev"><a class="learndash-binary-selector-pager-prev" style="display:none;" href="#"><?php esc_html_e('&lsaquo; prev', 'learndash') ?></a></li>
+			<li class="learndash-binary-selector-pager-info" style="display:none;"><?php esc_html_e('Page', 'learndash'); ?> <span class="current_page"></span> of <span class="total_pages"></span> <?php /* ?><span class="total_items">(<span class="total_items_count"></span> <?php esc_html_e('items', 'learndash');?>)</span><?php */ ?></li>
+			<li class="learndash-binary-selector-pager-next"><a class="learndash-binary-selector-pager-next" style="display:none;" href="#"><?php esc_html_e('next  &rsaquo;', 'learndash') ?></a></li>
 			<?php
 		}
 		
@@ -215,7 +215,7 @@ if (!class_exists('Learndash_Binary_Selector')) {
 			} else if ( isset($this->args['search_label'] ) ) {
 				return $this->args['search_label'];
 			} else {
-				return __( 'Search', 'learndash' );
+				return esc_html__( 'Search', 'learndash' );
 			}
 		}
 		
@@ -425,13 +425,13 @@ if (!class_exists('Learndash_Binary_Selector_Course_Users')) {
 
 			$defaults = array(
 				'course_id'				=>	0,
-				'html_title' 			=>	'<h3>'. _x('%s Users', 'Course Users Label', 'learndash') .'</h3>',
-				'html_title' 			=>	'<h3>'. sprintf( _x('%s Users', 'Course Users label', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ) .'</h3>',
+				'html_title' 			=>	'<h3>'. esc_html_x('%s Users', 'Course Users Label', 'learndash') .'</h3>',
+				'html_title' 			=>	'<h3>'. sprintf( esc_html_x('%s Users', 'Course Users label', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ) .'</h3>',
 				'html_id'				=>	'learndash_course_users',
 				'html_class'			=>	'learndash_course_users',
 				'html_name'				=>	'learndash_course_users',
-				'search_label_left'		=>	sprintf( _x( 'Search All %s Users', 'Search All Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-				'search_label_right'	=>	sprintf( _x( 'Search Assigned %s Users', 'Search Assigned Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+				'search_label_left'		=>	sprintf( esc_html_x( 'Search All %s Users', 'Search All Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+				'search_label_right'	=>	sprintf( esc_html_x( 'Search Assigned %s Users', 'Search Assigned Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -453,12 +453,12 @@ if (!class_exists('Learndash_Binary_Selector_Group_Users')) {
 
 			$defaults = array(
 				'group_id'				=>	0,
-				'html_title' 			=>	'<h3>'. _x('Group Users', 'Group Users Label', 'learndash') .'</h3>',
+				'html_title' 			=>	'<h3>'. esc_html__('Group Users', 'learndash') .'</h3>',
 				'html_id'				=>	'learndash_group_users',
 				'html_class'			=>	'learndash_group_users',
 				'html_name'				=>	'learndash_group_users',
-				'search_label_left'		=>	_x( 'Search All Group Users', 'Search All Group Users', 'learndash' ),
-				'search_label_right'	=>	_x( 'Search Assigned Group Users', 'Search Assigned Group Users', 'learndash' ),
+				'search_label_left'		=> esc_html__( 'Search All Group Users', 'learndash' ),
+				'search_label_right'	=> esc_html__( 'Search Assigned Group Users', 'learndash' ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -480,12 +480,12 @@ if (!class_exists('Learndash_Binary_Selector_Group_Leaders')) {
 			
 			$defaults = array(
 				'group_id'				=>	0,
-				'html_title' 			=>	'<h3>'. _x('Group Leaders', 'Group Leaders Label', 'learndash') .'</h3>',
+				'html_title' 			=>	'<h3>'. esc_html__('Group Leaders', 'learndash') .'</h3>',
 				'html_id'				=>	'learndash_group_leaders',
 				'html_class'			=>	'learndash_group_leaders',
 				'html_name'				=>	'learndash_group_leaders',
-				'search_label_left'		=>	_x( 'Search All Group Leaders', 'Search All Group Leaders Label', 'learndash' ),
-				'search_label_right'	=>	_x( 'Search Assigned Group Leaders', 'Search Assigned Group Leaders Label', 'learndash' ),
+				'search_label_left'		=> esc_html__( 'Search All Group Leaders', 'learndash' ),
+				'search_label_right'	=> esc_html__( 'Search Assigned Group Leaders', 'learndash' ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -676,12 +676,12 @@ if (!class_exists('Learndash_Binary_Selector_Group_Courses')) {
 			$defaults = array(
 				'group_id'				=>	0,
 				'post_type'				=>	'sfwd-courses',
-				'html_title' 			=>	'<h3>'. sprintf( _x('Group %s', 'Group Courses label', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) ) .'</h3>',
+				'html_title' 			=>	'<h3>'. sprintf( esc_html_x('Group %s', 'Group Courses label', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) ) .'</h3>',
 				'html_id'				=>	'learndash_group_courses',
 				'html_class'			=>	'learndash_group_courses',
 				'html_name'				=>	'learndash_group_courses',
-				'search_label_left'		=>	sprintf( _x( 'Search All Group %s', 'Search All Group Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
-				'search_label_right'	=>	sprintf( _x( 'Search Assigned Group %s', 'Search Assigned Group Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
+				'search_label_left'		=>	sprintf( esc_html_x( 'Search All Group %s', 'Search All Group Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
+				'search_label_right'	=>	sprintf( esc_html_x( 'Search Assigned Group %s', 'Search Assigned Group Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -704,12 +704,12 @@ if (!class_exists('Learndash_Binary_Selector_Course_Groups')) {
 			$defaults = array(
 				'course_id'				=>	0,
 				'post_type'				=>	'groups',
-				'html_title' 			=>	'<h3>'. sprintf( _x('Groups Using %s', 'Groups Using Course Label', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ) .'</h3>',
+				'html_title' 			=>	'<h3>'. sprintf( esc_html_x('Groups Using %s', 'Groups Using Course Label', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ) .'</h3>',
 				'html_id'				=>	'learndash_course_groups',
 				'html_class'			=>	'learndash_course_groups',
 				'html_name'				=>	'learndash_course_groups',
-				'search_label_left'		=>	_x( 'Search All Groups', 'Search All Groups Label', 'learndash' ),
-				'search_label_right'	=>	sprintf( _x( 'Search %s Groups', 'Search Course Groups Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+				'search_label_left'		=> esc_html__( 'Search All Groups', 'learndash' ),
+				'search_label_right'	=>	sprintf( esc_html_x( 'Search %s Groups', 'Search Course Groups Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -732,12 +732,12 @@ if (!class_exists('Learndash_Binary_Selector_User_Courses')) {
 			$defaults = array(
 				'user_id'				=>	0,
 				'post_type'				=>	'sfwd-courses',
-				'html_title' 			=>	'<h3>'. sprintf( _x('User Enrolled in %s', 'User Enrolled in Courses Label', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) ) .'</h3>',
+				'html_title' 			=>	'<h3>'. sprintf( esc_html_x('User Enrolled in %s', 'User Enrolled in Courses Label', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) ) .'</h3>',
 				'html_id'				=>	'learndash_user_courses',
 				'html_class'			=>	'learndash_user_courses',
 				'html_name'				=>	'learndash_user_courses',
-				'search_label_left'		=>	sprintf( _x( 'Search All %s', 'Search All Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
-				'search_label_right'	=>	sprintf( _x( 'Search Enrolled %s', 'Search Enrolled Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
+				'search_label_left'		=>	sprintf( esc_html_x( 'Search All %s', 'Search All Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
+				'search_label_right'	=>	sprintf( esc_html_x( 'Search Enrolled %s', 'Search Enrolled Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -761,12 +761,12 @@ if (!class_exists('Learndash_Binary_Selector_User_Groups')) {
 			$defaults = array(
 				'user_id'				=>	0,
 				'post_type'				=>	'groups',
-				'html_title' 			=>	'<h3>'. _x('User Enrolled in Groups', 'User Enrolled in Groups Label', 'learndash') .'</h3>',
+				'html_title' 			=>	'<h3>'. esc_html__('User Enrolled in Groups', 'learndash') .'</h3>',
 				'html_id'				=>	'learndash_user_groups',
 				'html_class'			=>	'learndash_user_groups',
 				'html_name'				=>	'learndash_user_groups',
-				'search_label_left'		=>	_x( 'Search All Groups', 'Search All Groups Label', 'learndash' ),
-				'search_label_right'	=>	_x( 'Search Enrolled Groups', 'Search Enrolled Groups Label', 'learndash' ),
+				'search_label_left'		=> esc_html__( 'Search All Groups', 'learndash' ),
+				'search_label_right'	=> esc_html__( 'Search Enrolled Groups', 'learndash' ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );
@@ -789,12 +789,12 @@ if (!class_exists('Learndash_Binary_Selector_Leader_Groups')) {
 			$defaults = array(
 				'user_id'				=>	0,
 				'post_type'				=>	'groups',
-				'html_title' 			=>	'<h3>'. _x('Leader of Groups', 'Leader of Groups Label', 'learndash') .'</h3>',
+				'html_title' 			=>	'<h3>'. esc_html__('Leader of Groups', 'learndash') .'</h3>',
 				'html_id'				=>	'learndash_leader_groups',
 				'html_class'			=>	'learndash_leader_groups',
 				'html_name'				=>	'learndash_leader_groups',
-				'search_label_left'		=>	_x( 'Search All Groups', 'Search All Groups Label', 'learndash' ),
-				'search_label_right'	=>	_x( 'Search Leader Groups', 'Search Leader Groups Label', 'learndash' ),
+				'search_label_left'		=> esc_html__( 'Search All Groups', 'learndash' ),
+				'search_label_right'	=> esc_html__( 'Search Leader Groups', 'learndash' ),
 			);
 			
 			$args = wp_parse_args( $args, $defaults );

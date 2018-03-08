@@ -2,11 +2,12 @@
 /**
  * Class that models the offline donation receipt email.
  *
- * @version     1.5.0
- * @package     Charitable/Classes/Charitable_Email_Offline_Donation_Receipt
- * @author      Eric Daams
- * @copyright   Copyright (c) 2017, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Email_Offline_Donation_Receipt
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.5.0
+ * @version   1.5.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
@@ -21,7 +22,7 @@ if ( ! class_exists( 'Charitable_Email_Offline_Donation_Receipt' ) && class_exis
 	class Charitable_Email_Offline_Donation_Receipt extends Charitable_Email_Donation_Receipt {
 
 		/* @var string */
-		CONST ID = 'offline_donation_receipt';
+		const ID = 'offline_donation_receipt';
 
 		/**
 		 * Object types that are used in this email.
@@ -74,13 +75,13 @@ if ( ! class_exists( 'Charitable_Email_Offline_Donation_Receipt' ) && class_exis
 						array( 'gateways_offline', 'instructions' ),
 						__( 'Thank you for your donation. We will contact you shortly for payment.', 'charitable' )
 					) ),
-				)
+				),
 			);
 		}
 
 		/**
 		 * Static method that is fired right after a donation is completed, sending the donation receipt.
-		 *	 
+		 *
 		 * @since  1.5.0
 		 *
 		 * @param  int $donation_id The donation ID we're sending an email about.
@@ -107,7 +108,7 @@ if ( ! class_exists( 'Charitable_Email_Offline_Donation_Receipt' ) && class_exis
 
 			/* All three of those checks passed, so proceed with sending the email. */
 			$email = new Charitable_Email_Offline_Donation_Receipt( array(
-				'donation' => new Charitable_Donation( $donation_id )
+				'donation' => new Charitable_Donation( $donation_id ),
 			) );
 
 			/**
@@ -239,5 +240,5 @@ if ( ! class_exists( 'Charitable_Email_Offline_Donation_Receipt' ) && class_exis
 			 */
 			return apply_filters( 'charitable_email_offline_donation_receipt_default_body', ob_get_clean(), $this );
 		}
-  	}
+	}
 }

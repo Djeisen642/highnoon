@@ -3,7 +3,7 @@ CHARITABLE = window.CHARITABLE || {};
 /**
  * Set up Donation_Form object.
  */
-( function( exports, $ ){
+( function( exports, $ ) {
 
     /**
      * Donation_Form expects a jQuery this.form object.
@@ -50,11 +50,11 @@ CHARITABLE = window.CHARITABLE || {};
             
             $( this ).closest( 'li' ).trigger( 'click' ).find( 'input[name=donation_amount]' ).prop( 'checked', true ).trigger( 'change' );
 
-            $body.off( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
+            self.form.off( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
 
             $( this ).focus();
             
-            $body.on( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
+            self.form.on( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
         
         };
 
@@ -217,11 +217,18 @@ CHARITABLE = window.CHARITABLE || {};
         }
 
         /**
-         * Initialization that should happen for every new form object.
+         * Set up event handlers for donation forms.
          *
          * @return  void
          */
-        var init_each = function() {
+        var init = function() {
+
+            // Init donation amount selection
+            self.form.on( 'click', '.donation-amount', on_select_donation_amount );
+            self.form.on( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
+
+            // Init currency formatting
+            self.form.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );
 
             self.form.find( '.donation-amount input:checked' ).each( function() {
                 $( this ).closest( 'li' ).addClass( 'selected' );
@@ -237,40 +244,21 @@ CHARITABLE = window.CHARITABLE || {};
                 helper : self,
             }, on_submit );
 
+            // This only fires after the first form instance is initialized.
+            if ( false === CHARITABLE.forms_initialized ) {
+
+                // Process the donation on the 'charitable:form:process' event.
+                $body.on( 'charitable:form:process', process_donation );
+            
+                $body.trigger( 'charitable:form:initialize', self );
+                
+                CHARITABLE.forms_initialized = true;
+            }
+
             $body.trigger( 'charitable:form:loaded', self );
-
         }
 
-        /**
-         * Set up event handlers for donation forms.
-         *
-         * Note: This function is only ever designed to run once.
-         *
-         * @return  void
-         */
-        var init = function() {
-
-            // Init donation amount selection
-            $body.on( 'click', '.donation-amount', on_select_donation_amount );
-            $body.on( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
-
-            // Init currency formatting        
-            $body.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );
-
-            // Process the donation on the 'charitable:form:process' event
-            $body.on( 'charitable:form:process', process_donation );
-
-            $body.trigger( 'charitable:form:initialize', self );
-
-            CHARITABLE.forms_initialized = true;
-
-        }
-
-        init_each();
-
-        if ( false === CHARITABLE.forms_initialized ) {
-            init();
-        }
+        init();
 
     };
 
@@ -815,7 +803,7 @@ CHARITABLE.SanitizeURL = function( input ) {
 
         $( 'html' ).addClass( 'js' );
 
-        $( '.charitable-donation-form' ).each( function(){
+        $( '.charitable-donation-form' ).each( function() {
             new CHARITABLE.Donation_Form( $( this ) );
         });
 

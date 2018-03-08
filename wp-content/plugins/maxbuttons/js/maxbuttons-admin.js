@@ -21,8 +21,8 @@ maxAdmin.prototype = {
 }; // MaxAdmin
 
 maxAdmin.prototype.init = function () {
-		this.button_id = $('input[name="button_id"]').val();
 
+		this.button_id = $('input[name="button_id"]').val();
  		// Prevents the output button from being clickable (also in admin list view )
 		$(document).on('click', ".maxbutton-preview", function(e) { e.preventDefault(); });
 		$(document).on('click', '.output .preview-toggle', $.proxy(this.toggle_preview, this));
@@ -43,8 +43,8 @@ maxAdmin.prototype.init = function () {
 		// conditionals
 		$(document).on('reInitConditionals', $.proxy(this.initConditionials, this));
 		this.initConditionials(); // conditional options
-
 		// range inputs
+
 		$(document).on('change, input', 'input[type="range"]', $.proxy(this.updateRange, this ));
 		this.updateRange(null);
 
@@ -113,7 +113,6 @@ maxAdmin.prototype.init = function () {
 
 		// Expand shortcode tabs for more examples.
 		$('.shortcode-expand').on('click', this.toggleShortcode);
-
 
 }; // INIT
 
@@ -612,7 +611,6 @@ maxAdmin.prototype.toggleManual = function (e)
 maxAdmin.prototype.initConditionials = function ()
 {
 	var mAP = this;
-
 	$('[data-show]').each(function () {
 		var condition  = $(this).data('show');
 		var target = condition.target;
@@ -620,29 +618,38 @@ maxAdmin.prototype.initConditionials = function ()
 		var self = this;
 
 		$(document).on('change','[name="' + target + '"]', {child: this, values: values}, $.proxy(mAP.updateConditional, mAP) );
+
     if ( $('[name="' + target + '"]').length > 1)  // trigger change to test condition
     {
-      // this statement doesn't work in MBPRO for some reason
-        $('[name="' + target + '"]:checked').change(['conditional']); // radio button
-
+        $('[name="' + target + '"]:checked').trigger('change', ['conditional']); // radio / checkbox button
     }
     else {
   	   $('[name="' + target + '"]').trigger('change', ['conditional']);
     }
 	});
 
-	$('[data-has]').each(function () {
+// problem here is fields having same target, will add the same event over and over //
+//  the target, input array, have a lot of input fields, which all receive the events. this is the issue.
+
+  var updatelist = [];
+
+  $('[data-has]').each(function () {
 		var condition = $(this).data('has');
 		var target = condition.target;
 		var values = condition.values;
-		var self = this;
 
-		$(document).on('change', '[name="' + target + '"]', {target: target, child: this, values: values}, $.proxy(mAP.updateHasConditional, mAP) );
+  $('[name="' + target + '"]').on('change', {target: target, child: this, values: values}, $.proxy(mAP.updateHasConditional, mAP) );
 
-     $('[name="' + target + '"]').trigger('change', ['conditional']);
-
+   var targetdecl = '[name="' + target + '"]';
+   if (! $.inArray(targetdecl, updatelist));
+    updatelist.push(targetdecl);
 	});
 
+  if (updatelist.length > 0)
+  {
+    // the issue will a lot of event checking still exist..
+    $(updatelist.toString()).first().trigger('change', ['conditional']);
+  }
 
 }
 
@@ -667,7 +674,6 @@ maxAdmin.prototype.updateConditional = function (event)
 			value = 'unchecked';
 		else
 			value = 0;
-
 	}
 
 	if (cond_values.indexOf(value) >= 0)
@@ -695,16 +701,22 @@ maxAdmin.prototype.updateHasConditional = function(event)
 
 	var hascond = false;
 
-	$('[name="' + target + '"]').each(function ()
-	{
-		var target_val = $(this).val();
+/** The issue here is to change this calls, to searches directly for value form cond_values ( mostly 1-3 options ) and not run the entire DOM each time.
+*/
+  var filter = [];
+  $(cond_values).each(function (el)
+  {
 
-		if (cond_values.indexOf(target_val) >= 0)
-		{
-			hascond = true;
-			return false;
-		}
-	});
+    filter.push( '[value=' + this + ']');
+  } );
+
+  if ($('[name="' + target + '"]').filter( filter.toString() ).length > 0)
+  {
+      hascond = true;
+  }
+  else {
+    hascond = false
+  }
 
 	if (hascond)
 	{

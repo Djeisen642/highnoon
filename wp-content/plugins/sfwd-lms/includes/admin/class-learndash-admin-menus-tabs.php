@@ -262,7 +262,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 				
 				if ( isset( $submenu['edit.php?post_type=sfwd-certificates'] ) ) {
 					$add_submenu['sfwd-certificates'] = array(
-						'name' 	=> _x( 'Certificates', 'Certificates Menu Label', 'learndash' ),
+						'name' 	=> esc_html_x( 'Certificates', 'Certificates Menu Label', 'learndash' ),
 						'cap'	=> 'edit_courses',
 						'link'	=> 'edit.php?post_type=sfwd-certificates',
 					);
@@ -273,7 +273,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 			if ( current_user_can('edit_assignments') ) {
 				if ( isset( $submenu['edit.php?post_type=sfwd-assignment'] ) ) {
 					$add_submenu['sfwd-assignment'] = array(
-						'name' 	=> _x( 'Assignments', 'Assignments Menu Label', 'learndash' ),
+						'name' 	=> esc_html_x( 'Assignments', 'Assignments Menu Label', 'learndash' ),
 						'cap'	=> 'edit_assignments',
 						'link'	=> 'edit.php?post_type=sfwd-assignment',
 					);
@@ -285,7 +285,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 			if ( current_user_can('edit_groups') ) {
 				if ( isset( $submenu['edit.php?post_type=groups'] ) ) {
 					$add_submenu['groups'] = array(
-						'name' 	=> _x( 'Groups', 'Groups Menu Label', 'learndash' ),
+						'name' 	=> esc_html_x( 'Groups', 'Groups Menu Label', 'learndash' ),
 						'cap'	=> 'edit_groups',
 						'link'	=> 'edit.php?post_type=groups',
 					);
@@ -299,14 +299,14 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 				if ( !empty( $user_group_ids ) ) {
 			
 					$add_submenu['group_administration'] = array(
-						'name' 	=> _x( 'Group Administration', 'Group Administration Menu Label', 'learndash' ),
+						'name' 	=> esc_html_x( 'Group Administration', 'Group Administration Menu Label', 'learndash' ),
 						'cap'	=> LEARNDASH_ADMIN_CAPABILITY_CHECK,
 						'link'	=> 'admin.php?page=group_admin_page',
 					);
 				}
 			} else if ( learndash_is_group_leader_user() ) {
 				$add_submenu['group_administration'] = array(
-					'name' 	=> _x( 'Group Administration', 'Group Administration Menu Label', 'learndash' ),
+					'name' 	=> esc_html_x( 'Group Administration', 'Group Administration Menu Label', 'learndash' ),
 					'cap'	=> LEARNDASH_GROUP_LEADER_CAPABILITY_CHECK,
 					'link'	=> 'admin.php?page=group_admin_page',
 				);
@@ -315,7 +315,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 
 			if ( learndash_is_group_leader_user() ) {
 				$add_submenu['sfwd-essays'] = array(
-					'name' 	=> _x( 'Submitted Essays', 'Submitted Essays Menu Label', 'learndash' ),
+					'name' 	=> esc_html_x( 'Submitted Essays', 'Submitted Essays Menu Label', 'learndash' ),
 					'cap'	=> 'group_leader',
 					'link'	=> 'edit.php?post_type=sfwd-essays',
 				);
@@ -332,8 +332,8 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 			
 			if (!empty( $add_submenu ) ) {
 				add_menu_page(
-					__( 'LearnDash LMS', 'learndash' ),
-					__( 'LearnDash LMS', 'learndash' ),
+					esc_html__( 'LearnDash LMS', 'learndash' ),
+					esc_html__( 'LearnDash LMS', 'learndash' ),
 					'read',
 					'learndash-lms',
 					null,
@@ -385,7 +385,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 			}
 
 			$add_submenu['settings'] = array(
-				'name' 	=> _x( 'Settings', 'Settings Menu Label', 'learndash' ),
+				'name' 	=> esc_html_x( 'Settings', 'Settings Menu Label', 'learndash' ),
 				'cap'	=> LEARNDASH_ADMIN_CAPABILITY_CHECK,
 				'link'	=> 'admin.php?page=learndash_lms_settings'
 			);
@@ -459,7 +459,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					'edit.php?post_type=sfwd-quiz',
 					array(
 						'link'			=> 	'admin.php?page=ldAdvQuiz&module=globalSettings',
-						'name'			=> 	sprintf( _x( '%s Options', 'Quiz Options Tab Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+						'name'			=> 	sprintf( esc_html_x( '%s Options', 'Quiz Options Tab Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 						'id'			=> 	'sfwd-quiz_page_ldAdvQuiz_globalSettings',
 						'cap'			=> 	'wpProQuiz_change_settings',
 					),
@@ -469,7 +469,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					'edit.php?post_type=sfwd-quiz',
 					array(
 						'link'				=> 	'edit.php?post_type=sfwd-essays',
-						'name'				=> 	_x( 'Submitted Essays', 'Quiz Submitted Essays Tab Label', 'learndash' ),
+						'name'				=>  esc_html_x( 'Submitted Essays', 'Quiz Submitted Essays Tab Label', 'learndash' ),
 						'id'				=> 	'edit-sfwd-essays',
 						'parent_menu_link'	=> 	'edit.php?post_type=sfwd-quiz',
 					),
@@ -479,7 +479,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					'edit.php?post_type=sfwd-quiz',
 					array(
 						'link'			=> 	'admin.php?page=ldAdvQuiz',
-						'name'			=> 	_x( 'Import/Export', 'Quiz Import/Export Tab Label', 'learndash' ),
+						'name'			=>  esc_html_x( 'Import/Export', 'Quiz Import/Export Tab Label', 'learndash' ),
 						'id'			=> 	'sfwd-quiz_page_ldAdvQuiz',
 						'cap'			=> 	'wpProQuiz_export',
 					),
@@ -517,7 +517,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 							$current_screen->parent_file,
 							array(
 								'link'			=> 	'post.php?post='. $post_id .'&action=edit',
-								'name'			=> 	sprintf( _x( 'Edit %s', 'Edit Quiz Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+								'name'			=> 	sprintf( esc_html_x( 'Edit %s', 'Edit Quiz Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 								'id'			=> 	'sfwd-quiz_edit',
 							)
 						);
@@ -526,7 +526,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 							$current_screen->parent_file,
 							array(
 								'link'			=> 	'admin.php?page=ldAdvQuiz&module=question&quiz_id='. $quiz_id .'&post_id='. $post_id,
-								'name'			=> 	_x( 'Questions', 'Quiz Questions Tab Label', 'learndash' ),
+								'name'			=>  esc_html_x( 'Questions', 'Quiz Questions Tab Label', 'learndash' ),
 								'id'			=> 	'sfwd-quiz_page_ldAdvQuiz_question',
 							)
 						);
@@ -535,7 +535,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 							$current_screen->parent_file,
 							array(
 								'link'			=> 	'admin.php?page=ldAdvQuiz&module=statistics&id='. $quiz_id .'&post_id='. $post_id,
-								'name'			=> 	_x( 'Statistics', 'Quiz Statistics Tab Label', 'learndash' ),
+								'name'			=>  esc_html_x( 'Statistics', 'Quiz Statistics Tab Label', 'learndash' ),
 								'id'			=> 	'sfwd-quiz_page_ldAdvQuiz_statistics',
 							)
 						);
@@ -544,7 +544,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 							$current_screen->parent_file,
 							array(
 								'link'			=> 	'admin.php?page=ldAdvQuiz&module=toplist&id='. $quiz_id .'&post_id='. $post_id,
-								'name'			=> 	_x( 'Leaderboard', 'Quiz Leaderboard Tab Label', 'learndash' ),
+								'name'			=>  esc_html_x( 'Leaderboard', 'Quiz Leaderboard Tab Label', 'learndash' ),
 								'id'			=> 	'sfwd-quiz_page_ldAdvQuiz_toplist',
 							)
 						);
@@ -558,7 +558,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					$current_screen_parent_file,
 					array(
 						'id'			=> 	'learndash-lms_page_learndash-lms-reports',
-						'name' 			=> 	_x( 'Reports', 'Reports Menu Label', 'learndash' ),
+						'name' 			=>  esc_html_x( 'Reports', 'Reports Menu Label', 'learndash' ),
 						'cap'			=> 	LEARNDASH_ADMIN_CAPABILITY_CHECK, 
 					),
 					$this->admin_tab_priorities['high']
@@ -568,7 +568,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					$current_screen_parent_file,
 					array(
 						'id'				=> 	'edit-sfwd-transactions',
-						'name'				=> 	_x( 'Transactions', 'Transactions Tab Label', 'learndash' ),
+						'name'				=>  esc_html_x( 'Transactions', 'Transactions Tab Label', 'learndash' ),
 						'link'				=> 	'edit.php?post_type=sfwd-transactions',
 						'parent_menu_link'	=> 	'admin.php?page=learndash-lms-reports',
 					),
@@ -610,7 +610,7 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					'admin.php?page=learndash_lms_settings',
 					array(
 						'link'			=> 	'admin.php?page=nss_plugin_license-sfwd_lms-settings',
-						'name'			=> 	_x( 'LMS License', 'LMS License Tab Label', 'learndash' ),
+						'name'			=>  esc_html_x( 'LMS License', 'LMS License Tab Label', 'learndash' ),
 						'id'			=> 	'admin_page_nss_plugin_license-sfwd_lms-settings',
 					),
 					50
@@ -681,54 +681,55 @@ if ( !class_exists( 'Learndash_Admin_Menus_Tabs' ) ) {
 					 * Filter for current admin tab set
 					 * @since 2.5
 					 */
-					$this->admin_tab_sets[$menu_tab_key] = apply_filters('learndash_admin_tab_sets', $this->admin_tab_sets[$menu_tab_key], $menu_tab_key );
+					$this->admin_tab_sets[$menu_tab_key] = apply_filters('learndash_admin_tab_sets', $this->admin_tab_sets[$menu_tab_key], $menu_tab_key, $current_page_id );
+					if ( !empty( $this->admin_tab_sets[$menu_tab_key] ) ) {
+						echo '<h1 class="nav-tab-wrapper">';
 
-					echo '<h1 class="nav-tab-wrapper">';
+						$post_id = ! empty( $_GET['post_id'] ) ? $_GET['post_id'] : ( empty( $_GET['post'] ) ? 0 : $_GET['post'] );
 
-					$post_id = ! empty( $_GET['post_id'] ) ? $_GET['post_id'] : ( empty( $_GET['post'] ) ? 0 : $_GET['post'] );
-
-					foreach ( $this->admin_tab_sets[$menu_tab_key] as $admin_tab_item ) {		
-						if ( !isset( $admin_tab_item['id'] ) ) 
-							$admin_tab_item['id'] = '';
+						foreach ( $this->admin_tab_sets[$menu_tab_key] as $admin_tab_item ) {		
+							if ( !isset( $admin_tab_item['id'] ) ) 
+								$admin_tab_item['id'] = '';
 						
-						if ( ! empty( $admin_tab_item['id'] ) ) {
+							if ( ! empty( $admin_tab_item['id'] ) ) {
 					
-							if ( $admin_tab_item['id'] == $current_page_id ) {
-								$class = 'nav-tab nav-tab-active';
+								if ( $admin_tab_item['id'] == $current_page_id ) {
+									$class = 'nav-tab nav-tab-active';
 						
-								global $learndash_current_page_link;
-								if ( ( isset( $admin_tab_item['parent_menu_link'] ) ) && ( !empty( $admin_tab_item['parent_menu_link'] ) ) ) 
-									$learndash_current_page_link = trim( $admin_tab_item['parent_menu_link'] );
-								else
-									$learndash_current_page_link = $menu_tab_key;
+									global $learndash_current_page_link;
+									if ( ( isset( $admin_tab_item['parent_menu_link'] ) ) && ( !empty( $admin_tab_item['parent_menu_link'] ) ) ) 
+										$learndash_current_page_link = trim( $admin_tab_item['parent_menu_link'] );
+									else
+										$learndash_current_page_link = $menu_tab_key;
 								
-								add_action( 'admin_footer', 'learndash_select_menu' );
+									add_action( 'admin_footer', 'learndash_select_menu' );
 						
-							} else {
-								$class = 'nav-tab';
-							}
+								} else {
+									$class = 'nav-tab';
+								}
 					
-							$target = ! empty( $admin_tab_item['target'] ) ? 'target="'. $admin_tab_item['target'].'"':'';
+								$target = ! empty( $admin_tab_item['target'] ) ? 'target="'. $admin_tab_item['target'].'"':'';
 					
-							$url = '';
-							if ( ( isset( $admin_tab_item['external_link'] ) ) && ( !empty( $admin_tab_item['external_link'] ) ) ) {
-								$url = $admin_tab_item['external_link'];
-							} else if ( ( isset( $admin_tab_item['link'] ) ) && ( !empty( $admin_tab_item['link'] ) ) ) {
-								$url = $admin_tab_item['link'];
+								$url = '';
+								if ( ( isset( $admin_tab_item['external_link'] ) ) && ( !empty( $admin_tab_item['external_link'] ) ) ) {
+									$url = $admin_tab_item['external_link'];
+								} else if ( ( isset( $admin_tab_item['link'] ) ) && ( !empty( $admin_tab_item['link'] ) ) ) {
+									$url = $admin_tab_item['link'];
 								
-							} else {
-								if ( false !== ( $pos = strpos( $admin_tab_item['id'], 'learndash-lms_page_' ) ) ) {
-									$url_page = str_replace( 'learndash-lms_page_', '', $admin_tab_item['id'] );
-									$url = add_query_arg( array( 'page' => $url_page ), 'admin.php' );
+								} else {
+									if ( false !== ( $pos = strpos( $admin_tab_item['id'], 'learndash-lms_page_' ) ) ) {
+										$url_page = str_replace( 'learndash-lms_page_', '', $admin_tab_item['id'] );
+										$url = add_query_arg( array( 'page' => $url_page ), 'admin.php' );
+									}
+								}
+														
+								if ( !empty( $url ) ) {
+									echo '<a href="'. $url .'" class="'. $class .' nav-tab-'. $admin_tab_item['id'] .'"  '. $target .'>'. $admin_tab_item['name'] .'</a>';
 								}
 							}
-														
-							if ( !empty( $url ) ) {
-								echo '<a href="'. $url .'" class="'. $class .' nav-tab-'. $admin_tab_item['id'] .'"  '. $target .'>'. $admin_tab_item['name'] .'</a>';
-							}
 						}
+						echo '</h1>';
 					}
-					echo '</h1>';
 				} else {
 					global $learndash_current_page_link;
 					$learndash_current_page_link = $menu_tab_key;

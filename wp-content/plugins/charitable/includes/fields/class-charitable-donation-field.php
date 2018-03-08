@@ -2,9 +2,9 @@
 /**
  * Charitable_Donation_Field model.
  *
- * @package   Charitable/Classes/Charitable_Donation_Field 
+ * @package   Charitable/Classes/Charitable_Donation_Field
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.3
@@ -19,6 +19,16 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 	 * Charitable_Donation_Field
 	 *
 	 * @since 1.5.0
+	 *
+	 * @property string         $field
+	 * @property string         $label
+	 * @property string         $data_type
+	 * @property false|callable $value_callback
+	 * @property boolean|array  $donation_form
+	 * @property boolean|array  $admin_form
+	 * @property boolean        $show_in_meta
+	 * @property boolean        $show_in_export
+	 * @property boolean|array  $email_tag
 	 */
 	class Charitable_Donation_Field extends Charitable_Field implements Charitable_Field_Interface {
 
@@ -48,7 +58,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 *                                           args, this label will also be used there as the tag description.
 		 *     @type string         $data_type       How the data should be saved. This may be set to 'meta', 'user' or 'core',
 		 *                                           through 'core' is designed stricly for core Charitable use.
-		 *     @type false|callable $value_callback  A callback function to retrieve the value of the field for a donation.		 
+		 *     @type false|callable $value_callback  A callback function to retrieve the value of the field for a donation.
 		 *                                           The callback function receives up to two arguments: a `Charitable_Donation` object
 		 *                                           and the field key.
 		 *                                           Note that this should only be set to false if either of the following is true:
@@ -68,7 +78,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 *         @type boolean        $required       Whether this is a required field.
 		 *         @type array          $options        Provide a set of options. This is required when `type` is select, radio or
 		 *                                              multi-checkbox. These should be provided in a simple value=>label array,
-		 *                                              where the label is what people see when they select an option, and value 
+		 *                                              where the label is what people see when they select an option, and value
 		 *                                              is what gets stored in the database.
 		 *         @type mixed          $default        The default value for this field.
 		 *         @type boolean        $fullwidth      Whether to show the field as a full-width field.
@@ -78,12 +88,12 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 *                                              and `show_before`. If `priority`, `show_after` and `show_before` are not set,
 		 *                                              the field will be shown after the most recently registered form field.
 		 *         @type string         $show_after     Specify another field that this field should be shown after.
-		 *                                              If `priority` is set, this field is ignored. Note that if multiple fields 
+		 *                                              If `priority` is set, this field is ignored. Note that if multiple fields
 		 *                                              are set to show after the same field, it may not appear immediately after the
 		 *                                              other field. Use in combination with `show_before` or use `priority` instead
 		 *                                              for fine-grained control.
 		 *         @type string         $show_before    Specify another field that this field should be shown before.
-		 *                                              If `priority` is set, this field is ignored. Note that if multiple fields 
+		 *                                              If `priority` is set, this field is ignored. Note that if multiple fields
 		 *                                              are set to show before the same field, it may not appear immediately before
 		 *                                              the other field. Use in combination with `show_after` or use `priority`
 		 *                                              instead for fine-grained control.
@@ -92,7 +102,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 *     }
 		 *     @type boolean|array  $admin_form      {
 		 *         Sets whether the field should be shown in the admin donation form. To prevent the field being available
-		 *         in the form (not even as a hidden input), set to false. If set to true, the form field will inherit arguments 
+		 *         in the form (not even as a hidden input), set to false. If set to true, the form field will inherit arguments
 		 *         from the `donation_form` (if provided), or use default arguments. For control over how the field should be
 		 *         shown in the form, an array can be passed with the same keys as described for `donation_form` above.
 		 *     }
@@ -127,7 +137,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 				'show_in_meta'   => true,
 				'show_in_export' => true,
 				'email_tag'      => true,
-			);			
+			);
 		}
 
 		/**
@@ -137,7 +147,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 *
 		 * @param  string The argument's key.
 		 * @param  mixed  The argument's value.
-		 * @return mixed  The argument value after being registered.
+		 * @return mixed The argument value after being registered.
 		 */
 		protected function sanitize_arg( $key, $value ) {
 			$value = parent::sanitize_arg( $key, $value );
@@ -163,7 +173,7 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 			}
 
 			$defaults = array(
-				'type'      => 'text',				
+				'type'      => 'text',
 				'required'  => false,
 				'fullwidth' => false,
 				'default'   => '',

@@ -15,9 +15,9 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'settings_custom_labels';
 		
 			// Section label/header
-			$this->settings_section_label			=	__( 'Custom Labels', 'learndash' );
+			$this->settings_section_label			=	esc_html__( 'Custom Labels', 'learndash' );
 		
-			$this->reset_confirm_message			=	__('Are you sure want to reset the custom labels?', 'learndash' );
+			$this->reset_confirm_message			=	esc_html__('Are you sure want to reset the custom labels?', 'learndash' );
 
 			parent::__construct(); 
 		}
@@ -55,88 +55,88 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'course' => array(
 					'name'  		=> 	'course',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Course', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "course" (singular).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Course', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "course" (singular).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['course'] ) ? $this->setting_option_values['course'] : '',
 					'class'			=>	'regular-text'
 				),
 				'courses' => array(
 					'name'  		=> 	'courses',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Courses', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "courses" (plural).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Courses', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "courses" (plural).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['courses'] ) ? $this->setting_option_values['courses'] : '',
 					'class'			=>	'regular-text'
 				),
 				'lesson' => array(
 					'name'  		=> 	'lesson',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Lesson', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "lesson" (singular).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Lesson', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "lesson" (singular).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['lesson'] ) ? $this->setting_option_values['lesson'] : '',
 					'class'			=>	'regular-text'
 				),
 				'lessons' => array(
 					'name'  		=> 	'lessons',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Lessons', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "lessons" (plural).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Lessons', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "lessons" (plural).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['lessons'] ) ? $this->setting_option_values['lessons'] : '',
 					'class'			=>	'regular-text'
 				),
 				'topic' => array(
 					'name'  		=> 	'topic',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Topic', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "topic" (singular).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Topic', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "topic" (singular).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['topic'] ) ? $this->setting_option_values['topic'] : '',
 					'class'			=>	'regular-text'
 				),
 				'topics' => array(
 					'name'  		=> 	'topics',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Topics', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "topics" (plural).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Topics', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "topics" (plural).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['topics'] ) ? $this->setting_option_values['topics'] : '',
 					'class'			=>	'regular-text'
 				),
 				'quiz' => array(
 					'name'  		=> 	'quiz',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Quiz', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "quiz" (singular).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Quiz', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "quiz" (singular).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['quiz'] ) ? $this->setting_option_values['quiz'] : '',
 					'class'			=>	'regular-text'
 				),
 				'quizzes' => array(
 					'name'  		=> 	'quizzes',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Quizzes', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "quizzes" (plural).', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Quizzes', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "quizzes" (plural).', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['quizzes'] ) ? $this->setting_option_values['quizzes'] : '',
 					'class'			=>	'regular-text'
 				),
 				'button_take_this_course' => array(
 					'name'  		=> 	'button_take_this_course',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Take this Course (Button)', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "Take this Course" button.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Take this Course (Button)', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "Take this Course" button.', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['button_take_this_course'] ) ? $this->setting_option_values['button_take_this_course'] : '',
 					'class'			=>	'regular-text'
 				),
 				'button_mark_complete' => array(
 					'name'  		=> 	'button_mark_complete',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Mark Complete (Button)', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "Mark Complete" button.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Mark Complete (Button)', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "Mark Complete" button.', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['button_mark_complete'] ) ? $this->setting_option_values['button_mark_complete'] : '',
 					'class'			=>	'regular-text'
 				),
 				'button_click_here_to_continue' => array(
 					'name'  		=> 	'button_click_here_to_continue',
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Click Here to Continue (Button)', 'learndash' ),
-					'help_text'  	=> 	__( 'Label to replace "Click Here to Continue" button.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Click Here to Continue (Button)', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Label to replace "Click Here to Continue" button.', 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['button_click_here_to_continue'] ) ? $this->setting_option_values['button_click_here_to_continue'] : '',
 					'class'			=>	'regular-text'
 				),

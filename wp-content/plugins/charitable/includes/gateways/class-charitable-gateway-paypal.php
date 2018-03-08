@@ -4,7 +4,7 @@
  *
  * @package	  Charitable/Classes/Charitable_Gateway_Paypal
  * @author 	  Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.4
@@ -532,8 +532,8 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 */
 		public function get_redirect_url( $ssl_check = false, $ipn_check = false ) {
 			$paypal_uri = $this->use_ssl( $ssl_check, $ipn_check ) ? 'https://' : 'http://';
-			
-			if ( charitable_get_option( 'test_mode' ) ) { 
+
+			if ( charitable_get_option( 'test_mode' ) ) {
 				$paypal_uri .= $ipn_check ? 'ipnpb.sandbox.' : 'sandbox.';
 			} else {
 				$paypal_uri .= $ipn_check ? 'ipnpb.' : 'www.';

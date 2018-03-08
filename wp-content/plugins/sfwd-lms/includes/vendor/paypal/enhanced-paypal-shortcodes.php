@@ -263,7 +263,7 @@ $atts = shortcode_atts(
 		'nonote' 		=> '1',
 		'rm' 			=> '2',
 		'lc' 			=> '',
-		'cbt' 			=> __('Complete Your Purchase', 'learndash'),
+		'cbt' 			=> esc_html__('Complete Your Purchase', 'learndash'),
 		'cn' 			=> '',
 		'pagestyle' 	=> 'paypal',
 		'notifyurl' 	=> '',
@@ -540,7 +540,7 @@ case "subscribe":
             }
 			$code.=' class="ppalbtn">';
         } else {
-            $code.='<input type="hidden" src="https://www.paypal.com/en_AU/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="' . __('PayPal - The safer, easier way to pay online.', 'learndash') . '" class="ppalbtn">';
+            $code.='<input type="hidden" src="https://www.paypal.com/en_AU/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="' . esc_html__('PayPal - The safer, easier way to pay online.', 'learndash') . '" class="ppalbtn">';
 		}
 		$code .= '<input type="submit" value="'.$button_text.'" class="btn-join" id="btn-join">';
 		
@@ -734,7 +734,7 @@ case "hosted":
 				}
             $code.=' class="ppalbtn">';
         } else {
-	       $code.='<input type="hidden" src="https://www.paypal.com/en_AU/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="' . __('PayPal - The safer, easier way to pay online.', 'learndash') . '" class="ppalbtn">';
+	       $code.='<input type="hidden" src="https://www.paypal.com/en_AU/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="' . esc_html__('PayPal - The safer, easier way to pay online.', 'learndash') . '" class="ppalbtn">';
         }
 				$code .= '<input type="submit" value="'.$button_text.'" class="btn-join" id="btn-join">';
 

@@ -26,12 +26,12 @@ if ( ( isset( $course_step_post ) ) && ( $course_step_post instanceof WP_Post ) 
 			$php_max_upload = $post_settings['assignment_upload_limit_size'];
 		}
 	}
-	$upload_message = sprintf( _x( 'Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  $php_max_upload );
+	$upload_message = sprintf( esc_html_x( 'Maximum upload file size: %s', 'placeholder: PHP file upload size', 'learndash' ),  $php_max_upload );
 
 	if ( ( isset( $post_settings['assignment_upload_limit_extensions'] ) ) && ( !empty( $post_settings['assignment_upload_limit_extensions'] ) ) ) {
 		$limit_file_exts = learndash_validate_extensions( $post_settings['assignment_upload_limit_extensions'] );
 		if ( !empty( $limit_file_exts ) ) {
-			$upload_message .= ' '. sprintf( _x('Allowed file types: %s', 'placeholder: comma list of file extentions', 'learndash' ), implode(', ', $limit_file_exts ) );
+			$upload_message .= ' '. sprintf( esc_html_x('Allowed file types: %s', 'placeholder: comma list of file extentions', 'learndash' ), implode(', ', $limit_file_exts ) );
 		}
 	}
 
@@ -54,7 +54,7 @@ if ( ( isset( $course_step_post ) ) && ( $course_step_post instanceof WP_Post ) 
 
 	$ret .= '
 			<table id="leardash_upload_assignment">
-				<tr><td><u>' . __( 'Upload Assignment', 'learndash' ) . '</u></td></tr>
+				<tr><td><u>' . esc_html__( 'Upload Assignment', 'learndash' ) . '</u></td></tr>
 				<tr>
 					<td>
 						<form name="uploadfile" id="uploadfile_form" method="POST" enctype="multipart/form-data" action="" accept-charset="utf-8" >
@@ -63,7 +63,7 @@ if ( ( isset( $course_step_post ) ) && ( $course_step_post instanceof WP_Post ) 
 							<input type="hidden" value="' . $course_step_post->ID . '" name="post"/>
 							<input type="hidden" value="' . learndash_get_course_id( $course_step_post->ID ) . '" name="course_id"/>
 							<input type="hidden" name="uploadfile" value="'. wp_create_nonce( 'uploadfile_'. get_current_user_id() .'_'. $course_step_post->ID ) .'"  />
-							<input class="button-primary" type="submit" id="uploadfile_btn" value="' . __( 'Upload', 'learndash' ) . '"  onClick="this.form.submit(); this.disabled=true;;" />
+							<input class="button-primary" type="submit" id="uploadfile_btn" value="' . esc_html__( 'Upload', 'learndash' ) . '"  onClick="this.form.submit(); this.disabled=true;;" />
 						</form>
 					</td>
 				</tr>

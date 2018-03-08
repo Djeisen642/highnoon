@@ -29,7 +29,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 			);
 			if ( isset( $schema['properties']['password'] ) ) {
 				$get_item_args['password'] = array(
-					'description' => __( 'The password for the post if it is password protected.' ),
+					'description' => esc_html__( 'The password for the post if it is password protected.' ),
 					'type'        => 'string',
 				);
 			}
@@ -63,7 +63,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'id' => array(
-							'description' => __( 'Unique identifier for the Quiz object.' ),
+							'description' => esc_html__( 'Unique identifier for the Quiz object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -87,7 +87,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),
@@ -104,7 +104,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -129,11 +129,11 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'id' => array(
-							'description' => __( 'Unique identifier for the Quiz object.' ),
+							'description' => esc_html__( 'Unique identifier for the Quiz object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -157,7 +157,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),
@@ -175,15 +175,15 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'lesson_id' => array(
-							'description' => __( 'Unique identifier for the Lesson object.' ),
+							'description' => esc_html__( 'Unique identifier for the Lesson object.' ),
 							'type'        => 'integer',
 						),
 						'topic_id' => array(
-							'description' => __( 'Unique identifier for the Topic object.' ),
+							'description' => esc_html__( 'Unique identifier for the Topic object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -209,15 +209,15 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'lesson_id' => array(
-							'description' => __( 'Unique identifier for the Lesson object.' ),
+							'description' => esc_html__( 'Unique identifier for the Lesson object.' ),
 							'type'        => 'integer',
 						),
 						'id' => array(
-							'description' => __( 'Unique identifier for the object.' ),
+							'description' => esc_html__( 'Unique identifier for the object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -241,7 +241,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),
@@ -257,15 +257,15 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'lesson_id' => array(
-							'description' => __( 'Unique identifier for the Lesson object.' ),
+							'description' => esc_html__( 'Unique identifier for the Lesson object.' ),
 							'type'        => 'integer',
 						),
 						'topic_id' => array(
-							'description' => __( 'Unique identifier for the Topic object.' ),
+							'description' => esc_html__( 'Unique identifier for the Topic object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -291,19 +291,19 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 				array(
 					'args' => array(
 						'course_id' => array(
-							'description' => __( 'Unique identifier for the Course object.' ),
+							'description' => esc_html__( 'Unique identifier for the Course object.' ),
 							'type'        => 'integer',
 						),
 						'lesson_id' => array(
-							'description' => __( 'Unique identifier for the Lesson object.' ),
+							'description' => esc_html__( 'Unique identifier for the Lesson object.' ),
 							'type'        => 'integer',
 						),
 						'topic_id' => array(
-							'description' => __( 'Unique identifier for the Topic object.' ),
+							'description' => esc_html__( 'Unique identifier for the Topic object.' ),
 							'type'        => 'integer',
 						),
 						'id' => array(
-							'description' => __( 'Unique identifier for the Quiz object.' ),
+							'description' => esc_html__( 'Unique identifier for the Quiz object.' ),
 							'type'        => 'integer',
 						),
 					),
@@ -327,7 +327,7 @@ if ( ( !class_exists( 'LD_REST_Posts_Quizzes_Controller' ) ) && ( class_exists( 
 							'force' => array(
 								'type'        => 'boolean',
 								'default'     => false,
-								'description' => __( 'Whether to bypass trash and force deletion.' ),
+								'description' => esc_html__( 'Whether to bypass trash and force deletion.' ),
 							),
 						),
 					),

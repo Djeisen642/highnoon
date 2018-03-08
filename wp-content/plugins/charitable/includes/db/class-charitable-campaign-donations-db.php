@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign_Donations_DB
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.4
@@ -156,9 +156,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @return boolean
 		 */
 		public function update( $row_id, $data = array(), $where = '' ) {
-			if ( empty( $where ) ) {
-				Charitable_Campaign::flush_donations_cache( $row_id );
-			}
+			$this->flush_campaign_caches( $row_id, $where );
 
 			return parent::update( $row_id, $data, $where );
 		}
@@ -172,7 +170,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @return boolean
 		 */
 		public function delete( $row_id = 0 ) {
-			Charitable_Campaign::flush_donations_cache( $row_id );
+			$this->flush_campaign_caches( $row_id );
 
 			return parent::delete( $row_id );
 		}
@@ -825,22 +823,22 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 */
 		private function get_sanitized_column( $field ) {
 			switch ( $field ) {
-				case 'campaign' :
-				case 'campaign_id' :
+				case 'campaign':
+				case 'campaign_id':
 					$column = 'campaign_id';
 					break;
 
-				case 'donation' :
-				case 'donation_id' :
+				case 'donation':
+				case 'donation_id':
 					$column = 'donation_id';
 					break;
 
-				case 'donor' :
-				case 'donor_id' :
+				case 'donor':
+				case 'donor_id':
 					$column = 'donor_id';
 					break;
 
-				default :
+				default:
 					charitable_get_deprecated()->doing_it_wrong(
 						__METHOD__,
 						__( 'Field expected to be `campaign`, `campaign_id`, `donation`, `donation_id`, `donor` or `donor_id`.', 'charitable' ),
@@ -851,6 +849,27 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			return $column;
+		}
+
+		/**
+		 * Flush campaign caches when updating one or more rows.
+		 *
+		 * @since  1.5.11
+		 *
+		 * @param  int    $row_id The primary key ID for the row we are retrieving.
+		 * @param  string $where  Column used in where argument.
+		 * @return void
+		 */
+		private function flush_campaign_caches( $row_id, $where = '' ) {
+			if ( empty( $where ) ) {
+				$where = $this->primary_key;
+			}
+
+			$campaign_ids = array_unique( $this->get_column_all_by( 'campaign_id', $where, $row_id ) );
+
+			foreach ( $campaign_ids as $campaign_id ) {
+				Charitable_Campaign::flush_donations_cache( $campaign_id );
+			}
 		}
 	}
 

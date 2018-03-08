@@ -34,27 +34,27 @@
 <div id="learndash_profile">
 
     <div class="expand_collapse">
-        <a href="#" onClick='return flip_expand_all("#course_list");'><?php _e( 'Expand All', 'learndash' ); ?></a> | <a href="#" onClick='return flip_collapse_all("#course_list");'><?php _e( 'Collapse All', 'learndash' ); ?></a>
+        <a href="#" onClick='return flip_expand_all("#course_list");'><?php esc_html_e( 'Expand All', 'learndash' ); ?></a> | <a href="#" onClick='return flip_collapse_all("#course_list");'><?php esc_html_e( 'Collapse All', 'learndash' ); ?></a>
     </div>
 
 	<div class="learndash_profile_heading">
-		<span><?php _e( 'Profile', 'learndash' ); ?></span>
+		<span><?php esc_html_e( 'Profile', 'learndash' ); ?></span>
 	</div>
 
 	<div class="profile_info clear_both">
 		<div class="profile_avatar">
 			<?php echo get_avatar( $current_user->user_email, 96 ); ?>
 			<div class="profile_edit_profile" align="center">
-                <a href='<?php echo get_edit_user_link(); ?>'><?php _e( 'Edit profile', 'learndash' ); ?></a>
+                <a href='<?php echo get_edit_user_link(); ?>'><?php esc_html_e( 'Edit profile', 'learndash' ); ?></a>
             </div>
         </div>
 
 		<div class="learndash_profile_details">
 			<?php if ( ( ! empty( $current_user->user_lastname) ) || ( ! empty( $current_user->user_firstname ) ) ): ?>
-				<div><b><?php _e( 'Name', 'learndash' ); ?>:</b> <?php echo $current_user->user_firstname . ' ' . $current_user->user_lastname; ?></div>
+				<div><b><?php esc_html_e( 'Name', 'learndash' ); ?>:</b> <?php echo $current_user->user_firstname . ' ' . $current_user->user_lastname; ?></div>
 			<?php endif; ?>
-			<div><b><?php _e( 'Username', 'learndash' ); ?>:</b> <?php echo $current_user->user_login; ?></div>
-			<div><b><?php _e( 'Email', 'learndash' ); ?>:</b> <?php echo $current_user->user_email; ?></div>
+			<div><b><?php esc_html_e( 'Username', 'learndash' ); ?>:</b> <?php echo $current_user->user_login; ?></div>
+			<div><b><?php esc_html_e( 'Email', 'learndash' ); ?>:</b> <?php echo $current_user->user_email; ?></div>
 			
 			<?php if ( ( isset( $shortcode_atts['course_points_user'] ) ) && ( $shortcode_atts['course_points_user'] == 'yes' ) ) { ?>
 				<?php echo do_shortcode('[ld_user_course_points user_id="'. $current_user->ID .'" context="ld_profile"]'); ?>
@@ -63,9 +63,9 @@
 	</div>
 
 	<div class="learndash_profile_heading no_radius clear_both">
-		<span class="ld_profile_course"><?php printf( _x( 'Registered %s', 'Registered Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ); ?></span>
-		<span class="ld_profile_status"><?php _e( 'Status', 'learndash' ); ?></span>
-		<span class="ld_profile_certificate"><?php _e( 'Certificate', 'learndash' ); ?></span>
+		<span class="ld_profile_course"><?php printf( esc_html_x( 'Registered %s', 'Registered Courses Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ); ?></span>
+		<span class="ld_profile_status"><?php esc_html_e( 'Status', 'learndash' ); ?></span>
+		<span class="ld_profile_certificate"><?php esc_html_e( 'Certificate', 'learndash' ); ?></span>
 	</div>
 
 	<div id="course_list">
@@ -109,15 +109,15 @@
 						?></div>
 						<div class="flip" style="clear: both; display:none;">
 
-							<div class="learndash_profile_heading course_overview_heading"><?php printf( _x( '%s Progress Overview', 'Course Progress Overview Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></div>
+							<div class="learndash_profile_heading course_overview_heading"><?php printf( esc_html_x( '%s Progress Overview', 'Course Progress Overview Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></div>
 
 							<div>
-								<dd class="course_progress" title='<?php echo sprintf( __( '%s out of %s steps completed', 'learndash' ), $progress['completed'], $progress['total'] ); ?>'>
+								<dd class="course_progress" title='<?php echo sprintf( esc_html_x( '%1$s out of %2$s steps completed', 'learndash' ), $progress['completed'], $progress['total'] ); ?>'>
 									<div class="course_progress_blue" style='width: <?php echo esc_attr( $progress['percentage'] ); ?>%;'>
 								</dd>
 
 								<div class="right">
-									<?php echo sprintf( __( '%s%% Complete', 'learndash' ), $progress['percentage'] ); ?>
+									<?php echo sprintf( esc_html_x( '%1$s%% Complete', 'learndash' ), $progress['percentage'] ); ?>
 								</div>
 							</div>
 
@@ -126,10 +126,10 @@
 
 									<div class="learndash_profile_quiz_heading">
 										<div class="quiz_title"><?php echo LearnDash_Custom_Label::get_label( 'quizzes' ); ?></div>
-										<div class="certificate"><?php _e( 'Certificate', 'learndash' ); ?></div>
-										<div class="scores"><?php _e( 'Score', 'learndash' ); ?></div>
-										<div class="statistics"><?php _e( 'Statistics', 'learndash' ); ?></div>
-										<div class="quiz_date"><?php _e( 'Date', 'learndash' ); ?></div>
+										<div class="certificate"><?php esc_html_e( 'Certificate', 'learndash' ); ?></div>
+										<div class="scores"><?php esc_html_e( 'Score', 'learndash' ); ?></div>
+										<div class="statistics"><?php esc_html_e( 'Statistics', 'learndash' ); ?></div>
+										<div class="quiz_date"><?php esc_html_e( 'Date', 'learndash' ); ?></div>
 									</div>
 
 									<?php foreach ( $quiz_attempts[ $course_id ] as $k => $quiz_attempt ) : ?>
@@ -166,7 +166,7 @@
 
 												<div class="scores">
 													<?php if ( (isset( $quiz_attempt['has_graded'] ) ) && (true === $quiz_attempt['has_graded']) && (true === LD_QuizPro::quiz_attempt_has_ungraded_question( $quiz_attempt )) ) : ?>
-														<?php echo _x('Pending', 'Pending Certificate Status Label', 'learndash'); ?>
+														<?php echo esc_html_x('Pending', 'Pending Certificate Status Label', 'learndash'); ?>
 													<?php else : ?>
 														<?php echo round( $quiz_attempt['percentage'], 2 ); ?>%
 													<?php endif; ?>
@@ -211,10 +211,20 @@
 
 	</div>
 </div>
-<?php if ( apply_filters('learndash_course_steps_expand_all', $shortcode_atts['expand_all'], 0, 'profile_shortcode' ) ) { ?>
+<?php
+echo SFWD_LMS::get_template( 
+	'learndash_pager.php', 
+	array(
+	'pager_results' => $profile_pager, 
+	'pager_context' => 'profile'
+	) 
+);
+?>
+<?php
+if ( apply_filters('learndash_course_steps_expand_all', $shortcode_atts['expand_all'], 0, 'profile_shortcode' ) ) { ?>
 	<script>
 		jQuery(document).ready(function() {
 			jQuery("#learndash_profile .list_arrow").trigger('click');
 		});
 	</script>	
-<?php } ?>
+<?php }

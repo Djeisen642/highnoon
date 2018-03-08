@@ -34,16 +34,16 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 				'labels' => array(
 					'name'					=> $this->post_name,
 					'singular_name'			=> $this->post_name,
-					'add_new'				=> __( 'Add New', 'learndash' ),
+					'add_new'				=> esc_html__( 'Add New', 'learndash' ),
 					'all_items'				=> $this->post_name,
-					'add_new_item'			=> sprintf( __( 'Add New %s', 'learndash' ), $this->post_name ),
-					'edit_item'				=> sprintf( __( 'Edit %s', 'learndash' ), $this->post_name ),
-					'new_item'				=> sprintf( __( 'New %s', 'learndash' ), $this->post_name ),
-					'view_item'				=> sprintf( __( 'View %s', 'learndash' ), $this->post_name ),
-					'search_items'			=> sprintf( __( 'Search %s', 'learndash' ), $this->post_name ),
-					'not_found'				=> sprintf( __( 'No %s found', 'learndash' ), $this->post_name ),
-					'not_found_in_trash'	=> sprintf( __( 'No %s found in Trash', 'learndash' ), $this->post_name ),
-					'parent_item_colon'		=> sprintf( __( 'Parent %s', 'learndash' ), $this->post_name ),
+					'add_new_item'			=> sprintf( esc_html_x( 'Add New %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'edit_item'				=> sprintf( esc_html_x( 'Edit %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'new_item'				=> sprintf( esc_html_x( 'New %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'view_item'				=> sprintf( esc_html_x( 'View %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'search_items'			=> sprintf( esc_html_x( 'Search %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'not_found'				=> sprintf( esc_html_x( 'No %s found', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'not_found_in_trash'	=> sprintf( esc_html_x( 'No %s found in Trash', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
+					'parent_item_colon'		=> sprintf( esc_html_x( 'Parent %s', 'placeholder: Post Name', 'learndash' ), $this->post_name ),
 					'menu_name'				=> $this->post_name,
 				),
 				'public' => true,
@@ -217,6 +217,8 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 			
 			$args = array(
 				'pagination'      => '',
+				'paged'			  => 1,
+				'pager_context'	  => '',
 				'posts_per_page'  => '',
 				'query'           => '',
 				'category'        => '',
@@ -246,12 +248,22 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 
 			$filter = shortcode_atts( $args, $atts );
 			extract( shortcode_atts( $args, $atts ) );
-			global $paged;
+			//global $paged;
 
-			$posts = new WP_Query();
+			//$posts = new WP_Query();
 
-			if ( $pagination == 'true' ) {
+			$sno   = 1;
+			
+			//if ( $pagination == 'true' ) {
+			//	$query .= '&paged=' . $paged;
+			//}
+			if ( ( $pagination == 'true' ) && ( isset( $posts_per_page ) ) && ( !empty( $posts_per_page ) ) ) {
+				if ( !isset( $atts['paged'] ) ) 
+					global $paged;
+				
 				$query .= '&paged=' . $paged;
+				$start_no = intval( $posts_per_page ) * (intval( $paged ) - 1 ) + 1;
+				$sno = $start_no;
 			}
 
 			if ( ! empty( $category) ) {
@@ -278,18 +290,29 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 						'terms' => explode( ',', $tax_terms ),
 					),
 				);
-
 			}
 
+			if ( ( isset( $query['include'] ) ) && ( !empty( $query['include'] ) ) ) {
+				$query['post__in'] = explode(',', $query['include'] );
+				$query['post__in'] = array_map( 'trim', $query['post__in'] );
+				unset( $query['include'] );
+			}
 
-
-			$posts = get_posts( $query );
+			//error_log('query<pre>'. print_r($query, true) .'</pre>');
+			$query_posts = new WP_Query( $query );
+			if ( $query_posts->have_posts() ) {
+				$posts = $query_posts->posts;
+			} else {
+				$posts = array();
+			}
+			
+			//$posts = get_posts( $query );
 			if ( $return == 'array' ) {
 				$buf = array();
 			} else {
 				$buf = '';
 			}
-			$sno   = 1;
+			//$sno   = 1;
 
 			if ( empty( $user_id ) ) {
 				$user_id = get_current_user_id();
@@ -324,8 +347,6 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 							$status = 'notcompleted';
 						} else {
 							$status    = 'notavailable';
-							//$sub_title = "<small class='notavailable_message'>" . sprintf( __( ' YYY Available on: %s ', 'learndash' ), learndash_adjust_date_time_display( $ld_lesson_access_from ) ) . '</small>';
-							
 								$sub_title = SFWD_LMS::get_template( 
 									'learndash_course_lesson_not_available', 
 									array(
@@ -364,16 +385,29 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 						$buf[ $sno ] = array(
 							'sno'                => $sno,
 							'post'               => $post,
-							'permalink'          => get_permalink( $post->ID ),
+							//'permalink'          => get_permalink( $post->ID ),
 							'sub_title'          => $sub_title,
 							'status'             => $status,
 							'sample'             => $sample,
 							'lesson_access_from' => $ld_lesson_access_from,
 						);
+						
+						if ( ( isset( $course_id ) ) && ( !empty( $course_id ) ) && ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_Permalinks', 'nested_urls' ) == 'yes' ) ) {
+							$buf[ $sno ]['permalink'] = learndash_get_step_permalink( $post->ID, $course_id );
+						} else {
+							$buf[ $sno ]['permalink'] = get_permalink( $post->ID );
+						}
+						
 					} else {
 						$show_content = str_replace( '{learndash_completed_class}', 'class="' . $status . '"', $content );
 						$show_content = str_replace( '{the_title}', $post->post_title, $show_content );
-						$show_content = str_replace( '{the_permalink}', get_permalink( $post->ID ), $show_content );
+						//$show_content = str_replace( '{the_permalink}', get_permalink( $post->ID ), $show_content );
+						if ( ( isset( $course_id ) ) && ( !empty( $course_id ) ) && ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_Permalinks', 'nested_urls' ) == 'yes' ) ) {
+							$show_content = str_replace( '{the_permalink}', learndash_get_step_permalink( $post->ID, $course_id ), $show_content );
+						} else {
+							$show_content = str_replace( '{the_permalink}', get_permalink( $post->ID ), $show_content );
+						}
+						
 						$show_content = str_replace( '{sub_title}', $sub_title, $show_content );
 						$show_content = str_replace( '$id', "$id", $show_content );
 						$show_content = str_replace( '{sno}', $sno, $show_content );
@@ -387,13 +421,16 @@ if ( ! class_exists( 'SFWD_CPT' ) ) {
 			}
 
 			if ( $pagination == 'true' ) {
+				/*
 				$buf .= '<div class="navigation">
 					  <div class="alignleft">' . get_previous_posts_link( '« Previous' ) . '</div>
 					  <div class="alignright">' . get_next_posts_link( 'More »' ) . '</div>
 					</div>';
+				*/
+				do_action( 'learndash_course_lessons_list_pager', $query_posts, $pager_context );
 			}
 
-			wp_reset_query();
+			//wp_reset_query();
 			
 			$learndash_shortcode_used = true;
 			

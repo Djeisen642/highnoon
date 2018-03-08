@@ -4,10 +4,10 @@
  *
  * @author      Eric Daams
  * @package     Charitable/Admin Views/Metaboxes
- * @copyright   Copyright (c) 2017, Studio 164a 
+ * @copyright   Copyright (c) 2018, Studio 164a 
  * @since       1.2.0
  */
 
 $level = array_key_exists( 'level', $view_args ) ? $view_args['level'] : 'h4';
 ?>
-<<?php echo $level ?> class="charitable-metabox-header" <?php echo charitable_get_arbitrary_attributes( $view_args ) ?>><?php echo $view_args[ 'title' ] ?></<?php echo $level ?>>
+<<?php echo $level ?> class="charitable-metabox-header" <?php echo charitable_get_arbitrary_attributes( $view_args ) ?>><?php esc_html_e( $view_args['title'] )  ?></<?php echo $level ?>>

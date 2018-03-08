@@ -1,35 +1,35 @@
-=== Contact Form 7 - PayPal Add-on ===
+=== Contact Form 7 - PayPal & Stripe Add-on ===
 Contributors: scottpaterson,wp-plugin
 Donate link: https://wpplugin.org/donate/
-Tags: paypal, contact form 7, cf7, contact form, form, contact, email, contact form paypal, ecommerce, buy now, gateway, payment, paypal button, paypal payment, paypal plugin
+Tags: paypal, contact form 7, stripe, contact form, contact form paypal
 Author URI: https://wpplugin.org
 Requires at least: 3.0
-Tested up to: 4.8
+Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.4.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrates PayPal with Contact Form 7. Start selling with PayPal today. Developed by an Official PayPal Partner.
+Integrates PayPal & Stripe with Contact Form 7. Start selling with PayPal and / or Stripe today. Developed by an Official PayPal Partner.
 
 == Description ==
 = Overview =
 
-This PayPal plugin seamlessly integrates PayPal with Contact Form 7.
+This PayPal plugin seamlessly integrates PayPal & Stripe with Contact Form 7.
 
 Watch this 1 minute video of how the plugin works:
 
-[vimeo https://vimeo.com/239187347]
+[youtube https://www.youtube.com/watch?v=GZ_lYEAJgsQ]
 
-Each contact form can have its own PayPal settings. When a contact form is enabled with PayPal, and the user submits the form it will send the email as usual, then auto redirect to PayPal.
+Each contact form can have its own PayPal & Stripe settings. When a contact form is enabled with PayPal, and the user submits the form it will send the email as usual, then auto redirect to PayPal.  When a contact form is enabled with Stripe, and the user submits the form it will send the email as usual, then auto redirect to a Stripe payment page.
 
-If you have any problems, questions, or issues about this PayPal plugins then please create a support request and we will get back to you quickly.
+If you have any problems, questions, or issues about this plugin then please create a support request and we will get back to you quickly.
 
 WP Plugin is an offical PayPal Partner based in Boulder, Colorado. You can visit WP Plugins website at [wpplugin.org](https://wpplugin.org). Various trademarks held by their respective owners.
 
-Note: This PayPal plugin works with both the old and new Contact Form 7 interface. A PayPal account, which is free, is required to use this plugin.
+Note: This PayPal & Stripe plugin works with both the old and new Contact Form 7 interface. A PayPal account, which is free, is required to use PayPal. A Stripe account, which is also free, is required to use Stripe. You can use the plugin with only PayPal enabled, only Stripe or PayPal and Stripe at the same time.
 
-= Contact Form 7 - PayPal Integration Add-on Features =
+= Contact Form 7 - PayPal & Stripe Integration Add-on Features =
 
 *	Set items name, price, SKU/ID per contact form
 *   Built in support for 18 languages (PayPal currently supports 18 languages)
@@ -38,7 +38,7 @@ Note: This PayPal plugin works with both the old and new Contact Form 7 interfac
 *	Choose a cancel payment URL
 *	Choose a succesful payment URL
 
-> #### Contact Form 7 - PayPal Integration Add-on Pro
+> #### Contact Form 7 - PayPal & Stripe Integration Add-on Pro
 > We offer a Pro version of this PayPal plugin for business owners who need more features.<br />
 >
 > * Only send Contact Form 7 email if PayPal payment is successful.
@@ -53,7 +53,7 @@ Note: This PayPal plugin works with both the old and new Contact Form 7 interfac
 > *	Choose a succesful payment URL per contact form<br />
 >
 >
-> [You can learn more about Contact Form 7 - PayPal Integration Add-on Pro here](https://wpplugin.org/downloads/contact-form-7-paypal-add-on/)
+> [You can learn more about Contact Form 7 - PayPal & Stripe Integration Add-on Pro here](https://wpplugin.org/downloads/contact-form-7-paypal-add-on/)
 
 
 
@@ -73,9 +73,34 @@ Note: This PayPal plugin works with both the old and new Contact Form 7 interfac
 == Screenshots ==
 1. Options while editing a contact form - Note: This plugin works with both the old and new Contact Form 7 interface, screenshots from old version.
 2. PayPal settings page
+3. Stripe settings page
 
 
 == Changelog ==
+
+
+= 1.5.4 =
+* 2/19/18
+* Fix - Stripe checkout was giving an error message if the Stripe test keys were not entered.
+
+= 1.5.3 =
+* 2/9/18
+* Fix - Was not redirecting to Stripe, if only Stripe was enabled.
+* New - Added Test Mode indicator on Stripe mode form, if Stripe is being used in Sandbox mode.
+
+= 1.5.2 =
+* 2/7/18
+* Fix - Plugin had a conflict with the Divi theme's full page width.
+
+= 1.5.1 =
+* 2/6/18
+* Fix - Not all forms where redirecting on some sites.
+
+= 1.5 =
+* 2/6/18
+* Major Release - Added Stripe to the plugin
+* Change - The majority of the plugin has been completely rewritten
+* Fix - The plugin now works with Contact Form 7 version 5
 
 = 1.4.3 =
 * 10/23/17
@@ -142,6 +167,10 @@ Note: This PayPal plugin works with both the old and new Contact Form 7 interfac
 
 
 == Upgrade Notice ==
+
+= 1.5 =
+* 2/6/18
+* Major Release - Added Stripe to the plugin
 
 = 1.4.3 =
 * 10/23/17

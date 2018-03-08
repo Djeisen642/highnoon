@@ -41,6 +41,18 @@ function learndash_load_resources() {
 	);
 	$learndash_assets_loaded['styles']['jquery-dropdown-css'] = __FUNCTION__;
 
+	$filepath = SFWD_LMS::get_template( 'learndash_pager.css', null, null, true );
+	if ( !empty( $filepath ) ) {
+		wp_enqueue_style( 'learndash_pager_css', learndash_template_url_from_path( $filepath ), array(), LEARNDASH_SCRIPT_VERSION_TOKEN );
+		$learndash_assets_loaded['styles']['learndash_pager_css'] = __FUNCTION__;
+	} 
+
+	$filepath = SFWD_LMS::get_template( 'learndash_pager.js', null, null, true );
+	if ( !empty( $filepath ) ) {
+		wp_enqueue_script( 'learndash_pager_js', learndash_template_url_from_path( $filepath ), array( 'jquery' ), LEARNDASH_SCRIPT_VERSION_TOKEN, true );
+		$learndash_assets_loaded['scripts']['learndash_pager_js'] = __FUNCTION__;
+	}
+	
 	$filepath = SFWD_LMS::get_template( 'learndash_template_style.css', null, null, true );
 	if ( !empty( $filepath ) ) {
 		wp_enqueue_style( 'learndash_template_style_css', learndash_template_url_from_path( $filepath ), array(), LEARNDASH_SCRIPT_VERSION_TOKEN );

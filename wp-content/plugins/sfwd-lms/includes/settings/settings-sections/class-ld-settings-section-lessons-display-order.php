@@ -18,7 +18,7 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'display_order';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Display Settings', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson') );
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Display Settings', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson') );
 		
 			parent::__construct(); 
 
@@ -30,13 +30,13 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			learndash_purge_transients();
 		}
 		
-		function add_meta_boxes( $settings_screen_id = '' ) {
-			if ( $settings_screen_id == $this->settings_screen_id ) {
-				if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
-					parent::add_meta_boxes( $settings_screen_id );
-				}
-			}
-		}
+//		function add_meta_boxes( $settings_screen_id = '' ) {
+//			if ( $settings_screen_id == $this->settings_screen_id ) {
+//				if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
+//					parent::add_meta_boxes( $settings_screen_id );
+//				}
+//			}
+//		}
 
 		function load_settings_values() {
 			parent::load_settings_values();
@@ -65,14 +65,11 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			if ( !isset( $this->setting_option_values['order'] ) )
 				$this->setting_option_values['order'] = 'DESC';
 				
-			if ( !isset( $this->setting_option_values['posts_per_page'] ) )
+			if ( ( !isset( $this->setting_option_values['posts_per_page'] ) ) || ( is_null( $this->setting_option_values['posts_per_page'] ) ) ) {
 				$this->setting_option_values['posts_per_page'] = 25;
-			else
+			} else {
 				$this->setting_option_values['posts_per_page'] = intval( $this->setting_option_values['posts_per_page'] );
-
-			if ( empty( $this->setting_option_values['posts_per_page'] ) )
-				$this->setting_option_values['posts_per_page'] = 25;
-			
+			}
 		}
 		
 		
@@ -82,31 +79,31 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'orderby' => array(
 					'name'  		=> 	'orderby', 
 					'type'  		=> 	'select',
-					'label' 		=> 	__( 'Sort By', 'learndash' ),
-					'help_text'  	=> 	__( 'Choose the sort order.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Sort By', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Choose the sort order.', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['orderby'],
 					'options'		=>	array(
-											'title'			=> 	__( 'Title', 'learndash' ),
-											'date'			=> 	__( 'Date', 'learndash' ),
-											'menu_order' 	=> __( 'Menu Order', 'learndash' ),
+											'title'			=> 	esc_html__( 'Title', 'learndash' ),
+											'date'			=> 	esc_html__( 'Date', 'learndash' ),
+											'menu_order' 	=> esc_html__( 'Menu Order', 'learndash' ),
 										)
 				),
 				'order' => array(
 					'name'  		=> 	'order', 
 					'type'  		=> 	'select',
-					'label' 		=> 	__( 'Sort Direction', 'learndash' ),
-					'help_text'  	=> 	__( 'Choose the sort direction.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Sort Direction', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Choose the sort direction.', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['order'],
 					'options'		=>	array(
-											'ASC'	=> __( 'Ascending', 'learndash' ),
-											'DESC'	=> __( 'Descending', 'learndash' ),
+											'ASC'	=> esc_html__( 'Ascending', 'learndash' ),
+											'DESC'	=> esc_html__( 'Descending', 'learndash' ),
 										)
 				),
 				'posts_per_page' => array(
 					'name'  		=> 	'posts_per_page', 
 					'type'  		=> 	'number',
-					'label' 		=> 	__( 'Posts Per Page', 'learndash' ),
-					'help_text'  	=> 	__( 'Enter the number of posts to display per page.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Posts Per Page', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Enter the number of posts to display per page. Enter zero to display all.', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['posts_per_page'],
 					'class'			=>	'small-text',
 					'attrs'			=>	array(
@@ -115,6 +112,11 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 					)
 				),
 			);
+		
+			if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) == 'yes' ) {
+				$this->setting_option_fields['orderby']['attrs'] = array( 'disabled' => 'disabled' );
+				$this->setting_option_fields['order']['attrs'] = array( 'disabled' => 'disabled' );
+			}
 		
 			$this->setting_option_fields = apply_filters( 'learndash_settings_fields', $this->setting_option_fields, $this->settings_section_key );
 			

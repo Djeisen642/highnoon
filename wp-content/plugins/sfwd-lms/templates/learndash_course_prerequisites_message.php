@@ -16,7 +16,7 @@
 ?>
 <div id="learndash_complete_prerequisites"><?php 
 	echo sprintf( 
-		_x( 
+	 esc_html_x(
 			'To take this %s, you need to complete the following %s first:', 
 			'placeholders: (1) will be Course, Lesson or Quiz sigular. (2) Course sigular label', 
 			'learndash' 

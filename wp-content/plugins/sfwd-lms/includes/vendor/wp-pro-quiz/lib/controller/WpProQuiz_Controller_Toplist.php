@@ -77,7 +77,7 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		$email = trim($this->_post['email']);
 		
 		if(empty($name) || empty($email) || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-			return array('error' => __('No name or e-mail entered.', 'wp-pro-quiz'));
+			return array('error' => esc_html__('No name or e-mail entered.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 		}
 		
 		
@@ -145,7 +145,7 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		}
 		
 		if($r === true) 
-			$r = array('text' => __('You signed up successfully.', 'wp-pro-quiz'), 'clear' => true);
+			$r = array('text' => esc_html__('You signed up successfully.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		
 		
 		echo json_encode($r);
@@ -153,11 +153,11 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 	
 	private function handleAddInToplist(WpProQuiz_Model_Quiz $quiz) {
 		if(!wp_verify_nonce($this->_post['token'], 'wpProQuiz_toplist')) {
-			return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+			return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		}
 		
 		//if(!isset($this->_post['points']) || !isset($this->_post['totalPoints'])) {
-		//	return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+		//	return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		//}
 		
 		$quizId = $quiz->getId();
@@ -167,12 +167,12 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		
 		// Added v2.4.3 to validate the comp points with nonce. See ld-quiz-pro.php checkAnswers() for nonce definition logic. 
 		//if ( !wp_verify_nonce($this->_post['p_nonce'], 'ld_quiz_pnonce'. $userId .'_'. $quizId .'_'. $quiz_post_id .'_'. 'comp' .'_'. $points) ) {
-		//	return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+		//	return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		//}
 		
 
 		if ( !isset( $this->_post['results']) ) {
-			return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+			return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		}
 
 		$results = $this->_post['results'];
@@ -217,18 +217,18 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		$toplistMapper = new WpProQuiz_Model_ToplistMapper();
 		
 		if($quiz == null || $quiz->getId() == 0 || !$quiz->isToplistActivated()) {
-			return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+			return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		}
 		
 		if(!$this->preCheck($quiz->getToplistDataAddPermissions(), $userId)) {
-			return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+			return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		}
 		
 		//$numPoints = $quizMapper->sumQuestionPoints($quizId);
 		//$totalPoints = $quizMapper->sumQuestionPoints($quizId);
 		
 		//if($totalPoints > $numPoints || $points > $numPoints) {
-		//	return array('text' => __('An error has occurred.', 'wp-pro-quiz'), 'clear' => true);
+		//	return array('text' => esc_html__('An error has occurred.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 		//}
 		
 		$clearTime = null;
@@ -239,7 +239,7 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		
 		if($userId > 0) {
 			if($toplistMapper->countUser($quizId, $userId, $clearTime)) {
-				return array('text' => __('You can not enter again.', 'wp-pro-quiz'), 'clear' => true);
+				return array('text' => esc_html__('You can not enter again.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 			}
 				
 			$user = wp_get_current_user();
@@ -248,15 +248,15 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 				
 		} else {
 			if($toplistMapper->countFree($quizId, $name, $email, $ip, $clearTime)) {
-				return array('text' => __('You can not enter again.', 'wp-pro-quiz'), 'clear' => true);
+				return array('text' => esc_html__('You can not enter again.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => true);
 			}
 				
 			if(empty($name) || empty($email) || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-				return array('text' => __('No name or e-mail entered.', 'wp-pro-quiz'), 'clear' => false);
+				return array('text' => esc_html__('No name or e-mail entered.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => false);
 			}
 			
 			if(strlen($name) > 15) {
-				return array('text' => __('Your name can not exceed 15 characters.', 'wp-pro-quiz'), 'clear' => false);
+				return array('text' => esc_html__('Your name can not exceed 15 characters.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => false);
 			}
 				
 			if($quiz->isToplistDataCaptcha()) {
@@ -264,7 +264,7 @@ class WpProQuiz_Controller_Toplist extends WpProQuiz_Controller_Controller {
 		
 				if($captcha->isSupported()) {
 					if(!$captcha->check($prefix, $captchaAnswer)) {
-						return array('text' => __('You entered wrong captcha code.', 'wp-pro-quiz'), 'clear' => false);
+						return array('text' => esc_html__('You entered wrong captcha code.', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'clear' => false);
 					}
 				}
 			}

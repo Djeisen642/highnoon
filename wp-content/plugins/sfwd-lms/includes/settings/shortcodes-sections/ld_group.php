@@ -6,9 +6,9 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 			$this->fields_args = $fields_args;
 
 			$this->shortcodes_section_key 			= 	'ld_group';
-			$this->shortcodes_section_title 		= 	__( 'Group', 'learndash' );
+			$this->shortcodes_section_title 		= 	esc_html__( 'Group', 'learndash' );
 			$this->shortcodes_section_type			=	2;
-			$this->shortcodes_section_description	=	__( 'This shortcode shows the content if the user is enrolled in a specific group.', 'learndash'  );
+			$this->shortcodes_section_description	=	esc_html__( 'This shortcode shows the content if the user is enrolled in a specific group.', 'learndash'  );
 			
 			parent::__construct(); 
 		}
@@ -19,8 +19,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_message',
 					'name'  		=> 	'message', 
 					'type'  		=> 	'textarea',
-					'label' 		=> 	__('Message shown to user', 'learndash'),
-					'help_text'		=>	__('Message shown to user', 'learndash'),
+					'label' 		=> 	esc_html__('Message shown to user', 'learndash'),
+					'help_text'		=>	esc_html__('Message shown to user', 'learndash'),
 					'value' 		=> 	'',
 					'required'		=>	'required'
 				),
@@ -28,8 +28,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_group_id',
 					'name'  		=> 	'group_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	__( 'Group ID', 'learndash' ),
-					'help_text'		=>	__( 'Enter single Group ID. Leave blank for any Group.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Group ID', 'learndash' ),
+					'help_text'		=>	esc_html__( 'Enter single Group ID. Leave blank for any Group.', 'learndash' ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text'
 				),
@@ -37,7 +37,7 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 		
 			if ( ( !isset( $this->fields_args['post_type'] ) ) || ( $this->fields_args['post_type'] != 'groups' ) ) {
 				$this->shortcodes_option_fields['group_id']['required'] 	= 'required';	
-				$this->shortcodes_option_fields['group_id']['help_text']	= __( 'Enter single Group ID.', 'learndash' );
+				$this->shortcodes_option_fields['group_id']['help_text']	= esc_html__( 'Enter single Group ID.', 'learndash' );
 			} 
 		
 			$this->shortcodes_option_fields = apply_filters( 'learndash_settings_fields', $this->shortcodes_option_fields, $this->shortcodes_section_key );

@@ -16,7 +16,7 @@
 
 <div class='social-share-move option-container'>
 	<div class='inside'>
-		<h3>MaxButtons Social Share is moving </h3>
+		<h3>MaxButtons Share Buttons</h3>
 
 		<p>We created a brand new plugin to make your Social Share experiences better. </p>
 

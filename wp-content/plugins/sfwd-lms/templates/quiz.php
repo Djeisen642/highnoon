@@ -36,9 +36,9 @@
 
 if( ! empty( $lesson_progression_enabled ) && ! is_quiz_accessable( null, $post ) ) {
     if ( empty( $quiz_settings['lesson'] ) ) {
-        echo sprintf( _x( 'Please go back and complete the previous %s.<br/>', 'placeholder lesson', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lesson') );
+        echo sprintf( esc_html_x( 'Please go back and complete the previous %s.<br/>', 'placeholder lesson', 'learndash' ), LearnDash_Custom_Label::label_to_lower('lesson') );
     } else {
-        echo sprintf( _x( 'Please go back and complete the previous %s.<br/>', 'placeholder topic', 'learndash' ), LearnDash_Custom_Label::label_to_lower('topic') );
+        echo sprintf( esc_html_x( 'Please go back and complete the previous %s.<br/>', 'placeholder topic', 'learndash' ), LearnDash_Custom_Label::label_to_lower('topic') );
     }
 }
 
@@ -57,7 +57,7 @@ if ( $show_content ) {
         echo $quiz_content;
     } else {
 		?>
-			<p id="learndash_already_taken"><?php echo sprintf( _x( 'You have already taken this %s %d time(s) and may not take it again.', 'placeholders: quiz, attempts count', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz'), $attempts_count ); ?></p>
+			<p id="learndash_already_taken"><?php echo sprintf( esc_html_x( 'You have already taken this %1$s %2$d time(s) and may not take it again.', 'placeholders: quiz, attempts count', 'learndash' ), LearnDash_Custom_Label::label_to_lower('quiz'), $attempts_count ); ?></p>
 		<?php
     }
 }

@@ -2,10 +2,12 @@
 /**
  * Donation Receipt shortcode class.
  *
- * @version     1.2.0
- * @package     Charitable/Shortcodes/Donation Receipt
- * @category    Class
- * @author      Eric Daams
+ * @package   Charitable/Shortcodes/Donation Receipt
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.2.0
+ * @version   1.2.0
  */
 
 // Exit if accessed directly.

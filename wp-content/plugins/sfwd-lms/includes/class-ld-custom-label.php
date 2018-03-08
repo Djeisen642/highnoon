@@ -24,47 +24,47 @@ class LearnDash_Custom_Label {
 
 		switch ( strtolower( $key ) ) {
 			case 'course':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Course', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Course', 'learndash' );
 				break;
 
 			case 'courses':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Courses', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Courses', 'learndash' );
 				break;
 
 			case 'lesson':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Lesson', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Lesson', 'learndash' );
 				break;
 
 			case 'lessons':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Lessons', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Lessons', 'learndash' );
 				break;
 
 			case 'topic':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Topic', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Topic', 'learndash' );
 				break;
 
 			case 'topics':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Topics', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Topics', 'learndash' );
 				break;
 
 			case 'quiz':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Quiz', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Quiz', 'learndash' );
 				break;
 
 			case 'quizzes':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Quizzes', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Quizzes', 'learndash' );
 				break;
 
 			case 'button_take_this_course':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Take this Course', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Take this Course', 'learndash' );
 				break;
 
 			case 'button_mark_complete':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Mark Complete', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Mark Complete', 'learndash' );
 				break;
 
 			case 'button_click_here_to_continue':
-				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : __( 'Click Here to Continue', 'learndash' );
+				$label = ! empty( $labels[ $key] ) ? $labels[ $key ] : esc_html__( 'Click Here to Continue', 'learndash' );
 				break;
 				
 			default:

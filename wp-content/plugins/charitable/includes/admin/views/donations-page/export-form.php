@@ -21,7 +21,7 @@ $report_types = apply_filters( 'charitable_donation_export_report_types', array(
 <div id="charitable-donations-export-modal" style="display: none;" class="charitable-donations-modal <?php echo esc_attr( $modal_class ) ?>" tabindex="0">
 	<a class="modal-close"></a>
 	<h3><?php _e( 'Export Donations', 'charitable' ) ?></h3>
-	<form class="charitable-donations-modal-form" method="get" action="<?php echo admin_url( 'admin.php' ) ?>">
+	<form class="charitable-donations-modal-form charitable-modal-form" method="get" action="<?php echo admin_url( 'admin.php' ) ?>">
 		<?php wp_nonce_field( 'charitable_export_donations', '_charitable_export_nonce' ) ?>
 		<input type="hidden" name="charitable_action" value="export_donations" />
 		<input type="hidden" name="page" value="charitable-donations-table" />

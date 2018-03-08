@@ -19,10 +19,10 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'taxonomies';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Taxonomies', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); 
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Taxonomies', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
 		
 			// Used to show the section description above the fields. Can be empty
-			$this->settings_section_description		=	sprintf( _x( '<p>Control which Taxonomies can be used with the LearnDash %s.</p>', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); 
+			$this->settings_section_description		=	sprintf( wp_kses_post( _x( '<p>Control which Taxonomies can be used with the LearnDash %s.</p>', 'placeholder: Course', 'learndash' ) ), LearnDash_Custom_Label::get_label( 'course' ) );
 
 			parent::__construct(); 
 		}
@@ -68,41 +68,41 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'ld_course_category' => array(
 					'name'  		=> 	'ld_course_category', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( 'LearnDash %s Categories', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Enable the builtin LearnDash %s Categories', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'label' 		=> 	sprintf( esc_html_x( 'LearnDash %s Categories', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Enable the builtin LearnDash %s Categories', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 					'value' 		=> 	$this->setting_option_values['ld_course_category'],
 					'options'		=>	array(
-											'yes'	=>	__('Enable', 'learndash'),
+											'yes'	=>	esc_html__('Enable', 'learndash'),
 										)
 				),
 				'ld_course_tag' => array(
 					'name'  		=> 	'ld_course_tag', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( 'LearnDash %s Tags', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Enable the builtin LearnDash %s Tags', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'label' 		=> 	sprintf( esc_html_x( 'LearnDash %s Tags', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Enable the builtin LearnDash %s Tags', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 					'value' 		=> 	$this->setting_option_values['ld_course_tag'],
 					'options'		=>	array(
-											'yes'	=>	__('Enable', 'learndash'),
+											'yes'	=>	esc_html__('Enable', 'learndash'),
 										)
 				),
 				'wp_post_category' => array(
 					'name'  		=> 	'wp_post_category', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'WordPress Post Categories', 'learndash' ),
-					'help_text'  	=> 	__( 'Enable the builtin WordPress Post Categories', 'learndash' ),
+					'label' 		=> 	esc_html__( 'WordPress Post Categories', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Enable the builtin WordPress Post Categories', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['wp_post_category'],
 					'options'		=>	array(
-											'yes'	=>	__('Enable', 'learndash'),
+											'yes'	=>	esc_html__('Enable', 'learndash'),
 										)
 				),
 				'wp_post_tag' => array(
 					'name'  		=> 	'wp_post_tag', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'WordPress Post Tags', 'learndash' ),
-					'help_text'  	=> 	__( 'Enable the builtin WordPress Post Tags', 'learndash' ),
+					'label' 		=> 	esc_html__( 'WordPress Post Tags', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Enable the builtin WordPress Post Tags', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['wp_post_tag'],
 					'options'		=>	array(
-											'yes'	=>	__('Enable', 'learndash'),
+											'yes'	=>	esc_html__('Enable', 'learndash'),
 										)
 				),
 			);

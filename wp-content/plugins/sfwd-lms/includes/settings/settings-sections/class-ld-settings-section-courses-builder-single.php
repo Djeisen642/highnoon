@@ -21,7 +21,7 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'courses_builder';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
 
 			// Add a cstom callback for our metabox as we don't display a list of settings fields.
 			$this->settings_fields_callback			=	array( $this, 'display_meta_box_inside' );

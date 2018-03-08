@@ -141,8 +141,9 @@ add_action('wp_ajax_variant_page_builder_save_variant', 'variant_page_builder_sa
  * @since v1.0.0
  */
 function variant_page_builder_load_variant() {
+
 	$response = '{"newpage": "'. get_the_title($_POST['post_id']) .'"}';
-	$meta = get_post_meta($_POST['post_id'], '_variant_page_builder_variant', 1);
+	$meta     = get_post_meta($_POST['post_id'], '_variant_page_builder_variant', 1);
 	
 	if( isset($meta) && !( '' == $meta )){
 		

@@ -19,10 +19,10 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'cpt_options';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Custom Post Type Options', 'Course Custom Post Type Options', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Custom Post Type Options', 'Course Custom Post Type Options', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
 		
 			// Used to show the section description above the fields. Can be empty
-			$this->settings_section_description		=	sprintf( _x( '<p>Control the LearnDash %s Custom Post Type Options.</p>', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
+			$this->settings_section_description		=	sprintf( wp_kses_post( _x( '<p>Control the LearnDash %s Custom Post Type Options.</p>', 'placeholder: Course', 'learndash' ) ), LearnDash_Custom_Label::get_label( 'course') );
 
 			parent::__construct(); 
 		}
@@ -32,11 +32,11 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'exclude_from_search' => array(
 					'name'  		=> 	'exclude_from_search', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'Exclude From Search', 'learndash' ),
-					'help_text'		=>	__( 'Exclude From Search' , 'learndash' ),
+					'label' 		=> 	esc_html__( 'Exclude From Search', 'learndash' ),
+					'help_text'		=>	esc_html__( 'Exclude From Search' , 'learndash' ),
 					'value' 		=> 	isset( $this->setting_option_values['exclude_from_search'] ) ? $this->setting_option_values['exclude_from_search'] : '',
 					'options'		=>	array(
-											'yes'	=>	__('Exclude', 'learndash'),
+											'yes'	=>	esc_html__('Exclude', 'learndash'),
 										)
 				),
 			);

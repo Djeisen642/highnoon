@@ -54,26 +54,34 @@ class Code_Snippets_Import_Menu extends Code_Snippets_Admin_Menu {
 
 		$count = 0;
 		$network = is_network_admin();
+		$uploads = $_FILES['code_snippets_import_files'];
 		$dup_action = isset( $_POST['duplicate_action'] ) ? $_POST['duplicate_action'] : 'ignore';
+		$error = false;
 
 		/* Loop through the uploaded files and import the snippets */
 
-		foreach ( $_FILES['code_snippets_import_files']['tmp_name'] as $i => $import_file ) {
-			$file_type = $_FILES['code_snippets_import_files']['type'][ $i ];
+		foreach ( $uploads['tmp_name'] as $i => $import_file ) {
+			$ext = pathinfo( $uploads['name'][ $i ] );
+			$ext = $ext['extension'];
+			$mime_type = $uploads['type'][ $i ];
 
-			if ( 'application/json' === $file_type ) {
+			if ( 'json' === $ext || 'application/json' === $mime_type ) {
 				$result = import_snippets_json( $import_file, $network, $dup_action );
-			} elseif ( 'text/xml' === $file_type ) {
+			} elseif ( 'xml' === $ext || 'text/xml' === $mime_type ) {
 				$result = import_snippets_xml( $import_file, $network, $dup_action );
 			} else {
-				continue;
+				$result = false;
 			}
 
-			$count += count( $result );
+			if ( false === $result || -1 === $result ) {
+				$error = true;
+			} else {
+				$count += count( $result );
+			}
 		}
 
 		/* Send the amount of imported snippets to the page */
-		$url = add_query_arg( $count > 0 ? array( 'imported' => $count ) : array( 'error' => true ) );
+		$url = add_query_arg( $error ? array( 'error' => true ) : array( 'imported' => $count ) );
 		wp_redirect( esc_url_raw( $url ) );
 		exit;
 	}
@@ -101,26 +109,34 @@ class Code_Snippets_Import_Menu extends Code_Snippets_Admin_Menu {
 	 * Print the status and error messages
 	 */
 	protected function print_messages() {
-		if ( isset( $_REQUEST['imported'] ) ) {
+
+		if ( isset( $_REQUEST['error'] ) && $_REQUEST['error'] ) {
+			echo '<div id="message" class="error fade"><p>';
+			_e( 'An error occurred when processing the import files.', 'code-snippets' );
+			echo '</p></div>';
+		}
+
+		if ( isset( $_REQUEST['imported'] ) && intval( $_REQUEST['imported'] ) >= 0 ) {
 			echo '<div id="message" class="updated fade"><p>';
 
 			$imported = intval( $_REQUEST['imported'] );
 
-			printf(
-				_n(
-					'Successfully imported <strong>%d</strong> snippet. <a href="%s">Have fun!</a>',
-					'Successfully imported <strong>%d</strong> snippets. <a href="%s">Have fun!</a>',
-					$imported, 'code-snippets'
-				),
-				$imported,
-				code_snippets()->get_menu_url( 'manage' )
-			);
+			if ( 0 === $imported ) {
+				esc_html_e( 'No snippets were imported.', 'code-snippets' );
 
-			echo '</p></div>';
+			} else {
 
-		} elseif ( isset( $_REQUEST['error'] ) && $_REQUEST['error'] ) {
-			echo '<div id="message" class="error fade"><p>';
-			_e( 'An error occurred when processing the import file.', 'code-snippets' );
+				printf(
+					_n(
+						'Successfully imported <strong>%d</strong> snippet. <a href="%s">Have fun!</a>',
+						'Successfully imported <strong>%d</strong> snippets. <a href="%s">Have fun!</a>',
+						$imported, 'code-snippets'
+					),
+					$imported,
+					code_snippets()->get_menu_url( 'manage' )
+				);
+			}
+
 			echo '</p></div>';
 		}
 	}

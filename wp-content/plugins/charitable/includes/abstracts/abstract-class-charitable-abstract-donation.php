@@ -5,7 +5,7 @@
  * @version   1.5.0
  * @package   Charitable/Classes/Charitable_Donation
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -61,11 +61,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $donation_type;
 
 		/**
-		 * Charitable_Donation donation data for the donation plan this donation is part of
+		 * Charitable_Donation donation data for the donation plan this donation is part of.
+		 *
+		 * @since 1.4.5
 		 *
 		 * @var false|Charitable_Donation
 		 */
-		protected $donation_plan = false;
+		protected $donation_plan;
 
 		/**
 		 * The database record for this donation from the Posts table.
@@ -89,6 +91,15 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $gateway;
 
 		/**
+		 * Gateway transaction ID.
+		 *
+		 * @since 1.4.6
+		 *
+		 * @var   mixed
+		 */
+		protected $gateway_transaction_id;
+
+		/**
 		 * The campaign donations made as part of this donation.
 		 *
 		 * @var Object
@@ -110,6 +121,15 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @var   Charitable_Donation_Log
 		 */
 		protected $log;
+
+		/**
+		 * The Charitable_Donation_Fields object for this donation.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @var   Charitable_Donation_Fields
+		 */
+		protected $fields;
 
 		/**
 		 * Instantiate a new donation object based off the ID.
@@ -167,11 +187,11 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
-		 * Return the Charitable_Fields instance.
+		 * Return the Charitable_Donation_Fields instance.
 		 *
 		 * @since  1.5.0
 		 *
-		 * @return Charitable_Fields
+		 * @return Charitable_Donation_Fields
 		 */
 		public function fields() {
 			if ( ! isset( $this->fields ) ) {
@@ -220,13 +240,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @since  1.0.0
 		 *
 		 * @param  boolean $sanitize Whether the value should be sanitized as a monetary amount.
-		 * @return decimal|float|WP_Error
+		 * @return float
 		 */
 		public function get_total_donation_amount( $sanitize = false ) {
 			$amount = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
 
 			if ( $sanitize ) {
-				$amount = Charitable_Currency::get_instance()->sanitize_monetary_amount( $amount );
+				$amount = Charitable_Currency::get_instance()->sanitize_monetary_amount( (string) $amount );
 			}
 
 			return $amount;
@@ -580,7 +600,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @since  1.4.5
 		 *
-		 * @return int
+		 * @return string
 		 */
 		public function get_donation_type() {
 			return $this->donation_type;
@@ -877,20 +897,15 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @return false|Charitable_Donation
 		 */
 		public function get_donation_plan() {
-			if ( ! isset( $this->parent_donation ) ) {
-
+			if ( ! isset( $this->donation_plan ) ) {
 				if ( $this->donation_data->post_parent > 0 ) {
-
-					$this->parent_donation = charitable_get_donation( $this->donation_data->post_parent );
-
+					$this->donation_plan = charitable_get_donation( $this->donation_data->post_parent );
 				} else {
-
-					$this->parent_donation = false;
-
+					$this->donation_plan = false;
 				}
 			}
 
-			return $this->parent_donation;
+			return $this->donation_plan;
 		}
 
 		/**
@@ -912,12 +927,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @since  1.4.6
 		 *
-		 * @return string
+		 * @return mixed
 		 */
 		public function get_gateway_transaction_id() {
-			if ( ! isset( $this->gateway_transaction_id ) ){
+			if ( ! isset( $this->gateway_transaction_id ) ) {
 				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id' , true );
 			}
+
 			return $this->gateway_transaction_id;
 		}
 

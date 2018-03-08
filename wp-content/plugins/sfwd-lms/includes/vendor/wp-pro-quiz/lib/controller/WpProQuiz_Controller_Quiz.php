@@ -68,7 +68,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 		}
 
 		if($quizId && $quizMapper->exists($quizId) == 0) {
-			WpProQuiz_View_View::admin_notices( sprintf( _x('%s not found', 'Quiz not found', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error');
+			WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s not found', 'Quiz not found', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error');
 			
 			return;
 		}
@@ -98,15 +98,22 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 			if(isset($this->_post['resultGradeEnabled'])) {
 				$this->_post['result_text'] = $this->filterResultTextGrade($this->_post);
 			}
+			
+			// Patch to only set Statistics on if post from form save. 
+			// LEARNDASH-1434 & LEARNDASH-1481
+			if ( !isset( $this->_post['statisticsOn'] ) ) {
+				$this->_post['statisticsOn'] = '0';
+				$this->_post['viewProfileStatistics'] = '0';
+			}
 				
 			$quiz = new WpProQuiz_Model_Quiz($this->_post);
 			$quiz->setId($quizId);
 				
 			if($this->checkValidit($this->_post)) {
 				if($quizId)
-					WpProQuiz_View_View::admin_notices( sprintf( _x('%s edited', 'Quiz edited', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
+					WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s edited', 'Quiz edited', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
 				else
-					WpProQuiz_View_View::admin_notices( sprintf( _x('%s created', 'Quiz created', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
+					WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s created', 'Quiz created', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
 		
 				$quiz->setText("AAZZAAZZ");
 								
@@ -144,7 +151,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 				$prerequisiteQuizList = $prerequisiteMapper->fetchQuizIds($quizId);
 				
 			} else {
-				WpProQuiz_View_View::admin_notices( sprintf( _x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )));
+				WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )));
 			}
 		} else if($quizId) {
 			$quiz = $quizMapper->fetch($quizId);
@@ -161,7 +168,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 		$this->view->quizList 				= $quizMapper->fetchAllAsArray(array('id', 'name'), $quizId ? array($quizId) : array());
 		$this->view->captchaIsInstalled 	= class_exists('ReallySimpleCaptcha');
 		
-		$this->view->header = $quizId ? sprintf( _x('Edit %s', 'Edit quiz', 'wp-pro-quiz'), LearnDash_Custom_Label::label_to_lower( 'quiz' ) ) : sprintf( _x('Create %s', 'Create quiz', 'wp-pro-quiz'), LearnDash_Custom_Label::label_to_lower( 'quiz' ));
+		$this->view->header = $quizId ? sprintf( esc_html_x('Edit %s', 'Edit quiz', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::label_to_lower( 'quiz' ) ) : sprintf( esc_html_x('Create %s', 'Create quiz', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::label_to_lower( 'quiz' ));
 
 		$this->view->show($get);
 	}
@@ -396,14 +403,14 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 		$m = new WpProQuiz_Model_QuizMapper();
 		
 		$this->view = new WpProQuiz_View_QuizEdit();
-		$this->view->header = sprintf( _x('Edit %s', 'Edit quiz', 'wp-pro-quiz'), LearnDash_Custom_Label::label_to_lower( 'quiz' ) );
+		$this->view->header = sprintf( esc_html_x('Edit %s', 'Edit quiz', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::label_to_lower( 'quiz' ) );
 		
 		$forms = $formMapper->fetch($id);
 		$prerequisiteQuizList = $prerequisiteMapper->fetchQuizIds($id);
 		
 		
 		if($m->exists($id) == 0) {
-			WpProQuiz_View_View::admin_notices( sprintf( _x('%s not found', 'Quiz not found', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error');
+			WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s not found', 'Quiz not found', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'error');
 			return;
 		}
 		
@@ -418,7 +425,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 					
 			if($this->checkValidit($this->_post)) {
 				
-				WpProQuiz_View_View::admin_notices( sprintf( _x('%s edited', 'Quiz edited', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
+				WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s edited', 'Quiz edited', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' )), 'info');
 				
 				$prerequisiteMapper = new WpProQuiz_Model_PrerequisiteMapper();
 				
@@ -439,7 +446,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 				
 				return;
 			} else {
-				WpProQuiz_View_View::admin_notices( sprintf( _x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )) );
+				WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )) );
 			}
 		} else if(isset($this->_post['template']) || isset($this->_post['templateLoad'])) {
 			if(isset($this->_post['template']))
@@ -474,7 +481,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 		}
 		
 		$this->view = new WpProQuiz_View_QuizEdit();
-		$this->view->header = sprintf( _x('Create %s', 'Create quiz', 'wp-pro-quiz'), LearnDash_Custom_Label::label_to_lower( 'quiz' ) );
+		$this->view->header = sprintf( esc_html_x('Create %s', 'Create quiz', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::label_to_lower( 'quiz' ) );
 		
 		$forms = null;
 		$prerequisiteQuizList = array();
@@ -492,7 +499,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 			$quizMapper = new WpProQuiz_Model_QuizMapper();
 			
 			if($this->checkValidit($this->_post)) {
-				WpProQuiz_View_View::admin_notices( sprintf( _x('Create %s', 'Create quiz', 'wp-pro-quiz'), LearnDash_Custom_Label::label_to_lower( 'quiz' ) ), 'info');
+				WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('Create %s', 'Create quiz', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::label_to_lower( 'quiz' ) ), 'info');
 				$quizMapper->save($quiz);
 				
 				$id = $quizMapper->getInsertId();
@@ -511,7 +518,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 				$this->showAction();
 				return;
 			} else {
-				WpProQuiz_View_View::admin_notices( sprintf( _x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )) );
+				WpProQuiz_View_View::admin_notices( sprintf( esc_html_x('%s title or %s description are not filled', 'Quiz title or quiz description are not filled', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ), LearnDash_Custom_Label::label_to_lower( 'quiz' )) );
 			}
 		} else if(isset($this->_post['template']) || isset($this->_post['templateLoad'])) {
 			if(isset($this->_post['template']))
@@ -589,7 +596,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 			$forms[] = new WpProQuiz_Model_Form($f);
 		}
 		
-		WpProQuiz_View_View::admin_notices(__('Template stored', 'wp-pro-quiz'), 'info');
+		WpProQuiz_View_View::admin_notices(__('Template stored', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'info');
 		
 		$data = array(
 			'quiz' => $quiz,
@@ -695,7 +702,7 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 		
 		$m->deleteAll($id);
 		
-		WpProQuiz_View_View::admin_notices(sprintf( _x('%s deleted', 'Quiz deleted', 'wp-pro-quiz'), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'info');
+		WpProQuiz_View_View::admin_notices(sprintf( esc_html_x('%s deleted', 'Quiz deleted', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), LearnDash_Custom_Label::get_label( 'quiz' ) ), 'info');
 		
 		$this->showAction();
 	}
@@ -991,13 +998,13 @@ class WpProQuiz_Controller_Quiz extends WpProQuiz_Controller_Controller {
 			/* @var $cat WpProQuiz_Model_Category */
 			
 			if(!$cat->getCategoryId()) {
-				$cat->setCategoryName(__('Not categorized', 'wp-pro-quiz'));
+				$cat->setCategoryName(__('Not categorized', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			}
 			
 			$cats[$cat->getCategoryId()] = $cat->getCategoryName();
 		}
 		
-		$a = __('Categories', 'wp-pro-quiz').":\n";
+		$a = esc_html__('Categories', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN).":\n";
 		
 		foreach($catArray as $id => $value) {
 			if(!isset($cats[$id]))

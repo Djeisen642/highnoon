@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Settings
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.0.0
@@ -38,6 +38,15 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 * @var   array
 		 */
 		private $dynamic_groups;
+
+		/**
+		 * List of static pages, used in some settings.
+		 *
+		 * @since 1.5.9
+		 *
+		 * @var   array
+		 */
+		private $pages;
 
 		/**
 		 * Create object instance.
@@ -253,21 +262,17 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 * @return string[]
 		 */
 		public function get_pages() {
-			$pages = wp_cache_get( 'filtered_static_pages', 'charitable' );
-
-			if ( false === $pages ) {
+			if ( ! isset( $this->pages ) ) {
 				$all_pages = get_pages();
 
 				if ( ! $all_pages ) {
-					$pages = array();
+					$this->pages = array();
 				} else {
-					$pages = array_combine( wp_list_pluck( $all_pages, 'ID' ), wp_list_pluck( $all_pages, 'post_title' ) );
+					$this->pages = array_combine( wp_list_pluck( $all_pages, 'ID' ), wp_list_pluck( $all_pages, 'post_title' ) );
 				}
-
-				wp_cache_set( 'filtered_static_pages', $pages, 'charitable' );
 			}
 
-			return $pages;
+			return $this->pages;
 		}
 
 		/**
@@ -568,7 +573,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 				'1.4.13',
 				'Charitable_Admin_Notices::get_notices()'
 			);
-			
+
 			return charitable_get_admin_notices()->get_notices();
 		}
 	}

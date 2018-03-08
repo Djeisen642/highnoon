@@ -2,10 +2,12 @@
 /**
  * Login shortcode class.
  *
- * @version     1.5.7
- * @package     Charitable/Shortcodes/Login
- * @category    Class
- * @author      Eric Daams
+ * @package   Charitable/Shortcodes/Login
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.5.7
  */
 
 // Exit if accessed directly.
@@ -41,36 +43,20 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
 			$args['login_form_args'] = self::get_login_form_args( $args );
 
 			if ( is_user_logged_in() ) {
-
 				ob_start();
-
 				charitable_template( 'shortcodes/logged-in.php', $args );
-
 				return ob_get_clean();
 			}
 
 			if ( false == $args['registration_link_text'] || 'false' == $args['registration_link_text'] ) {
-
 				$args['registration_link'] = false;
-
 			} else {
-
 				$registration_link = charitable_get_permalink( 'registration_page' );
 
 				if ( charitable_get_permalink( 'login_page' ) === $registration_link ) {
-
 					$args['registration_link'] = false;
-
 				} else {
-
-					if ( isset( $_GET['redirect_to'] ) ) {
-
-						$registration_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $registration_link );
-
-					}
-
-					$args['registration_link'] = $registration_link;
-
+					$args['registration_link'] = add_query_arg( 'redirect_to', $args['redirect'], $registration_link );
 				}
 			}
 
@@ -91,7 +77,6 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
 		 * @return  string
 		 */
 		public static function add_hidden_field_to_login_form( $content, $args ) {
-
 			if ( isset( $args['charitable'] ) && $args['charitable'] ) {
 				$content .= '<input type="hidden" name="charitable" value="1" />';
 			}

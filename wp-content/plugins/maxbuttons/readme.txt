@@ -2,9 +2,9 @@
 Contributors: maxfoundry, basszje, arcware, johnbhartley
 Tags: wordpress button plugin, share button, wordpress buttons, css3 button generator, responsive buttons, css wordpress button
 Requires at least: 4.0
-Tested up to: 4.9.1
+Tested up to: 4.9.4
 Requires PHP: 5.3
-Stable tag: 6.27
+Stable tag: 6.28
 
 WordPress button plugin so powerful and easy to use anyone can create beautiful buttons, share buttons and social icons.
 
@@ -250,6 +250,14 @@ The plugin works with users of non-lating languages with a few exceptions. First
 Secondly, please use latin only characters for button name ( Basic settings) and extra classes ( Advanced settings ). Not doing so might prevent the styling output from working correctly.
 
 == Changelog ==
+
+
+= 6.28 =
+
+* Tested for 4.9.4
+* Improved performance of editor javascript
+* Fixed issue with showing certain conditional fields
+* Fixed issue in maxmodal with double init
 
 = 6.27 =
 

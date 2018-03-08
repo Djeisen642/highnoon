@@ -6,9 +6,9 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 			$this->fields_args = $fields_args;
 
 			$this->shortcodes_section_key 			= 	'course_content';
-			$this->shortcodes_section_title 		= 	sprintf( _x( '%s Content', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
+			$this->shortcodes_section_title 		= 	sprintf( esc_html_x( '%s Content', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
 			$this->shortcodes_section_type			=	1;
-			$this->shortcodes_section_description	=	sprintf( __( 'This shortcode displays the %s Content table (%s, %s, and %s) when inserted on a page or post.', 'placeholders: Course, lesson, topics, quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::label_to_lower( 'lessons' ), LearnDash_Custom_Label::label_to_lower( 'topics' ), LearnDash_Custom_Label::label_to_lower( 'quizzes' ));
+			$this->shortcodes_section_description	=	sprintf( esc_html_x( 'This shortcode displays the %1$s Content table (%2$s, %3$s, and %4$s) when inserted on a page or post.', 'placeholders: Course, lesson, topics, quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::label_to_lower( 'lessons' ), LearnDash_Custom_Label::label_to_lower( 'topics' ), LearnDash_Custom_Label::label_to_lower( 'quizzes' ));
 			
 			parent::__construct(); 
 		}
@@ -19,8 +19,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_course_id',
 					'name'  		=> 	'course_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	sprintf( _x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'		=>	sprintf( _x( 'Enter single %s ID', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'label' 		=> 	sprintf( esc_html_x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'		=>	sprintf( esc_html_x( 'Enter single %s ID', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text',
 					'required'		=>	'required'

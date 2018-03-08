@@ -41,9 +41,14 @@ require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/cl
 
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections-pages/class-ld-settings-page-certificate-shortcodes.php' );
 
+if ( ( defined( 'LEARNDASH_ADDONS_UPDATER' ) ) && ( LEARNDASH_ADDONS_UPDATER === true ) ) {
+	require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections-pages/class-ld-settings-page-addons.php' );
+}
+
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections-pages/class-ld-settings-page-general.php' );
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/class-ld-settings-section-general-submit.php' );
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/class-ld-settings-section-general-admin-user.php' );
+require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/class-ld-settings-section-general-per-page.php' );
 
 
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections-pages/class-ld-settings-page-paypal.php' );
@@ -67,3 +72,4 @@ if ( ( defined( 'LEARNDASH_TRANSLATIONS' ) ) && ( LEARNDASH_TRANSLATIONS === tru
 
 // Shows settings section on the WP Settings > Permalinks page
 require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/class-ld-settings-section-permalinks.php' );
+require_once( LEARNDASH_LMS_PLUGIN_DIR . 'includes/settings/settings-sections/class-ld-settings-section-permalinks-taxonoies.php' );

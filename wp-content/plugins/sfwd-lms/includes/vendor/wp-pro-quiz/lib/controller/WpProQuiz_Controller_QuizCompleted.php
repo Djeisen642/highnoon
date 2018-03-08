@@ -247,13 +247,13 @@ class WpProQuiz_Controller_QuizCompleted {
 			/* @var $cat WpProQuiz_Model_Category */
 				
 			if(!$cat->getCategoryId()) {
-				$cat->setCategoryName(__('Not categorized', 'wp-pro-quiz'));
+				$cat->setCategoryName(__('Not categorized', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			}
 				
 			$cats[$cat->getCategoryId()] = $cat->getCategoryName();
 		}
 	
-		$a = __('Categories', 'wp-pro-quiz').":\n";
+		$a = esc_html__('Categories', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN).":\n";
 	
 		foreach($catArray as $id => $value) {
 			if(!isset($cats[$id]))

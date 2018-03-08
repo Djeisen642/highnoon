@@ -139,7 +139,10 @@ jQuery(document).ready(function(){
 		}
 	}
 
-	jQuery('a.user_statistic').click(function(e) {
+	jQuery( '#ld_course_info' ).on( 'click', 'a.user_statistic', show_user_statistic );
+	jQuery( '#learndash_profile' ).on( 'click', 'a.user_statistic', show_user_statistic );
+
+	function show_user_statistic( e ) {
 		e.preventDefault();
 		
 		var refId 				= 	jQuery(this).data('ref_id');
@@ -193,6 +196,6 @@ jQuery(document).ready(function(){
 		jQuery('#wpProQuiz_overlay_close').click(function() {
 			jQuery('#wpProQuiz_user_overlay').hide();
 		});
-	});
-	
+	}
 });
+

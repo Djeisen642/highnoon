@@ -5,7 +5,7 @@
  * The responsibility of this class is to manage migrations between versions of Charitable.
  *
  * @package	  Charitable/Classes/Charitable_Upgrade
- * @copyright Copyright (c) 2017, Eric Daams
+ * @copyright Copyright (c) 2018, Eric Daams
  * @license   http://opensource.org/licenses/gpl-1.0.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.4
@@ -176,6 +176,12 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 					'message'  => '',
 					'prompt'   => false,
 					'callback' => array( $this, 'update_tables' ),
+				),
+				'fix_donor_role_caps' => array(
+					'version'  => '1.5.9',
+					'message'  => '',
+					'prompt'   => false,
+					'callback' => array( $this, 'fix_donor_role_caps' ),
 				),
 			);
 		}
@@ -939,6 +945,23 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 			} catch ( Exception $e ) {
 				return false;
 			}
+		}
+
+		/**
+		 * Fix the donor role caps.
+		 *
+		 * @since  1.5.9
+		 *
+		 * @return true
+		 */
+		public function fix_donor_role_caps() {
+			remove_role( 'donor' );
+
+			add_role( 'donor', __( 'Donor', 'charitable' ), array(
+				'read' => true,
+			) );
+
+			return true;
 		}
 
 		/**

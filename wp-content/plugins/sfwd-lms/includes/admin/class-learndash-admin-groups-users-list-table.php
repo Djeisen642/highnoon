@@ -51,7 +51,7 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 				
 					?>
 					<div class="alignleft actions">
-						<a href="<?php echo add_query_arg('action', 'learndash-group-email') ?>" class="button button-secondary"><?php _e('Email Group', 'learndash') ?></a>
+						<a href="<?php echo add_query_arg('action', 'learndash-group-email') ?>" class="button button-secondary"><?php esc_html_e('Email Group', 'learndash') ?></a>
 					</div>
 					<?php
 				}
@@ -76,7 +76,7 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 			if ( current_user_can( 'edit_groups') ) {
 				$output .= '<strong><a href="'. get_edit_post_link( $item->ID ) .'">' . $item->post_title .'</a></strong>';
 			
-				$row_actions = array('edit' => '<a href="'. get_edit_post_link( $item->ID ) .'">' . __('edit') .'</a>' );
+				$row_actions = array('edit' => '<a href="'. get_edit_post_link( $item->ID ) .'">' . esc_html__('edit') .'</a>' );
 				$output .= $this->row_actions($row_actions);
 			
 			} else {
@@ -92,14 +92,14 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 			$data_settings_quizzes = $element->get_data_settings('user-meta-quizzes');
 			
 			$actions = array();
-			$actions['list-view'] = '<a href="'. add_query_arg( 'group_id', $item->ID, remove_query_arg( array('s', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) ) .'">'. __( 'List Users', 'learndash' ) .'</a>';
+			$actions['list-view'] = '<a href="'. add_query_arg( 'group_id', $item->ID, remove_query_arg( array('s', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) ) .'">'. esc_html__( 'List Users', 'learndash' ) .'</a>';
 			
 			if ( ( !empty( $data_settings_courses ) ) && ( !empty( $data_settings_quizzes ) ) ) {			
 				$data_slug = 'user-courses';
-				$actions[$data_slug] = '<a href="" class="learndash-data-group-reports-button" data-nonce="'. wp_create_nonce( 'learndash-data-reports-'. $data_slug .'-'. get_current_user_id() ).'" data-group-id="'. $item->ID .'" data-slug="'. $data_slug .'">'. __( 'Export Progress', 'learndash' ) .'<span class="status"></span></a>';
+				$actions[$data_slug] = '<a href="" class="learndash-data-group-reports-button" data-nonce="'. wp_create_nonce( 'learndash-data-reports-'. $data_slug .'-'. get_current_user_id() ).'" data-group-id="'. $item->ID .'" data-slug="'. $data_slug .'">'. esc_html__( 'Export Progress', 'learndash' ) .'<span class="status"></span></a>';
 
 				$data_slug = 'user-quizzes';
-				$actions[$data_slug] = '<a href="" class="learndash-data-group-reports-button" data-nonce="'. wp_create_nonce( 'learndash-data-reports-'. $data_slug .'-'. get_current_user_id() ).'" data-group-id="'. $item->ID .'" data-slug="'. $data_slug .'">'. __( 'Export Results', 'learndash' ) .'<span class="status"></span></a>';
+				$actions[$data_slug] = '<a href="" class="learndash-data-group-reports-button" data-nonce="'. wp_create_nonce( 'learndash-data-reports-'. $data_slug .'-'. get_current_user_id() ).'" data-group-id="'. $item->ID .'" data-slug="'. $data_slug .'">'. esc_html__( 'Export Results', 'learndash' ) .'<span class="status"></span></a>';
 			} else {
 				$data_slug = 'user-courses';
 				$actions[$data_slug] = '<a href="'. add_query_arg(
@@ -110,7 +110,7 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 														), 
 														admin_url( 'admin.php?page=group_admin_page' ) 
 													) 
-													.'">'. __( 'Export Progress', 'learndash' ) .'</a>';
+													.'">'. esc_html__( 'Export Progress', 'learndash' ) .'</a>';
 				
 				$data_slug = 'user-quizzes';
 				$actions[$data_slug] = '<a href="'. add_query_arg(
@@ -121,13 +121,13 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 														),
 														admin_url( 'admin.php?page=group_admin_page' )
 													)  
-													.'">'. __( 'Export Results', 'learndash' ) .'</a>';
+													.'">'. esc_html__( 'Export Results', 'learndash' ) .'</a>';
 								
 			}
 				
 			if ( current_user_can( 'edit_groups') ) {
 				$data_slug = 'edit-group';
-				$actions[$data_slug] = '<a href="'. get_edit_post_link( $item->ID ) .'">'. __( 'Edit Group', 'learndash' ) .'</a>';
+				$actions[$data_slug] = '<a href="'. get_edit_post_link( $item->ID ) .'">'. esc_html__( 'Edit Group', 'learndash' ) .'</a>';
 			}
 			
 			if ( !empty( $actions ) ) {
@@ -146,7 +146,7 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 			if ( current_user_can( 'edit_users' ) ) {
 				$output .= '<strong><a href="'. get_edit_user_link( $item->ID ) .'">' . $item->display_name .'</a></strong>';
 				
-				$row_actions = array('edit' => '<a href="'. get_edit_user_link( $item->ID ) .'">' . __('edit') .'</a>' );
+				$row_actions = array('edit' => '<a href="'. get_edit_user_link( $item->ID ) .'">' . esc_html__('edit') .'</a>' );
 				$output .= $this->row_actions($row_actions);
 				
 			} else {
@@ -165,7 +165,7 @@ if ( !class_exists('Learndash_Admin_Groups_Users_List_Table') ) {
 
 		function column_user_actions( $item ) {
 			?>
-			<a href="<?php echo add_query_arg( 'user_id', $item->ID, remove_query_arg(array('s', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce')) );?>"><?php _e( 'Report', 'learndash' );?></a>
+			<a href="<?php echo add_query_arg( 'user_id', $item->ID, remove_query_arg(array('s', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce')) );?>"><?php esc_html_e( 'Report', 'learndash' );?></a>
 			<?php
 		}
 		

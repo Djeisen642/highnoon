@@ -98,13 +98,13 @@ function learndash_group_emails() {
 						}
 						wp_send_json_error( 
 							array( 
-								'message' => sprintf( __( '<span style="color:red">Error: Email(s) not sent. Please try again or check with your hosting provider.<br />wp_mail() returned %d.<br />Error: %s</span>', 'learndash' ), $mail_ret, $group_email_error_message )
+								'message' => sprintf( wp_kses_post( __( '<span style="color:red">Error: Email(s) not sent. Please try again or check with your hosting provider.<br />wp_mail() returned %d.<br />Error: %s</span>', 'learndash' ) ), $mail_ret, $group_email_error_message )
 							) 
 						);
 					} else {
 						wp_send_json_success(
 							array( 
-								'message' => sprintf( __( '<span style="color:green">Success: Email sent to %d group users.</span>', 'learndash' ), count( $email_addresses ) )
+								'message' => sprintf( wp_kses_post( __( '<span style="color:green">Success: Email sent to %d group users.</span>', 'learndash' ) ), count( $email_addresses ) )
 							) 
 						);
 					}
@@ -118,7 +118,7 @@ function learndash_group_emails() {
 			} else {
 				wp_send_json_error( 
 					array( 
-						'message' => __( 'No users in group.', 'learndash' )
+						'message' => esc_html__( 'No users in group.', 'learndash' )
 					) 
 				);
 			}
@@ -138,20 +138,20 @@ add_action( 'wp_ajax_learndash_group_emails', 'learndash_group_emails' );
 function learndash_groups_post_content() {
 
 	$labels = array(
-		'name'               => __( 'LearnDash Groups', 'learndash' ),
-		'singular_name'      => __( 'LearnDash Group', 'learndash' ),
-		'add_new'            => __( 'Add New', 'learndash' ),
-		'add_new_item'       => __( 'Add New LearnDash Group', 'learndash' ),
-		'edit_item'          => __( 'Edit LearnDash Group', 'learndash' ),
-		'new_item'           => __( 'New LearnDash Group', 'learndash' ),
-		'all_items'          => __( 'LearnDash Groups', 'learndash' ),
-		'updated'            => __( 'LearnDash Group Updated.', 'learndash' ),
-		'view_item'          => __( 'View LearnDash Group', 'learndash' ),
-		'search_items'       => __( 'Search LearnDash Group', 'learndash' ),
-		'not_found'          => __( 'No LearnDash Group found', 'learndash' ),
-		'not_found_in_trash' => __( 'No LearnDash Group found in the Trash', 'learndash' ),
+		'name'               => esc_html__( 'LearnDash Groups', 'learndash' ),
+		'singular_name'      => esc_html__( 'LearnDash Group', 'learndash' ),
+		'add_new'            => esc_html__( 'Add New', 'learndash' ),
+		'add_new_item'       => esc_html__( 'Add New LearnDash Group', 'learndash' ),
+		'edit_item'          => esc_html__( 'Edit LearnDash Group', 'learndash' ),
+		'new_item'           => esc_html__( 'New LearnDash Group', 'learndash' ),
+		'all_items'          => esc_html__( 'LearnDash Groups', 'learndash' ),
+		'updated'            => esc_html__( 'LearnDash Group Updated.', 'learndash' ),
+		'view_item'          => esc_html__( 'View LearnDash Group', 'learndash' ),
+		'search_items'       => esc_html__( 'Search LearnDash Group', 'learndash' ),
+		'not_found'          => esc_html__( 'No LearnDash Group found', 'learndash' ),
+		'not_found_in_trash' => esc_html__( 'No LearnDash Group found in the Trash', 'learndash' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( 'LearnDash Groups', 'learndash' ),
+		'menu_name'          => esc_html__( 'LearnDash Groups', 'learndash' ),
 	);
 
 	$capabilities = array(
@@ -180,7 +180,7 @@ function learndash_groups_post_content() {
 
 	$args = array(
 		'labels'              => $labels,
-		'description'         => __( 'Holds LearnDash user Groups', 'learndash' ),
+		'description'         => esc_html__( 'Holds LearnDash user Groups', 'learndash' ),
 		'public'              => false,
 		'menu_position'       => 10,
 		'show_in_menu'        => true,
@@ -223,16 +223,16 @@ function learndash_group_updated_messages( $messages ) {
 
 	$messages['groups'] = array(
 		0  => '', // Unused. Messages start at index 1.
-		1  => sprintf( __( 'LearnDash Group updated.', 'learndash' ), esc_url( get_permalink( $post_ID ) ) ),
-		2  => __( 'Custom field updated.', 'learndash' ),
-		3  => __( 'Custom field deleted.', 'learndash' ),
-		4  => __( 'LearnDash Group updated.', 'learndash' ),
-		5  => isset( $_GET['revision'] ) ? sprintf( __( 'LearnDash Group restored to revision from %s', 'learndash' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, /* translators: %s: date and time of the revision */
-		6  => sprintf( __( 'Group published.', 'learndash' ), esc_url( get_permalink( $post_ID ) ) ),
-		7  => __( 'LearnDash Group saved.', 'learndash' ),
-		8  => sprintf( __( 'LearnDash Group submitted. ', 'learndash' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
-		9  => sprintf(__( 'LearnDash Group scheduled for: <strong>%1$s</strong>. ', 'learndash' ), date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ) ), // translators: Publish box date format, see http://php.net/date
-		10 => sprintf( __( 'Group draft updated.', 'learndash' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+		1  => sprintf( esc_html__( 'LearnDash Group updated.', 'learndash' ), esc_url( get_permalink( $post_ID ) ) ),
+		2  => esc_html__( 'Custom field updated.', 'learndash' ),
+		3  => esc_html__( 'Custom field deleted.', 'learndash' ),
+		4  => esc_html__( 'LearnDash Group updated.', 'learndash' ),
+		5  => isset( $_GET['revision'] ) ? sprintf( esc_html__( 'LearnDash Group restored to revision from %s', 'learndash' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, /* translators: %s: date and time of the revision */
+		6  => sprintf( esc_html__( 'Group published.', 'learndash' ), esc_url( get_permalink( $post_ID ) ) ),
+		7  => esc_html__( 'LearnDash Group saved.', 'learndash' ),
+		8  => sprintf( esc_html__( 'LearnDash Group submitted. ', 'learndash' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+		9  => sprintf( wp_kses_post( __( 'LearnDash Group scheduled for: <strong>%1$s</strong>. ', 'learndash' ) ), date_i18n( esc_html__( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ) ), // translators: Publish box date format, see http://php.net/date
+		10 => sprintf( esc_html__( 'Group draft updated.', 'learndash' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
 	);
 
 	return $messages;
@@ -351,7 +351,7 @@ function learndash_group_user_list( $group_id ) {
 	$current_user = wp_get_current_user();
 
 	if ( ( !learndash_is_admin_user( $current_user ) ) && ( !learndash_is_group_leader_user( $current_user ) ) ) {
-		return __( 'Please login as a Group Administrator', 'learndash' );
+		return esc_html__( 'Please login as a Group Administrator', 'learndash' );
 	}
 
 	$users = learndash_get_groups_users( $group_id );
@@ -360,20 +360,20 @@ function learndash_group_user_list( $group_id ) {
 		<table cellspacing="0" class="wp-list-table widefat fixed groups_user_table">
 		<thead>
 			<tr>
-				<th class="manage-column column-sno " id="sno" scope="col" ><?php _e( 'S. No.', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Name', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Username', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Email', 'learndash' );?></th>
-				<th class="manage-column column-action" id="action" scope="col"><?php _e( 'Action', 'learndash' );?></span></th>
+				<th class="manage-column column-sno " id="sno" scope="col" ><?php esc_html_e( 'S. No.', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Name', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Username', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Email', 'learndash' );?></th>
+				<th class="manage-column column-action" id="action" scope="col"><?php esc_html_e( 'Action', 'learndash' );?></span></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<th class="manage-column column-sno " id="sno" scope="col" ><?php _e( 'S. No.', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Name', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Username', 'learndash' );?></th>
-				<th class="manage-column column-name " id="group" scope="col"><?php _e( 'Email', 'learndash' );?></th>
-				<th class="manage-column column-action" id="action" scope="col"><?php _e( 'Action', 'learndash' );?></span></th>
+				<th class="manage-column column-sno " id="sno" scope="col" ><?php esc_html_e( 'S. No.', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Name', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Username', 'learndash' );?></th>
+				<th class="manage-column column-name " id="group" scope="col"><?php esc_html_e( 'Email', 'learndash' );?></th>
+				<th class="manage-column column-action" id="action" scope="col"><?php esc_html_e( 'Action', 'learndash' );?></span></th>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -386,7 +386,7 @@ function learndash_group_user_list( $group_id ) {
 							<td><?php echo $name;?></td>
 							<td><?php echo $user->user_login;?></td>
 							<td><?php echo $user->user_email;?></td>
-							<td><a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page&group_id=' . $group_id . '&user_id=' . $user->ID );?>"><?php _e( 'Report', 'learndash' );?></a></td>
+							<td><a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page&group_id=' . $group_id . '&user_id=' . $user->ID );?>"><?php esc_html_e( 'Report', 'learndash' );?></a></td>
 						</tr>
 					<?php
 				}
@@ -395,7 +395,7 @@ function learndash_group_user_list( $group_id ) {
 		</table>
 		<?php
 	} else {
-		return __( 'No users.', 'learndash' );
+		return esc_html__( 'No users.', 'learndash' );
 	}
 
 }

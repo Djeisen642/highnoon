@@ -1165,13 +1165,13 @@ function learndash_report_course_users_progress( $course_id = 0, $user_query_arg
 					}
 
 					if ( ( !empty( $row['steps_total'] ) ) && ( !empty( $row['steps_completed'] ) ) && ( $row['steps_completed'] >= $row['steps_total'] )) {
-						$row['course_completed'] = _x('YES', 'Course Complete Report label: YES', 'learndash');
+						$row['course_completed'] = esc_html_x('YES', 'Course Complete Report label: YES', 'learndash');
 			
 						if ( property_exists( $result, 'activity_completed_formatted' ) ) {
 							$row['course_completed_on'] = $result->activity_completed_formatted;
 						}
 					} else {
-						$row['course_completed'] = _x('NO', 'Course Complete Report label: NO', 'learndash');
+						$row['course_completed'] = esc_html_x('NO', 'Course Complete Report label: NO', 'learndash');
 					} 
 
 					if ( !empty($row ) ) {
@@ -1430,13 +1430,13 @@ function learndash_report_user_courses_progress( $user_id = 0, $course_query_arg
 				}
 
 				if ( ( !empty( $row['steps_total'] ) ) && ( !empty( $row['steps_completed'] ) ) && ( $row['steps_completed'] >= $row['steps_total'] )) {
-					$row['course_completed'] = _x('YES', 'Course Complete Report label: YES', 'learndash');
+					$row['course_completed'] = esc_html_x('YES', 'Course Complete Report label: YES', 'learndash');
 		
 					if ( property_exists( $result, 'activity_completed_formatted' ) ) {
 						$row['course_completed_on'] = $result->activity_completed_formatted;
 					}
 				} else {
-					$row['course_completed'] = _x('NO', 'Course Complete Report label: NO', 'learndash');
+					$row['course_completed'] = esc_html_x('NO', 'Course Complete Report label: NO', 'learndash');
 				} 
 
 				if ( !empty($row ) ) {

@@ -47,7 +47,7 @@ array_push( $suggested_donations, $default );
 		foreach ( $suggested_donations as $i => $donation ) :
 			?>
 			<tr data-index="<?php echo $i ?>" class="<?php echo ($donation === end( $suggested_donations )) ? 'to-copy hidden' : 'default'; ?>">
-				<td class="reorder-col"><span class="icon-donations-grab handle"></span></td>
+				<td class="reorder-col"><span class="charitable-icon charitable-icon-donations-grab handle"></span></td>
 				<?php foreach ( $fields as $key => $field ) :
 
 					if ( is_array( $donation ) && isset( $donation[ $key ] ) ) {

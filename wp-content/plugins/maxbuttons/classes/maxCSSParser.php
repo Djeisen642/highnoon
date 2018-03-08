@@ -504,9 +504,9 @@ class maxCSSParser
 
 	function mixin_boxshadow($results, $values)
 	{
-		$width = $results["box-shadow-width"];
-		$left = $results["box-shadow-offset-left"];
-		$top = $results["box-shadow-offset-top"];
+		$width = isset($results["box-shadow-width"]) ? $results["box-shadow-width"] : 0;
+		$left = isset($results["box-shadow-offset-left"]) ? $results["box-shadow-offset-left"] : 0;
+		$top = isset($results["box-shadow-offset-top"]) ? $results["box-shadow-offset-top"] : 0;
 		$spread = isset($results['box-shadow-spread']) ? $results['box-shadow-spread'] : 0;
 		$color = isset($results["box-shadow-color"]) ? $results["box-shadow-color"] : '';
 

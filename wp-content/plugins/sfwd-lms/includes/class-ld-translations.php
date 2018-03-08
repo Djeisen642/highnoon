@@ -6,8 +6,8 @@ $languages = get_available_languages();
 
 */
 
-if (!class_exists('Learndash_Translations')) {
-	class Learndash_Translations {
+if (!class_exists('LearnDash_Translations' ) ) {
+	class LearnDash_Translations {
 
 		private $project_slug = '';
 		private $available_translations = array();
@@ -23,9 +23,9 @@ if (!class_exists('Learndash_Translations')) {
 			}
 		}
 
-		static public function register_project_slug( $project_slug = '' ) {
+		static public function register_translation_slug( $project_slug = '', $project_language_dir = '' ) {
 			if ( ( !empty( $project_slug ) ) && ( !isset( self::$project_slugs[$project_slug] ) ) ) {
-				self::$project_slugs[$project_slug] = $project_slug;
+				self::$project_slugs[$project_slug] = trailingslashit( $project_language_dir );
 			}
 		}
 
@@ -36,26 +36,24 @@ if (!class_exists('Learndash_Translations')) {
 			}
 		}
 
-		static public function get_language_directory( $relative_to_home = true ) {
-			$WP_LANG_DIR_tmp = str_replace('\\', '/', WP_LANG_DIR );
-			$ABSPATH_tmp = str_replace('\\', '/', ABSPATH );
-			
-			self::$translations_dir = $WP_LANG_DIR_tmp . '/plugins/';
-			if ( !file_exists( self::$translations_dir ) ) {
-				wp_mkdir_p( self::$translations_dir );
-			}
-
-			if ( $relative_to_home !== true ) {
-				return self::$translations_dir;
-			} else {
-				return self::$translations_dir = str_replace( $ABSPATH_tmp, '/', self::$translations_dir );			
+		static public function get_language_directory( $project_slug = '', $relative_to_home = true ) {
+			if ( ( !empty( $project_slug ) ) && ( isset( self::$project_slugs[$project_slug] ) ) ) {
+				
+				if ( $relative_to_home !== true ) {
+					return trailingslashit( self::$project_slugs[$project_slug] );
+				} else {
+					$ABSPATH_tmp = str_replace('\\', '/', ABSPATH );
+					return  str_replace( $ABSPATH_tmp, '/', trailingslashit( self::$project_slugs[$project_slug] ) );
+				}
 			}
 		}
 		
-		static public function is_language_directory_writable() {
-			$translations_dir = self::get_language_directory( false );
-			if ( is_writable( $translations_dir ) ) {
-				return true;
+		static public function is_language_directory_writable( $project_slug = '' ) {
+			if ( !empty( $project_slug ) ) {
+				$translations_dir = self::get_language_directory( $project_slug, false );
+				if ( ( !empty( $translations_dir ) ) && ( is_writable( $translations_dir ) ) ) {
+					return true;
+				}
 			}
 		}
 
@@ -108,14 +106,14 @@ if (!class_exists('Learndash_Translations')) {
 			
 			if ( ( !empty( $project ) ) && ( !empty( $locale ) ) ) { 
 	
-				if ( Learndash_Translations::is_language_directory_writable() ) {
-					$translation_set = Learndash_Translations::project_get_available_translations( $project, $locale );
+				if ( LearnDash_Translations::is_language_directory_writable( $project ) ) {
+					$translation_set = LearnDash_Translations::project_get_available_translations( $project, $locale );
 			
 					if ( ( isset( $translation_set['links'] ) ) && ( !empty( $translation_set['links'] ) ) ) {
 						foreach( $translation_set['links'] as $link_key => $link_url ) {	
 							$url_args = apply_filters('learndash_translations_url_args', array() );
 
-							$dest_filename = Learndash_Translations::get_language_directory( false ) . $project .'-'. $locale .'.'. $link_key;
+							$dest_filename = LearnDash_Translations::get_language_directory( $project, false ) . $project .'-'. $locale .'.'. $link_key;
 							if ( file_exists( $dest_filename ) ) {
 								unlink( $dest_filename );
 							} 
@@ -129,7 +127,8 @@ if (!class_exists('Learndash_Translations')) {
 										fwrite( $fp, $response_body );
 										fclose( $fp );
 										$reply_data['status'] = true;
-										$reply_data['message'] = '<p>'. __( 'Translation installed', 'learndash' ). '</p>';
+										$reply_data['message'] = '<p>'. sprintf( esc_html_x( 'Translation installed: %1$s (%2$s)', 'placeholders: Language Name, Language code', 'learndash' ), $translation_set['english_name'], $translation_set['wp_locale'] ) . '</p>';
+										$reply_data['translation_set'] = $translation_set;
 									}
 								}
 							}
@@ -146,14 +145,14 @@ if (!class_exists('Learndash_Translations')) {
 		
 			if ( ( !empty( $project ) ) && ( !empty( $locale ) ) ) { 
 	
-				if ( Learndash_Translations::is_language_directory_writable() ) {
-					$translation_set = Learndash_Translations::project_get_available_translations( $project, $locale );
+				if ( LearnDash_Translations::is_language_directory_writable( $project ) ) {
+					$translation_set = LearnDash_Translations::project_get_available_translations( $project, $locale );
 			
 					if ( ( isset( $translation_set['links'] ) ) && ( !empty( $translation_set['links'] ) ) ) {
 						foreach( $translation_set['links'] as $link_key => $link_url ) {	
 							$url_args = apply_filters('learndash_translations_url_args', array() );
 
-							$dest_filename = Learndash_Translations::get_language_directory( false ) . $project .'-'. $locale .'.'. $link_key;
+							$dest_filename = LearnDash_Translations::get_language_directory( $project, false ) . $project .'-'. $locale .'.'. $link_key;
 							if ( file_exists( $dest_filename ) ) {
 								unlink( $dest_filename );
 							} 
@@ -167,7 +166,7 @@ if (!class_exists('Learndash_Translations')) {
 										fwrite( $fp, $response_body );
 										fclose( $fp );
 										$reply_data['status'] = true;
-										$reply_data['message'] = '<p>'. __( 'Translation updated', 'learndash' ) .'</p>';
+										$reply_data['message'] = '<p>'. sprintf( esc_html_x( 'Translation updated: %1$s (%2$s)', 'placeholders: Language Name, Language code', 'learndash' ), $translation_set['english_name'], $translation_set['wp_locale'] )  .'</p>';
 									}
 								}
 							}
@@ -185,18 +184,18 @@ if (!class_exists('Learndash_Translations')) {
 		
 			if ( ( !empty( $project ) ) && ( !empty( $locale ) ) ) { 
 	
-				if ( Learndash_Translations::is_language_directory_writable() ) {
-					$translation_set = Learndash_Translations::project_get_available_translations( $project, $locale );
+				if ( LearnDash_Translations::is_language_directory_writable( $project ) ) {
+					$translation_set = LearnDash_Translations::project_get_available_translations( $project, $locale );
 			
 					if ( ( isset( $translation_set['links'] ) ) && ( !empty( $translation_set['links'] ) ) ) {
 						foreach( $translation_set['links'] as $link_key => $link_url ) {	
 							$url_args = apply_filters('learndash_translations_url_args', array() );
 
-							$dest_filename = Learndash_Translations::get_language_directory( false ) . $project .'-'. $locale .'.'. $link_key;
+							$dest_filename = LearnDash_Translations::get_language_directory( $project, false ) . $project .'-'. $locale .'.'. $link_key;
 							if ( file_exists( $dest_filename ) ) {
 								unlink( $dest_filename );
 								$reply_data['status'] = true;
-								$reply_data['message'] = '<p>'. __( 'Translation removed', 'learndash' ) .'</p>';
+								$reply_data['message'] = '<p>'. sprintf( esc_html_x( 'Translation removed: %1$s (%2$s)', 'placeholders: Language Name, Language code', 'learndash' ), $translation_set['english_name'], $translation_set['wp_locale'] )  .'</p>';
 							} 
 						}
 					}
@@ -225,7 +224,7 @@ if (!class_exists('Learndash_Translations')) {
 							$this->show_installed_translations( );
 							$this->show_available_translations( );
 						} else {
-							?><p><?php _e('No translations available for this plugin.', 'learndash'); ?></p><?php
+							?><p><?php esc_html_e('No translations available for this plugin.', 'learndash'); ?></p><?php
 						}
 					?>
 				</div>
@@ -233,16 +232,20 @@ if (!class_exists('Learndash_Translations')) {
 			}
 		}
 
-		static public function get_available_translations( $project = '' ) {
+		static public function get_available_translations( $project = '', $force = false ) {
 			if ( !empty( self::$project_slugs ) ) {
 				$ld_translations = get_option( self::$options_key, null );
 				if ( !isset( $ld_translations['last_check'] ) ) {
 					$ld_translations['last_check'] = time() - ( LEARNDASH_TRANSLATIONS_URL_CACHE + 1 );
+				} else if ( ( isset( $_GET['action'] ) ) && ( $_GET['action'] == 'refresh' ) ) {
+					if ( ( isset( $_GET['ld-translation-nonce'] ) ) && ( !empty( $_GET['ld-translation-nonce'] ) ) && ( wp_verify_nonce( $_GET['ld-translation-nonce'], 'ld-translation-refresh' ) ) ) {
+						$ld_translations['last_check'] = time() - ( LEARNDASH_TRANSLATIONS_URL_CACHE + 1 );
+					}
 				}
 			
 				$time_diff = abs( time() - intval( $ld_translations['last_check'] ) );
 				
-				if ( $time_diff > LEARNDASH_TRANSLATIONS_URL_CACHE ) {
+				if ( ( $force === true) || ( $time_diff > LEARNDASH_TRANSLATIONS_URL_CACHE ) ) {
 					
 					$project_slugs = implode(',', array_keys( self::$project_slugs ) );
 			
@@ -254,8 +257,9 @@ if (!class_exists('Learndash_Translations')) {
 						),
 						LEARNDASH_TRANSLATIONS_URL_BASE 
 					);
-					$url_args = apply_filters('learndash_translations_url_args', array() );
-					if ( empty( $url_args ) ) $url_args = null; 
+					$url_args = array('timeout' => 10);
+					$url_args = apply_filters('learndash_translations_url_args', $url_args );
+					
 					$response = wp_remote_get( $url, $url_args );
 					if ( ( is_array( $response ) ) && ( wp_remote_retrieve_response_code( $response ) == '200' ) ) {
 						$response_body = wp_remote_retrieve_body( $response );
@@ -282,15 +286,21 @@ if (!class_exists('Learndash_Translations')) {
 		} 
 
 		function show_installed_translations( ) {
+			
+			$pot_file = $this->get_language_directory( $this->project_slug, false ) .''. $this->project_slug .'.pot';
+			if ( file_exists( $pot_file ) ) {
+				$pot_file = $this->get_language_directory( $this->project_slug ) .''. $this->project_slug .'.pot';
+				?><p style="float:right"><?php esc_html_e('Download the original strings (POT) File.', 'learndash' ); ?> <a target="_blank" id="learndash-translations-pot-file-<?php echo $this->project_slug ?>" class="button button-secondary learndash-translations-pot-file" href="<?php echo $pot_file; ?>" title="<?php esc_html_e('Download POT File from your server.', 'learndash' ); ?>"><span class="dashicons dashicons-download"></span><?php esc_html_e( 'POT', 'learndash' ); ?></a></p><div style="clear:both"></div><?php
+			}
 			?>
-			<h4><?php _e('Installed Translations', 'learndash') ?></h4>
-			<p><?php echo sprintf( __('All translations are stored into the directory: %s', 'learndash' ), '<code>'. esc_attr('<site root>') . str_replace( ABSPATH, '/', $this->get_language_directory() ) . $this->project_slug .'-xx_XX.mo</code>') ?></p>
+			
+			<h4><?php esc_html_e('Installed Translations', 'learndash') ?></h4>
 			<table class="ld-installed-translations wp-list-table widefat fixed striped posts">
 				<tr>
-					<th class="column-locale"><?php _e('Locale', 'learndash' ); ?></th>
-					<th class="column-title"><?php _e('Name / Native', 'learndash' ); ?></th>
-					<th class="column-actions-local"><?php _e('Download', 'learndash' ); ?></th>
-					<th class="column-action-remote"><?php _e('Actions', 'learndash' ); ?></th>
+					<th class="column-locale"><?php esc_html_e('Locale', 'learndash' ); ?></th>
+					<th class="column-title"><?php esc_html_e('Name / Native', 'learndash' ); ?></th>
+					<th class="column-actions-local"><?php esc_html_e('Download', 'learndash' ); ?></th>
+					<th class="column-action-remote"><?php esc_html_e('Actions', 'learndash' ); ?></th>
 				</tr>
 				<?php 
 					if ( ( is_array( $this->available_translations ) ) && ( !empty( $this->available_translations ) ) 
@@ -320,12 +330,18 @@ if (!class_exists('Learndash_Translations')) {
 					} else {
 						?>
 						<tr>
-							<td colspan="4"><?php _e('No Translations installed', 'leardash'); ?></td>
+							<td colspan="4"><?php esc_html_e('No Translations installed', 'leardash'); ?></td>
 						</tr>
 						<?php 
 					} 
 				?>
 			</table>
+			<p><?php echo sprintf( esc_html__('All translations are stored into the directory: %s', 'learndash' ), '<code>'. esc_attr('<site root>') . $this->get_language_directory( $this->project_slug, true ) . '</code>') ?><?php
+				if ( !LearnDash_Translations::is_language_directory_writable( $this->project_slug ) ) {
+					?><br /><span class="error"><?php esc_html_e('The language directory is not writable', 'learndash' ); ?></span><?php
+				}
+			?></p>
+			
 			<?php
 		}
 
@@ -338,41 +354,40 @@ if (!class_exists('Learndash_Translations')) {
 						if ( !is_null($translation_set ) ) {
 							echo $translation_set['english_name'] .'/'. $translation_set['native_name'];
 						} else {
-							_e( 'Not from LearnDash', 'learndash' );
+						esc_html_e( 'Not from LearnDash', 'learndash' );
 						}
 				
 						?></td>
 					<td class="column-actions-local">
 						<?php
+						/*
 						if ( isset( $installed_set['mo'] ) ) {
 							?>
-							<a id="learndash-translations-mo-file-<?php echo $locale ?>" class="button button-secondary learndash-translations-mo-file" href="<?php echo $this->get_language_directory() .'/'. $installed_set['mo'] ?>" title="<?php _e('Download MO File from your server.', 'learndash' ); ?>"><span class="dashicons dashicons-download"></span><?php esc_html_e( 'MO', 'learndash' ); ?></a>
+							<a id="learndash-translations-mo-file-<?php echo $locale ?>" class="button button-secondary learndash-translations-mo-file" href="<?php echo $this->get_language_directory( $this->project_slug ) .'/'. $installed_set['mo'] ?>" title="<?php esc_html_e('Download MO File from your server.', 'learndash' ); ?>"><span class="dashicons dashicons-download"></span><?php esc_html_e( 'MO', 'learndash' ); ?></a>
 							<?php
 						}
-		
+						*/
 						if ( isset( $installed_set['po'] ) ) {
 							?>
-							<a id="learndash-translations-po-file-<?php echo $locale ?>" class="button button-secondary learndash-translations-po-file" href="<?php echo $this->get_language_directory() .'/'. $installed_set['po'] ?>" title="<?php _e('Download PO File from your server.', 'learndash' ); ?>"><span class="dashicons dashicons-download"></span><?php esc_html_e( 'PO', 'learndash' ); ?></a>
+							<a id="learndash-translations-po-file-<?php echo $locale ?>" target="_blank" class="button button-secondary learndash-translations-po-file" href="<?php echo $this->get_language_directory( $this->project_slug ) .'/'. $installed_set['po'] ?>" title="<?php esc_html_e('Download PO File from your server.', 'learndash' ); ?>"><span class="dashicons dashicons-download"></span><?php esc_html_e( 'PO', 'learndash' ); ?></a>
 					
 							<?php
 						}
 						?>
 					</td>
 					<td class="column-actions-remote">
-						<?php
+						<a id="learndash-translations-<?php echo $this->project_slug ?>-<?php echo $locale ?>-remove" class="button button-secondary learndash-translations-remove" href="<?php echo self::get_action_url( 'remove', $this->project_slug, $locale ); ?>" title="<?php esc_html_e('Remove translation frm server', 'learndash' ) ?>"><span class="dashicons dashicons-trash"></span></a><?php
+
 							if ( !is_null( $translation_set ) ) {
 								$last_updated_time = learndash_get_timestamp_from_date_string( $translation_set['last_modified_gmt'] );
 								if ( ( $installed_set['mo_mtime'] < $last_updated_time ) && ( $installed_set['po_mtime'] < $last_updated_time ) ) {
-									_e('Up to date', 'learndash');
+									//esc_html_e('Up to date', 'learndash');
 								} else {
 									?>
 									<a href="<?php echo self::get_action_url( 'update', $this->project_slug, $locale ); ?>" class="button button-primary learndash-translations-update" title="<?php esc_html_e('Update trnaslation from LearnDash', 'learndash' ); ?>"><?php esc_html_e( 'Update', 'learndash' ); ?></a>
 									<?php
 								}
 							}
-							
-							?><a id="learndash-translations-<?php echo $this->project_slug ?>-<?php echo $locale ?>-remove" class="button button-secondary learndash-translations-remove" href="<?php echo self::get_action_url( 'remove', $this->project_slug, $locale ); ?>" title="<?php esc_html_e('Remove translation frm server', 'learndash' ) ?>"><span class="dashicons dashicons-trash"></span></a><?php
-							
 						?>
 					</td>
 				</tr>
@@ -382,7 +397,14 @@ if (!class_exists('Learndash_Translations')) {
 
 		function show_available_translations( ) {
 			$wp_languages = get_available_languages();
+			
 			if ( empty( $wp_languages ) ) $wp_languages = array();
+
+			if ( !in_array('en_US', $wp_languages ) ) {
+				$wp_languages = array_merge( array( 'en_US' ), $wp_languages );
+			}
+			error_log('wp_languages<pre>'. print_r($wp_languages, true) .'</pre>');
+				
 
 			// Taken from options-general.php. 
 			if ( ! is_multisite() && defined( 'WPLANG' ) && '' !== WPLANG && 'en_US' !== WPLANG && ! in_array( WPLANG, $languages ) ) {
@@ -415,9 +437,9 @@ if (!class_exists('Learndash_Translations')) {
 			
 					?>
 					<div id="learndash-translations-available">
-						<h4><?php _e('Available Translations', 'learndash' ); ?></h4>
+						<h4><?php esc_html_e('Available Translations', 'learndash' ); ?></h4>
 						<select id="ld-translation-install-locale-<?php echo $this->project_slug ?>" class="ld-translation-install-locale" data-project="<?php echo $this->project_slug ?>">
-							<option value=""><?php _e('-- Install Translation --', 'learndash' ); ?></option>
+							<option value=""><?php esc_html_e('-- Install Translation --', 'learndash' ); ?></option>
 							<?php 
 					
 							$show_opt_group = false;
@@ -462,7 +484,7 @@ if (!class_exists('Learndash_Translations')) {
 	
 			if ( !empty( $this->project_slug ) ) {
 	
-				$languages_plugins_dir = WP_LANG_DIR . '/plugins/'; 
+				$languages_plugins_dir = $translations_dir = self::get_language_directory( $this->project_slug, false );
 				$languages_plugins_dir_mo = $languages_plugins_dir . $this->project_slug .'-*.mo';
 	
 				$mo_files = glob( $languages_plugins_dir_mo );
@@ -495,113 +517,3 @@ if (!class_exists('Learndash_Translations')) {
 		// End of functions
 	}
 }
-
-
-/*
-add_action( 'wp_ajax_learndash_translation_update', function() {
-	$reply_data = array( );
-	
-	$project = $locale = '';
-	if ( ( isset( $_POST['project'] ) ) && ( !empty( $_POST['project'] ) ) ) {
-		$project = esc_attr( $_POST['project'] );
-	}
-	if ( ( isset( $_POST['locale'] ) ) && ( !empty( $_POST['locale'] ) ) ) {
-		$locale = esc_attr( $_POST['locale'] );
-	}
-	
-	if ( ( !empty( $project ) ) && ( !empty( $locale ) ) ) { 
-	
-		if ( Learndash_Translations::is_language_directory_writable() ) {
-			$translation_set = Learndash_Translations::project_get_available_translations( $project, $locale );
-			
-			if ( ( isset( $translation_set['links'] ) ) && ( !empty( $translation_set['links'] ) ) ) {
-				foreach( $translation_set['links'] as $link_key => $link_url ) {	
-					$url_args = apply_filters('learndash_translations_url_args', array() );
-
-					$dest_filename = Learndash_Translations::get_language_directory( false ) . $project .'-'. $locale .'.'. $link_key;
-					if ( file_exists( $dest_filename ) ) {
-						if ( is_writeable( $dest_filename ) ) {
-						}
-					} else 
-					
-					$response = wp_remote_get( $link_url, $url_args );
-					if ( ( is_array( $response ) ) && ( wp_remote_retrieve_response_code( $response ) == '200' ) ) {
-						$response_body = wp_remote_retrieve_body( $response );
-						if ( !empty( $response_body ) ) {
-							$fp = fopen( $dest_filename, 'w+' );
-							if ( $fp !== false ) {
-								fwrite( $fp, $response_body );
-								fclose( $fp );
-								$reply_data['status'] = true;
-							}
-						}
-					}
-				}
-			}
-		
-		} else {
-			$reply_data['status'] = false;
-			$reply_data['message'] = __( 'Languages directory not writable.', 'learndash' );
-		}
-	}
-		
-	echo json_encode( $reply_data );
-
-	wp_die(); // this is required to terminate immediately and return a proper response			
-	
-});
-*/
-/*
-add_action( 'wp_ajax_learndash_translation_install', function() {
-	$reply_data = array( );
-	
-	$project = $locale = '';
-	if ( ( isset( $_POST['project'] ) ) && ( !empty( $_POST['project'] ) ) ) {
-		$project = esc_attr( $_POST['project'] );
-	}
-	if ( ( isset( $_POST['locale'] ) ) && ( !empty( $_POST['locale'] ) ) ) {
-		$locale = esc_attr( $_POST['locale'] );
-	}
-	
-	if ( ( !empty( $project ) ) && ( !empty( $locale ) ) ) { 
-	
-		if ( Learndash_Translations::is_language_directory_writable() ) {
-			$translation_set = Learndash_Translations::project_get_available_translations( $project, $locale );
-			
-			if ( ( isset( $translation_set['links'] ) ) && ( !empty( $translation_set['links'] ) ) ) {
-				foreach( $translation_set['links'] as $link_key => $link_url ) {	
-					$url_args = apply_filters('learndash_translations_url_args', array() );
-
-					$dest_filename = Learndash_Translations::get_language_directory( false ) . $project .'-'. $locale .'.'. $link_key;
-					if ( file_exists( $dest_filename ) ) {
-						if ( is_writeable( $dest_filename ) ) {
-						}
-					} else 
-					
-					$response = wp_remote_get( $link_url, $url_args );
-					if ( ( is_array( $response ) ) && ( wp_remote_retrieve_response_code( $response ) == '200' ) ) {
-						$response_body = wp_remote_retrieve_body( $response );
-						if ( !empty( $response_body ) ) {
-							$fp = fopen( $dest_filename, 'w+' );
-							if ( $fp !== false ) {
-								fwrite( $fp, $response_body );
-								fclose( $fp );
-								$reply_data['status'] = true;
-							}
-						}
-					}
-				}
-			}
-		
-		} else {
-			$reply_data['status'] = false;
-			$reply_data['message'] = __( 'Languages directory not writable.', 'learndash' );
-		}
-	}
-		
-	echo json_encode( $reply_data );
-
-	wp_die(); // this is required to terminate immediately and return a proper response			
-	
-});
-*/

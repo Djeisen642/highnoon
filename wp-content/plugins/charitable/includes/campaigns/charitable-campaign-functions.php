@@ -7,7 +7,7 @@
  * @package     Charitable/Functions/Campaign
  * @version     1.0.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2017, Studio 164a
+ * @copyright   Copyright (c) 2018, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -17,21 +17,35 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 /**
  * Returns the given campaign.
  *
- * @since   1.0.0
+ * @since  1.0.0
  *
- * @param   int     $campaign_id
- * @return  Charitable_Campaign
+ * @param  int $campaign_id The campaign ID.
+ * @return Charitable_Campaign
  */
 function charitable_get_campaign( $campaign_id ) {
 	return new Charitable_Campaign( $campaign_id );
 }
 
 /**
+ * Create a campaign.
+ *
+ * @since  1.5.9
+ *
+ * @param  array $args Values for the campaign.
+ * @return int
+ */
+function charitable_create_campaign( array $args ) {
+	$processor = new Charitable_Campaign_Processor( $args );
+	return $processor->save();
+}
+
+
+/**
  * Returns the current campaign.
  *
- * @since   1.0.0
+ * @since  1.0.0
  *
- * @return  Charitable_Campaign
+ * @return Charitable_Campaign
  */
 function charitable_get_current_campaign() {
 	return charitable_get_request()->get_current_campaign();
@@ -40,21 +54,22 @@ function charitable_get_current_campaign() {
 /**
  * Returns the current campaign ID.
  *
- * @since   1.0.0
+ * @since  1.0.0
  *
- * @return  int
+ * @return int
  */
 function charitable_get_current_campaign_id() {
 	return charitable_get_request()->get_current_campaign_id();
 }
 
+
 /**
  * Returns whether the current user is the creator of the given campaign.
  *
- * @since   1.0.0
+ * @since  1.0.0
  *
- * @param   int     $campaign_id
- * @return  boolean
+ * @param  int $campaign_id The campaign ID.
+ * @return boolean
  */
 function charitable_is_current_campaign_creator( $campaign_id = null ) {
 	if ( is_null( $campaign_id ) ) {

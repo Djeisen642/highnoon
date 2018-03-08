@@ -6,9 +6,9 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 			$this->fields_args = $fields_args;
 
 			$this->shortcodes_section_key 			= 	'courseinfo';
-			$this->shortcodes_section_title 		= 	sprintf( _x( '%s Info', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
+			$this->shortcodes_section_title 		= 	sprintf( esc_html_x( '%s Info', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) );
 			$this->shortcodes_section_type			=	1;
-			$this->shortcodes_section_description	=	sprintf( _x( "This shortcode displays %s related information on the certificate. <strong>Unless specified otherwise, all points, scores and percentages relate to the %s associated with the %s.</strong>", 'placeholder: course, quizzes, course', 'learndash' ), LearnDash_Custom_Label::label_to_lower( 'course' ), LearnDash_Custom_Label::label_to_lower( 'quizzes' ) , LearnDash_Custom_Label::label_to_lower( 'course' ) );
+			$this->shortcodes_section_description	=	sprintf( wp_kses_post( _x( "This shortcode displays %s related information on the certificate. <strong>Unless specified otherwise, all points, scores and percentages relate to the %s associated with the %s.</strong>", 'placeholder: course, quizzes, course', 'learndash' ) ), LearnDash_Custom_Label::label_to_lower( 'course' ), LearnDash_Custom_Label::label_to_lower( 'quizzes' ) , LearnDash_Custom_Label::label_to_lower( 'course' ) );
 			
 			parent::__construct(); 
 		}
@@ -19,35 +19,35 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_show',
 					'name'  		=> 	'show', 
 					'type'  		=> 	'select',
-					'label' 		=> 	__( 'Show', 'learndash' ),
-					'help_text'		=>	sprintf( _x( 'This parameter determines the information to be shown by the shortcode.<br />cumulative - average for all %s of the %s.<br />aggregate - sum for all %s of the %s.', 'placeholders: quizzes, course, quizzes, course', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Show', 'learndash' ),
+					'help_text'		=>	sprintf( wp_kses_post( _x( 'This parameter determines the information to be shown by the shortcode.<br />cumulative - average for all %s of the %s.<br />aggregate - sum for all %s of the %s.', 'placeholders: quizzes, course, quizzes, course', 'learndash' ) ),
 											LearnDash_Custom_Label::label_to_lower( 'quizzes' ), LearnDash_Custom_Label::label_to_lower( 'course' ),
 											LearnDash_Custom_Label::label_to_lower( 'quizzes' ), LearnDash_Custom_Label::label_to_lower( 'course' ) ),
 					'value' 		=> 	'ID',
 					'options'		=>	array(
-											'course_title'				=>	__('Title', 'learndash' ),
-											'course_points'				=>	sprintf( _x('Earned %s Points', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-											'user_course_points'		=>	sprintf( _x('Total User %s Points', 'placeholder: Courses', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+											'course_title'				=>	esc_html__('Title', 'learndash' ),
+											'course_points'				=>	sprintf( esc_html_x('Earned %s Points', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+											'user_course_points'		=>	sprintf( esc_html_x('Total User %s Points', 'placeholder: Courses', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 											
-											'completed_on'				=>	__('Completed On (date)', 'learndash'),
-											'cumulative_score'			=>	__('Cumulative Score', 'learndash'),
-											'cumulative_points'			=>	__('Cumulative Points', 'learndash'),
-											'cumulative_total_points'	=>	__('Possible Cumulative Total Points', 'learndash'),
-											'cumulative_percentage'		=>	__('Cumulative Percentage', 'learndash'),
-											'cumulative_timespent'		=>	__('Cumulative Time Spent', 'learndash'),
-											'aggregate_percentage'		=>	__('Aggregate Percentage', 'learndash'),
-											'aggregate_score'			=>	__('Aggregate Score', 'learndash'),
-											'aggregate_points'			=>	__('Aggregate Points', 'learndash'),
-											'aggregate_total_points'	=>	__('Possible Aggregate Total Points', 'learndash'),
-											'aggregate_timespent'		=>	__('Aggregate Time Spent', 'learndash'),
+											'completed_on'				=>	esc_html__('Completed On (date)', 'learndash'),
+											'cumulative_score'			=>	esc_html__('Cumulative Score', 'learndash'),
+											'cumulative_points'			=>	esc_html__('Cumulative Points', 'learndash'),
+											'cumulative_total_points'	=>	esc_html__('Possible Cumulative Total Points', 'learndash'),
+											'cumulative_percentage'		=>	esc_html__('Cumulative Percentage', 'learndash'),
+											'cumulative_timespent'		=>	esc_html__('Cumulative Time Spent', 'learndash'),
+											'aggregate_percentage'		=>	esc_html__('Aggregate Percentage', 'learndash'),
+											'aggregate_score'			=>	esc_html__('Aggregate Score', 'learndash'),
+											'aggregate_points'			=>	esc_html__('Aggregate Points', 'learndash'),
+											'aggregate_total_points'	=>	esc_html__('Possible Aggregate Total Points', 'learndash'),
+											'aggregate_timespent'		=>	esc_html__('Aggregate Time Spent', 'learndash'),
 										)
 				),
 				'format' => array(
 					'id'			=>	$this->shortcodes_section_key . '_format',
 					'name'  		=> 	'format', 
 					'type'  		=> 	'text',
-					'label' 		=> 	__( 'Format', 'learndash'),
-					'help_text'		=>	__( 'This can be used to change the date format. Default: "F j, Y, g:i a" shows as <i>March 10, 2001, 5:16 pm</i>. See <a target="_blank" href="http://php.net/manual/en/function.date.php">the full list of available date formating strings  here.</a>', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Format', 'learndash'),
+					'help_text'		=>	wp_kses_post( __( 'This can be used to change the date format. Default: "F j, Y, g:i a" shows as <i>March 10, 2001, 5:16 pm</i>. See <a target="_blank" href="http://php.net/manual/en/function.date.php">the full list of available date formating strings  here.</a>', 'learndash' ) ),
 					'value' 		=> 	'',
 					'placeholder'	=>	'F j, Y, g:i a'
 				),
@@ -59,8 +59,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_course_id',
 					'name'  		=> 	'course_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	sprintf( _x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'		=>	sprintf( _x( 'Enter single %s ID.', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'label' 		=> 	sprintf( esc_html_x( '%s ID', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'		=>	sprintf( esc_html_x( 'Enter single %s ID.', 'placeholders: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text',
 					'required'		=>	'required'
@@ -70,8 +70,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_user_id',
 					'name'  		=> 	'user_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	__( 'User ID', 'learndash' ),
-					'help_text'		=>	__('Enter specific User ID. Leave blank for current User.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'User ID', 'learndash' ),
+					'help_text'		=>	esc_html__('Enter specific User ID. Leave blank for current User.', 'learndash' ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text'
 				);
@@ -81,8 +81,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 				'id'			=>	$this->shortcodes_section_key . '_decimals',
 				'name'  		=> 	'decimals', 
 				'type'  		=> 	'number',
-				'label' 		=> 	__( 'Decimals', 'learndash' ),
-				'help_text'		=>	__('Number of decimal places to show. Default is 2.', 'learndash' ),
+				'label' 		=> 	esc_html__( 'Decimals', 'learndash' ),
+				'help_text'		=>	esc_html__('Number of decimal places to show. Default is 2.', 'learndash' ),
 				'value' 		=> 	'',
 				'class'			=>	'small-text'
 			);

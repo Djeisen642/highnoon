@@ -2,11 +2,12 @@
 /**
  * A helper class for logging deprecated arguments, functions and methods.
  *
- * @package     Charitable/Classes/Charitable_Deprecated
- * @version     1.4.0
- * @author      Eric Daams
- * @copyright   Copyright (c) 2017, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Deprecated
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @version   1.4.0
+ * @version   1.5.9
  */
 
 // Exit if accessed directly.
@@ -17,38 +18,52 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 	/**
 	 * Charitable_Deprecated
 	 *
-	 * @since   1.4.0
+	 * @since 1.4.0
 	 */
 	class Charitable_Deprecated {
 
 		/**
 		 * One true class object.
 		 *
-		 * @var     Charitable_Deprecated
-		 * @since   1.4.0
+		 * @since 1.4.0
+		 *
+		 * @var   Charitable_Deprecated
 		 */
 		private static $instance = null;
 
 		/**
 		 * Whether logging is enabled.
 		 *
-		 * @var     $logging
-		 * @since   1.4.0
+		 * @since 1.4.0
+		 *
+		 * @var   $logging
 		 */
 		private static $logging;
 
 		/**
+		 * Plugin that this is being called for.
+		 *
+		 * @since 1.5.9
+		 *
+		 * @var   string
+		 */
+		private $context;
+
+		/**
 		 * Create class object. Private constructor.
 		 *
-		 * @since   1.4.0
+		 * @since 1.4.0
 		 */
 		private function __construct() {
+			$this->context = 'Charitable';
 		}
 
 		/**
 		 * Create and return the class object.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
+		 *
+		 * @return Charitable_Deprecated
 		 */
 		public static function get_instance() {
 			if ( is_null( self::$instance ) ) {
@@ -61,12 +76,12 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		/**
 		 * Log a deprecated argument.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param   string      $function      The deprecated function.
-		 * @param   string      $version       The version when this argument became deprecated.
-		 * @param   string|null $extra_message An extra message to include for the notice.
-		 * @return  boolean Whether the notice was logged.
+		 * @param  string      $function      The deprecated function.
+		 * @param  string      $version       The version when this argument became deprecated.
+		 * @param  string|null $extra_message An extra message to include for the notice.
+		 * @return boolean Whether the notice was logged.
 		 */
 		public function deprecated_argument( $function, $version, $extra_message = null ) {
 			if ( ! $this->is_logging_enabled() ) {
@@ -74,9 +89,9 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 			}
 
 			if ( ! is_null( $extra_message ) ) {
-				$message = sprintf( __( '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s of Charitable! %3$s', 'charitable' ), $function, $version, $extra_message );
+				$message = sprintf( __( '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s of %4$s! %3$s', 'charitable' ), $function, $version, $extra_message, $this->context );
 			} else {
-				$message = sprintf( __( '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s of Charitable with no alternatives available.', 'charitable' ), $function, $version );
+				$message = sprintf( __( '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s of %3$s with no alternatives available.', 'charitable' ), $function, $version, $this->context );
 			}
 
 			trigger_error( $message );
@@ -87,12 +102,12 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		/**
 		 * Log a deprecated function.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param   string      $function    The function that has been deprecated.
-		 * @param   string      $version     The version of Charitable where the function was deprecated.
-		 * @param   string|null $replacement Optional. The function to use instead.
-		 * @return  boolean Whether the notice was logged.
+		 * @param  string      $function    The function that has been deprecated.
+		 * @param  string      $version     The version of Charitable where the function was deprecated.
+		 * @param  string|null $replacement Optional. The function to use instead.
+		 * @return boolean Whether the notice was logged.
 		 */
 		public function deprecated_function( $function, $version, $replacement = null ) {
 			if ( ! $this->is_logging_enabled() ) {
@@ -100,9 +115,9 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 			}
 
 			if ( ! is_null( $replacement ) ) {
-				$message = sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s of Charitable! Use %3$s instead.', 'charitable' ), $function, $version, $replacement );
+				$message = sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s of %4$s! Use %3$s instead.', 'charitable' ), $function, $version, $replacement, $this->context );
 			} else {
-				$message = sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s of Charitable with no alternatives available.', 'charitable' ), $function, $version );
+				$message = sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s of %3$s with no alternatives available.', 'charitable' ), $function, $version, $this->context );
 			}
 
 			trigger_error( $message );
@@ -113,19 +128,19 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		/**
 		 * Log a general "doing it wrong" notice.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param   string $function
-		 * @param   string $message
-		 * @param   string $version
-		 * @return  boolean Whether the notice was logged.
+		 * @param  string $function The function with the problem.
+		 * @param  string $message  An error message.
+		 * @param  string $version  The version in which this error message was addd.
+		 * @return boolean Whether the notice was logged.
 		 */
 		public function doing_it_wrong( $function, $message, $version ) {
 			if ( ! $this->is_logging_enabled() ) {
 				return false;
 			}
 
-			$version = is_null( $version ) ? '' : sprintf( __( '(This message was added in Charitable version %s.)', 'charitable' ), $version );
+			$version = is_null( $version ) ? '' : sprintf( __( '(This message was added in %s version %s.)', 'charitable' ), $this->context, $version );
 
 			$message = sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'charitable' ), $function, $message, $version );
 
@@ -137,9 +152,9 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		/**
 		 * Returns whether logging is enabled.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  boolean
+		 * @return boolean
 		 */
 		private function is_logging_enabled() {
 			if ( ! isset( self::$logging ) ) {

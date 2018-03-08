@@ -119,10 +119,6 @@
   font-size: 14px;
   margin-top: 0;
   margin-bottom: 6px; }
-.charitable-metabox .charitable-helper {
-  display: block;
-  padding-top: 6px;
-  font-style: italic; }
 .charitable-metabox .charitable-metabox .charitable-metabox-wrap {
   margin-bottom: 24px; }
 .charitable-metabox .charitable-metabox .widefat th {
@@ -173,6 +169,10 @@
   width: 100%;
   float: left;
   margin-bottom: 12px; }
+  .charitable-metabox-wrap .charitable-helper {
+    display: block;
+    padding-top: 6px;
+    font-style: italic; }
   .charitable-metabox-wrap label {
     display: block;
     margin-bottom: 6px; }
@@ -202,6 +202,19 @@ body.post-type-donation .postbox-container .empty-container,
 body.post-type-campaign .postbox-container .empty-container {
   border: none;
   height: auto; }
+
+.charitable-actions-form {
+  padding: 0 20px 20px 20px; }
+
+.charitable-actions-submit {
+  background-color: #f8f8f8;
+  padding: 12px;
+  border-top: 1px solid #e5e5e5; }
+  .charitable-actions-submit .button-primary {
+    float: right; }
+
+.charitable-action-fields {
+  margin-top: 20px; }
 
 .post-type-campaign .postbox-title {
   border-bottom: 1px solid #eee; }
@@ -275,13 +288,6 @@ body.post-type-campaign .postbox-container .empty-container {
   font-size: 14px;
   margin-top: 0;
   margin-bottom: 6px; }
-#campaign-title .charitable-helper,
-#campaign-goal .charitable-helper,
-#campaign-end-date .charitable-helper,
-#campaign-description .charitable-helper {
-  display: block;
-  padding-top: 6px;
-  font-style: italic; }
 #campaign-title .charitable-metabox .charitable-metabox-wrap,
 #campaign-goal .charitable-metabox .charitable-metabox-wrap,
 #campaign-end-date .charitable-metabox .charitable-metabox-wrap,
@@ -689,16 +695,6 @@ body.post-type-donation .donation-banner {
 #donation-actions .postbox-title {
   padding: 20px 20px 12px 20px; }
 
-#charitable-donation-actions-form {
-  padding: 0 20px 20px 20px; }
-
-#charitable-donation-actions-submit {
-  background-color: #f8f8f8;
-  padding: 12px;
-  border-top: 1px solid #e5e5e5; }
-  #charitable-donation-actions-submit .button-primary {
-    float: right; }
-
 #donation-details,
 #donation-log {
   padding: 12px 8px; }
@@ -984,17 +980,16 @@ select.charitable-settings-field {
     background-color: #ff0000; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-refunded {
     background-color: #3fb8f5; }
-
-.charitable-donations-modal {
+.edit-php.post-type-charitable .charitable-modal {
   max-width: 400px;
   background-color: #f1f1f1; }
-  .charitable-donations-modal .modal-close {
+  .edit-php.post-type-charitable .charitable-modal .modal-close {
     position: absolute;
     top: 2px;
     right: 2px;
     z-index: 10;
     cursor: pointer; }
-    .charitable-donations-modal .modal-close::before {
+    .edit-php.post-type-charitable .charitable-modal .modal-close::before {
       content: "\f158";
       display: block !important;
       font: normal 20px/1 dashicons;
@@ -1006,37 +1001,37 @@ select.charitable-settings-field {
       color: #777;
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale; }
-  .charitable-donations-modal h3 {
+  .edit-php.post-type-charitable .charitable-modal h3 {
     margin: 0 0 0.5em;
     font-size: 23px;
     line-height: 29px;
     font-weight: 400;
     text-align: center; }
-  .charitable-donations-modal .charitable-donations-modal-form {
+  .edit-php.post-type-charitable .charitable-modal .charitable-modal-form {
     padding: 22px;
     font-size: 14px;
     background-color: #fff; }
-    .charitable-donations-modal .charitable-donations-modal-form legend,
-    .charitable-donations-modal .charitable-donations-modal-form label,
-    .charitable-donations-modal .charitable-donations-modal-form input[type=text],
-    .charitable-donations-modal .charitable-donations-modal-form select,
-    .charitable-donations-modal .charitable-donations-modal-form button {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form legend,
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form label,
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form input[type=text],
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form select,
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form button {
       display: block; }
-    .charitable-donations-modal .charitable-donations-modal-form input[type=text] {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form input[type=text] {
       width: 320px;
       max-width: 100%; }
-    .charitable-donations-modal .charitable-donations-modal-form input[type=text],
-    .charitable-donations-modal .charitable-donations-modal-form select {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form input[type=text],
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form select {
       max-width: 100%;
       margin-bottom: 22px; }
-    .charitable-donations-modal .charitable-donations-modal-form input[type=text] {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form input[type=text] {
       padding-top: 11px;
       padding-bottom: 11px; }
-    .charitable-donations-modal .charitable-donations-modal-form legend,
-    .charitable-donations-modal .charitable-donations-modal-form label,
-    .charitable-donations-modal .charitable-donations-modal-form #charitable-export-start-date {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form legend,
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form label,
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form #charitable-export-start-date {
       margin-bottom: 6px; }
-    .charitable-donations-modal .charitable-donations-modal-form input.charitable-datepicker {
+    .edit-php.post-type-charitable .charitable-modal .charitable-modal-form input.charitable-datepicker {
       width: 48%;
       display: inline-block; }
 

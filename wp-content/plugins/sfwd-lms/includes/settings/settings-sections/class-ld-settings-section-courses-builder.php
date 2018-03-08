@@ -19,10 +19,10 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'course_builder';
 		
 			// Section label/header
-			$this->settings_section_label			=	sprintf( _x( '%s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
+			$this->settings_section_label			=	sprintf( esc_html_x( '%s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
 		
 			// Used to show the section description above the fields. Can be empty
-			//$this->settings_section_description		=	sprintf( _x( '<p>Enables the %s Builder interface. This will allow you to manage %s, %s, %s within the %s editor screen. <span style="ld-important">Enabling this option will also enable the <a href="%s">nested permalinks</a> setting.</span></p>', 'placeholder: Course, Lessons, Topics, Quizzes, Course, URL to admin Permalinks', 'learndash' ), LearnDash_Custom_Label::get_label( 'course'), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'topics'), LearnDash_Custom_Label::get_label( 'quizzes'), LearnDash_Custom_Label::get_label( 'course'), admin_url('options-permalink.php#learndash_settings_permalinks_nested_urls') );
+			//$this->settings_section_description		=	sprintf( wp_kses_post( _x( '<p>Enables the %s Builder interface. This will allow you to manage %s, %s, %s within the %s editor screen. <span style="ld-important">Enabling this option will also enable the <a href="%s">nested permalinks</a> setting.</span></p>', 'placeholder: Course, Lessons, Topics, Quizzes, Course, URL to admin Permalinks', 'learndash' ) ), LearnDash_Custom_Label::get_label( 'course'), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'topics'), LearnDash_Custom_Label::get_label( 'quizzes'), LearnDash_Custom_Label::get_label( 'course'), admin_url('options-permalink.php#learndash_settings_permalinks_nested_urls') );
 
 			parent::__construct(); 
 
@@ -54,21 +54,21 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'enabled' => array(
 					'name'  		=> 	'enabled', 
 					'type'  		=> 	'checkbox',
-					'desc_before'	=>	sprintf( _x( 'Enables the %s Builder interface. This will allow you to manage %s, %s, %s within the %s editor screen.', 'placeholder: Course, Lessons, Topics, Quizzes, Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course'), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'topics'), LearnDash_Custom_Label::get_label( 'quizzes'), LearnDash_Custom_Label::get_label( 'course') ),
+					'desc_before'	=>	sprintf( esc_html_x( 'Enables the %s Builder interface. This will allow you to manage %s, %s, %s within the %s editor screen.', 'placeholder: Course, Lessons, Topics, Quizzes, Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course'), LearnDash_Custom_Label::get_label( 'lessons'), LearnDash_Custom_Label::get_label( 'topics'), LearnDash_Custom_Label::get_label( 'quizzes'), LearnDash_Custom_Label::get_label( 'course') ),
 					
-					'label' 		=> 	sprintf( _x( '%s Builder Interface', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
-					'help_text'		=>	sprintf( _x( 'Enable %s Builder Interface', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
+					'label' 		=> 	sprintf( esc_html_x( '%s Builder Interface', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
+					'help_text'		=>	sprintf( esc_html_x( 'Enable %s Builder Interface', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
 					'value' 		=> 	isset( $this->setting_option_values['enabled'] ) ? $this->setting_option_values['enabled'] : '',
 					'options'		=>	array(
-											'yes'	=>	__('Enabled', 'learndash'),
+											'yes'	=>	esc_html__('Enabled', 'learndash'),
 										)
 				),
 				
 				'per_page' => array(
 					'name'  		=> 	'per_page', 
 					'type'  		=> 	'number',
-					'label' 		=> 	__( 'Selector Items Per Page', 'learndash' ),
-					'help_text'  	=> 	__( 'Selector items to display per page.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'Selector Items Per Page', 'learndash' ),
+					'help_text'  	=> 	esc_html__( 'Selector items to display per page.', 'learndash' ),
 					'value' 		=> 	$this->setting_option_values['per_page'],
 					'class'			=>	'small-text',
 					'attrs'			=>	array(
@@ -79,15 +79,15 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'shared_steps' => array(
 					'name'  		=> 	'shared_steps', 
 					'type'  		=> 	'checkbox',
-					'desc_before'	=>	sprintf( _x( '<p>Enables using %s, %s, and %s across multiple %s. <span style="ld-important">%s Builder must be enabled. Enabling this option will also enable the <a href="%s">nested permalinks</a> setting.</span></p>', 'placeholder: Lessons, Topics, Quizzes, Courses, Course, URL to admin Permalinks', 'learndash' ), 
+					'desc_before'	=>	sprintf( wp_kses_post(  _x( '<p>Enables using %s, %s, and %s across multiple %s. <span style="ld-important">%s Builder must be enabled. Enabling this option will also enable the <a href="%s">nested permalinks</a> setting.</span></p>', 'placeholder: Lessons, Topics, Quizzes, Courses, Course, URL to admin Permalinks', 'learndash' ) ),
 											LearnDash_Custom_Label::get_label( 'lessons'), 
 											LearnDash_Custom_Label::get_label( 'topics'), 
 											LearnDash_Custom_Label::get_label( 'quizzes'), 
 											LearnDash_Custom_Label::get_label( 'courses'),
 											LearnDash_Custom_Label::get_label( 'course'), admin_url('options-permalink.php#learndash_settings_permalinks_nested_urls') ),
 					
-					'label' 		=> 	sprintf( _x( 'Shared %s Steps', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
-					'help_text'		=>	sprintf( _x( 'Use %s, %s, and %s across multiple %s', 'placeholder: Lessons, Topics, Quizzes, Courses', 'learndash' ), 
+					'label' 		=> 	sprintf( esc_html_x( 'Shared %s Steps', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') ),
+					'help_text'		=>	sprintf( esc_html_x( 'Use %1$s, %2$s, and %3$s across multiple %4$s', 'placeholder: Lessons, Topics, Quizzes, Courses', 'learndash' ),
 											LearnDash_Custom_Label::get_label( 'lessons' ), 
 											LearnDash_Custom_Label::get_label( 'topics' ), 
 											LearnDash_Custom_Label::get_label( 'quizzes' ), 
@@ -95,12 +95,20 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 										),
 					'value' 		=> 	isset( $this->setting_option_values['shared_steps'] ) ? $this->setting_option_values['shared_steps'] : '',
 					'options'		=>	array(
-											'yes'	=>	__('Enabled', 'learndash'),
+											'yes'	=>	esc_html__('Enabled', 'learndash'),
 										)
 				),
 			);
 		
 			$this->setting_option_fields = apply_filters( 'learndash_settings_fields', $this->setting_option_fields, $this->settings_section_key );
+
+			global $wp_rewrite;
+			if ( !$wp_rewrite->using_permalinks() ) {
+				$this->setting_option_fields['shared_steps']['value'] = '';
+				$this->setting_option_fields['shared_steps']['attrs'] = array( 'disabled' => 'disabled');
+			}
+			
+
 
 			parent::load_settings_fields();
 		}

@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="learndash_course_points_access_message"><?php 
 	echo sprintf( 
-		_x( 
+	 esc_html_x(
 			'To take this %s you need at least %.01f total points. You currently have %.01f points.', 
 			'placeholders: (1) will be Course. (2) course_access_points. (3) user_course_points ', 
 			'learndash' 

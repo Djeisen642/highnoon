@@ -103,7 +103,7 @@ if ( ! function_exists( 'post2pdf_conv_post_to_pdf' ) ) {
 
 		$post_data = get_post( $post_id );
 		if ( ! $post_data ) {
-			wp_die( __( 'Post does not exist.', 'learndash' ) );
+			wp_die( esc_html__( 'Post does not exist.', 'learndash' ) );
 		}
 
 		$title = $post_data->post_title;
@@ -606,7 +606,7 @@ if ( ! function_exists( 'post2pdf_conv_post_to_pdf' ) ) {
 		$pdf->Output( $filename . '.pdf', $destination );
 
 		if ( $target_post_id != 0 ) {
-			wp_die( __( '<strong>Generating completed successfully.</strong><br /><br />Post/Page title: ', 'learndash' ) . $title . __( '<br />Output path: ', 'learndash' ) . WP_CONTENT_DIR . '/tcpdf-pdf/' . $target_post_id . '.pdf' . __( '<br /><br />Go back to ', 'learndash' ) . '<a href="' . site_url() . '/wp-admin/options-general.php?page=post2pdf-converter-options">' . __( 'the settig panel</a>.', 'learndash' ), __( 'POST2PDF Converter', 'learndash' ) );
+			wp_die( wp_kses_post( __( '<strong>Generating completed successfully.</strong><br /><br />Post/Page title: ', 'learndash' ) ) . $title . wp_kses_post( __( '<br />Output path: ', 'learndash' ) ) . WP_CONTENT_DIR . '/tcpdf-pdf/' . $target_post_id . '.pdf' . wp_kses_post( __( '<br /><br />Go back to ', 'learndash' ) ) . '<a href="' . site_url() . '/wp-admin/options-general.php?page=post2pdf-converter-options">' . wp_kses_post( __( 'the setting panel</a>.', 'learndash' ) ), esc_html__( 'POST2PDF Converter', 'learndash' ) );
 		}
 	}
 }

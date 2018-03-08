@@ -6,7 +6,7 @@ class WpProQuiz_Helper_Import {
 	
 	public function setImportFileUpload($file) {
 		if(!is_uploaded_file($file['tmp_name'])) {
-			$this->setError(__('File was not uploaded', 'wp-pro-quiz'));
+			$this->setError(__('File was not uploaded', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 		
@@ -37,12 +37,12 @@ class WpProQuiz_Helper_Import {
 		$v2 = substr($code, 8, 5);
 	
 		if($c !== 'WPQ') {
-			$this->setError(__('File have wrong format', 'wp-pro-quiz'));			
+			$this->setError(__('File have wrong format', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));			
 			return false;
 		}
 		
 		if($v2 < 3) {
-			$this->setError(__('File is not compatible with the current version'));
+			$this->setError(__('File is not compatible with the current version', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 	
@@ -56,7 +56,7 @@ class WpProQuiz_Helper_Import {
 	public function getImportData() {
 		
 		if($this->_content === null) {
-			$this->setError(__('File cannot be processed', 'wp-pro-quiz'));
+			$this->setError(__('File cannot be processed', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 		
@@ -65,14 +65,14 @@ class WpProQuiz_Helper_Import {
 		$b = base64_decode($data);
 		
 		if($b === null) {
-			$this->setError(__('File cannot be processed', 'wp-pro-quiz'));
+			$this->setError(__('File cannot be processed', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 		
 		$check = $this->saveUnserialize($b, $o);
 
 		if($check === false || !is_array($o)) {
-			$this->setError(__('File cannot be processed', 'wp-pro-quiz'));
+			$this->setError(__('File cannot be processed', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			return false;
 		}
 		

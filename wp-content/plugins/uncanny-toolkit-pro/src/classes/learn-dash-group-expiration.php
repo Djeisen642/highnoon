@@ -231,7 +231,7 @@ class learnDashGroupExpiration extends toolkit\Config implements toolkit\Require
 	/**
 	 * @param $post_id
 	 */
-	private function PrintExpEmailInfo( $post_id ) {
+	private static function PrintExpEmailInfo( $post_id ) {
 		$system_time = time();
 		$wp_time     = current_time( 'timestamp' );
 		$offset      = $system_time - $wp_time;

@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Admin 
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.0
@@ -332,7 +332,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		public function add_admin_body_class( $classes ) {
 			$screen = get_current_screen();
 
-			if ( Charitable::DONATION_POST_TYPE == $screen->post_type ) {
+			if ( in_array( $screen->post_type, array( Charitable::DONATION_POST_TYPE, Charitable::CAMPAIGN_POST_TYPE ) ) ) {
 				$classes .= ' post-type-charitable';
 			}
 

@@ -35,9 +35,9 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 			
 			foreach( $columns as $col_key => $col_label ) {
 				if ($col_key == 'date') {
-					$columns_new['groups_group_leaders'] = __('Group Leaders', 'learndash');
-					$columns_new['groups_group_courses'] = sprintf( __('Group %s', 'Group Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ));
-					$columns_new['groups_group_users'] = __('Group Users', 'learndash');
+					$columns_new['groups_group_leaders'] = esc_html__('Group Leaders', 'learndash');
+					$columns_new['groups_group_courses'] = sprintf( esc_html__('Group %s', 'Group Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ));
+					$columns_new['groups_group_users'] = esc_html__('Group Users', 'learndash');
 				}
 				$columns_new[$col_key] = $col_label;
 			}
@@ -154,8 +154,8 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 
 				$pagehook = add_submenu_page( 
 					'learndash-lms', 
-					__( 'Group Administration', 'learndash' ), 
-					__( 'Group Administration', 'learndash' ), 
+					esc_html__( 'Group Administration', 'learndash' ),
+					esc_html__( 'Group Administration', 'learndash' ),
 					$menu_user_cap, 
 					'group_admin_page', 
 					array( $this, 'show_page') 
@@ -231,7 +231,7 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 				}
 			
 				$this->list_table->per_page = $per_page;
-				add_screen_option( 'per_page', array('label' => __('per Page', 'learndash' ), 'default' => $per_page) );
+				add_screen_option( 'per_page', array('label' => esc_html__('per Page', 'learndash' ), 'default' => $per_page) );
 						
 				if ( ( !empty( $this->group_id ) ) && ( !empty( $this->user_id ) ) ) {
 				
@@ -241,10 +241,10 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 				
 					$user           = get_user_by( 'id', $this->user_id );
 			
-					$this->title = __( 'Group Administration', 'learndash' ) . ': ';
+					$this->title = esc_html__( 'Group Administration', 'learndash' ) . ': ';
 				
 					if (learndash_is_admin_user()) {
-						$this->title .= '<a tite="'. __('Edit User', 'learndash') .'" href="'. get_edit_user_link( $user->ID ).'">';
+						$this->title .= '<a tite="'. esc_html__('Edit User', 'learndash') .'" href="'. get_edit_user_link( $user->ID ).'">';
 					}
 				
 					$this->title .= $user->display_name;
@@ -253,15 +253,15 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 						$this->title .= '</a>';
 					}
 				
-					$this->title .= ' <small>| <a href="' . remove_query_arg( array('user_id', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce')) . '">' . __( 'Back', 'learndash' ) . '</a></small>';
+					$this->title .= ' <small>| <a href="' . remove_query_arg( array('user_id', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce')) . '">' . esc_html__( 'Back', 'learndash' ) . '</a></small>';
 					return;
 				} else if ( !empty( $this->group_id ) ) {
 					$group_post = get_post( $this->group_id );
 					if ($group_post) {
-						$this->title = __( 'Group Administration', 'learndash' ) . ': ';
+						$this->title = esc_html__( 'Group Administration', 'learndash' ) . ': ';
 					
 						if (learndash_is_admin_user()) {
-							$this->title .= '<a title="'. __('Edit Group', 'learndash') .'" href="'. get_edit_post_link( $this->group_id ).'">';
+							$this->title .= '<a title="'. esc_html__('Edit Group', 'learndash') .'" href="'. get_edit_post_link( $this->group_id ).'">';
 						}
 					
 						$this->title .= $group_post->post_title;
@@ -270,14 +270,14 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 							$this->title .= '</a>';
 						}
 					
-						$this->title .= ' <small><a href="'. remove_query_arg( array('group_id', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) .'">'. __( 'Back', 'learndash' ) .'</a></small>';
+						$this->title .= ' <small><a href="'. remove_query_arg( array('group_id', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) .'">'. esc_html__( 'Back', 'learndash' ) .'</a></small>';
 				
 						$this->list_table->group_id = $this->group_id;
 					
-						$this->list_table->columns['username'] 		= 	__( 'Username', 'learndash' );
-						$this->list_table->columns['name'] 			= 	__( 'Name', 'learndash' );
-						$this->list_table->columns['email'] 		= 	__( 'Email', 'learndash' );
-						$this->list_table->columns['user_actions'] 	= 	__( 'Actions', 'learndash' );
+						$this->list_table->columns['username'] 		= 	esc_html__( 'Username', 'learndash' );
+						$this->list_table->columns['name'] 			= 	esc_html__( 'Name', 'learndash' );
+						$this->list_table->columns['email'] 		= 	esc_html__( 'Email', 'learndash' );
+						$this->list_table->columns['user_actions'] 	= 	esc_html__( 'Actions', 'learndash' );
 					
 						return;
 					}
@@ -287,10 +287,10 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 				
 				$group_post = get_post( $this->group_id );
 				if ($group_post) {
-					$this->title = __( 'Group Administration', 'learndash' ) . ': ';
+					$this->title = esc_html__( 'Group Administration', 'learndash' ) . ': ';
 				
 					if (learndash_is_admin_user()) {
-						$this->title .= '<a title="'. __('Edit Group', 'learndash') .'" href="'. get_edit_post_link( $this->group_id ).'">';
+						$this->title .= '<a title="'. esc_html__('Edit Group', 'learndash') .'" href="'. get_edit_post_link( $this->group_id ).'">';
 					}
 				
 					$this->title .= $group_post->post_title;
@@ -299,15 +299,15 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 						$this->title .= '</a>';
 					}
 				
-					$this->title .= ' <small><a href="'. remove_query_arg( array('action', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) .'">'. __( 'Back', 'learndash' ) .'</a></small>';
+					$this->title .= ' <small><a href="'. remove_query_arg( array('action', 's', 'paged', 'learndash-search', 'ld-group-list-view-nonce', '_wp_http_referer', '_wpnonce') ) .'">'. esc_html__( 'Back', 'learndash' ) .'</a></small>';
 			
 					return;
 				}
 			} 
-			$this->title = __( 'Group Administration', 'learndash' );
+			$this->title = esc_html__( 'Group Administration', 'learndash' );
 
-			$this->list_table->columns['group_name'] 	= 	__( 'Group Name', 'learndash' );
-			$this->list_table->columns['group_actions'] = 	__( 'Actions', 'learndash' );
+			$this->list_table->columns['group_name'] 	= 	esc_html__( 'Group Name', 'learndash' );
+			$this->list_table->columns['group_actions'] = 	esc_html__( 'Actions', 'learndash' );
 		}
 
 		function show_page() {
@@ -318,7 +318,7 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 				<?php
 					$current_user = wp_get_current_user();
 					if ( ( !learndash_is_group_leader_user( $current_user ) ) && ( !learndash_is_admin_user( $current_user ) ) ) {
-						die( __( 'Please login as a Group Administrator', 'learndash' ) );
+						die( esc_html__( 'Please login as a Group Administrator', 'learndash' ) );
 					}
 				?>
 				<div class="wrap-learndash-view-content">
@@ -332,20 +332,20 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 						<!-- Email Group feature below the Group Table (on the Group Leader page) -->
 						<table class="form-table">
 							<tr>
-								<th scope="row"><label for="group_email_sub"><?php _e( 'Email Subject:', 'learndash' );?></label></th>
+								<th scope="row"><label for="group_email_sub"><?php esc_html_e( 'Email Subject:', 'learndash' );?></label></th>
 								<td><input id="group_email_sub" rows="5" class="regular-text group_email_sub"/></td>
 							</tr>
 							<tr>
-								<th scope="row"><label for="text"><strong><?php _e( 'Email Message:', 'learndash' );?></strong></label></th>
+								<th scope="row"><label for="text"><strong><?php esc_html_e( 'Email Message:', 'learndash' );?></strong></label></th>
 								<td><div class="groupemailtext" ><?php wp_editor( '', 'groupemailtext', array( 'media_buttons' => true, 'wpautop' => true) );?></div></td>
 							</tr>
 						</table>
 
 						<p>
-							<button id="email_group" class="button button-primary" type="button"><?php _e( 'Send', 'learndash' );?></button> 
-							<button id="email_reset" class="button button-secondary" type="button"><?php _e( 'Reset', 'learndash' );?></button><br />
-							<span class="empty_status" style="color: red; display: none;"><?php _e( 'Both Email Subject and Message are required and cannot be empty.', 'learndash' ) ?></span>
-							<span class="sending_status" style="display: none;"><?php _e( 'Sending...', 'learndash' ) ?></span>
+							<button id="email_group" class="button button-primary" type="button"><?php esc_html_e( 'Send', 'learndash' );?></button>
+							<button id="email_reset" class="button button-secondary" type="button"><?php esc_html_e( 'Reset', 'learndash' );?></button><br />
+							<span class="empty_status" style="color: red; display: none;"><?php esc_html_e( 'Both Email Subject and Message are required and cannot be empty.', 'learndash' ) ?></span>
+							<span class="sending_status" style="display: none;"><?php esc_html_e( 'Sending...', 'learndash' ) ?></span>
 							<span class="sending_result" style="display: none;"></span>
 						</p>
 					<?php
@@ -364,9 +364,9 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 								
 									if ( !empty( $this->group_id ) ) {
 										?><input type="hidden" name="group_id" value="<?php echo $this->group_id ?>" /><?php
-										$this->list_table->search_box( __( 'Search Users' ), 'learndash' );
+										$this->list_table->search_box( esc_html__( 'Search Users' ), 'learndash' );
 									} else {
-										$this->list_table->search_box( __( 'Search Groups' ), 'learndash' );
+										$this->list_table->search_box( esc_html__( 'Search Groups' ), 'learndash' );
 									}
 									wp_nonce_field( 'ld-group-list-view-nonce', 'ld-group-list-view-nonce' );
 									$this->list_table->display();
@@ -378,7 +378,7 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 											echo learndash_course_info_shortcode( array( 'user_id' => $this->user_id ) );
 										
 											if ( learndash_show_user_course_complete( $this->user_id ) ) {
-												echo submit_button( __('Update User') ); 
+												echo submit_button( esc_html__('Update User') );
 											}
 										}
 									}
@@ -394,216 +394,18 @@ if (!class_exists('Learndash_Admin_Groups_Users_List')) {
 		}
 
 		
-		/**
-		 * Group admin page HTML output
-		 * 
-		 * @since 2.1.0
-		 */
-		/*
-		function show_page_old() {
-
-			if ( ( !learndash_is_group_leader_user( ) ) && ( !learndash_is_admin_user( ) ) ) {
-				die( __( 'Please login as a Group Administrator', 'learndash' ) );
-			}
-
-			//global $wpdb;
-			$group_ids = learndash_get_administrators_group_ids( $current_user->ID );
-			
-			if ( ! isset( $_GET['group_id'] ) || ! in_array( $_GET['group_id'], $group_ids ) ) {
-				?>
-					<div class="wrap">
-					<h2><?php _e( 'Group Administration', 'learndash' );?></h2>
-
-					<table cellspacing="0" class="wp-list-table widefat fixed groups_table">
-						<thead>
-							<tr>
-								<th class="manage-column column-sno " id="sno" scope="col"><?php _e( 'S. No.', 'learndash' );?></th>
-								<th class="manage-column column-group " id="group" scope="col"><?php _e( 'Group', 'learndash' );?></th>
-								<th class="manage-column column-action" id="action" scope="col"><?php _e( 'Action', 'learndash' );?></span><span class="sorting-indicator"></span></th>
-							</tr>
-						</thead>
-						<tfoot>
-						<tr>
-							<th class="manage-column column-sno " id="sno" scope="col"><?php _e( 'S. No.', 'learndash' );?></th>
-							<th class="manage-column column-group " id="group" scope="col"><?php _e( 'Group', 'learndash' );?></th>
-							<th class="manage-column column-action" id="action" scope="col"><?php _e( 'Action', 'learndash' );?></span><span class="sorting-indicator"></span></th>
-						</tr>
-						</tfoot>
-						<tbody>
-							<?php $sn = 1; ?>
-							<?php foreach ( $group_ids as $group_id ) : ?>
-								<?php $group = get_post( $group_id ); ?>
-								<tr>
-									<td><?php echo $sn++; ?></td>
-									<td><?php echo $group->post_title; ?></td>
-									<td><a href="<?php echo add_query_arg('group_id', $group_id ); ?>"><?php _e( 'List Users', 'learndash' );?></a> | <a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page&action=sfp_update_module&nonce-sfwd=' . wp_create_nonce( 'sfwd-nonce' ) . '&page_options=sfp_home_description&courses_export_submit=Export&group_id=' . $group_id );?>"><?php _e( 'Export Progress', 'learndash' );?></a> | <a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page&action=sfp_update_module&nonce-sfwd=' . wp_create_nonce( 'sfwd-nonce' ) . '&page_options=sfp_home_description&quiz_export_submit=Export&group_id=' . $group_id );?>"><?php _e( 'Export Results', 'learndash' );?></a><?php do_action( 'learndash_group_admin_page_actions', $group_id );?></td>
-								</tr>
-							<?php endforeach; ?>
-						<tbody>
-					</table>
-					</div>
-				<?php
-			} else {
-				if ( ! isset( $_GET['user_id'] ) ) {
-					$group_id = intval($_GET['group_id']);
-					$group = get_post( $group_id );
-					if ($group) {
-						?>
-						<div class="wrap">
-							<h2><?php echo __( 'Group Administration', 'learndash' ) . ': ' . $group->post_title;?> <small>| <a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page' );?>"><?php echo __( 'Back', 'learndash' );?></a></small></h2>
-							<p>
-								<?php echo $group->post_content;?>
-							</p>
-							<?php echo learndash_group_user_list( $group_id ); ?>
-						</div>
-						<!-- Email Group feature below the Group Table (on the Group Leader page) -->
-						<div id="learndash_groups_page_box">
-							<br><br>
-
-							<h2><?php _e( 'Email Users', 'learndash' );?></h2>
-
-							<br/>
-
-							<label for="email"><b><?php _e( 'Email Subject:', 'learndash' );?></b><br/>
-								<input id="group_email_sub" rows="5" class="group_email_sub"/>
-							</label>
-
-							<br/><br/>
-
-							<label for="text"><b><b><?php _e( 'Email Message:', 'learndash' );?></b><br/>
-								<div class="groupemailtext" ><?php wp_editor( '', 'groupemailtext', array( 'media_buttons' => true, 'wpautop' => true) );?></div>
-							</label>
-
-							<br/>
-
-							<button id="email_group" type="button"><?php _e( 'Send', 'learndash' );?></button>
-							<br/><br/><br/><br/><br/>
-						</div>
-						<script>
-						jQuery(function( $){
-							var sending = 0;
-							$("#email_group").click(function(){
-								tinyMCE.triggerSave();
-
-								$("#email_group").html("<?php _e( 'Sending...', 'learndash' );?>");
-								if(sending == 1) {
-									alert("<?php _e( 'Please Wait', 'learndash' );?>");
-									return;
-								}
-
-								sending = 1;
-								var gid = <?php echo $group_id?>;
-								var txt = $('#groupemailtext').val();
-								var sub = $('#group_email_sub').val();
-
-								$.post( "", 
-									{ 
-										group: gid,
-										text: txt,
-										sub: sub
-									},
-									function(data) {
-										alert(data);
-										$("#email_group").html("<?php _e( 'Send', 'learndash' );?>");
-										sending = 0;
-										tinyMCE.get('groupemailtext').setContent('');
-										$('#group_email_sub').val('');
-									}
-								);
-							});
-						});
-						</script>
-					<?php
-					}
-				} else {
-					$user_id        = $_GET['user_id'];
-					$group_id       = $_GET['group_id'];
-					$group_user_ids = learndash_get_groups_user_ids( $group_id );
-					$user           = get_user_by( 'id', $user_id );
-					?>
-						<div class="wrap">
-							<h2><?php echo __( 'Group Administration', 'learndash' ) . ': ' . $user->display_name;?> <small>| <a href="<?php echo admin_url( 'edit.php?post_type=sfwd-courses&page=group_admin_page&group_id=' . $group_id );?>"><?php echo __( 'Back', 'learndash' );?></a></small></h2>
-							<?php if ( in_array( $user_id, $group_user_ids ) ) : ?>
-								<?php echo learndash_course_info_shortcode( array( 'user_id' => $user_id ) ); ?>
-							<?php endif; ?>
-						</div>
-					<?php
-				}
-			}
-		}
-		*/
-		
 		
 		function on_process_actions_list() {
-			//error_log('_POST<pre>'. print_r($_POST, true) .'</pre>');
 			if ( !empty( $this->user_id ) ) {
 				learndash_save_user_course_complete( $this->user_id );
 			}
 		}
-
-		/*
-		// For now the real function lives in the ld-groups.php file. 
-		function learndash_group_emails() {
-			if ( isset( $_POST['group'] ) && isset( $_POST['text'] ) && isset( $_POST['sub'] ) ) {
-
-				if ( empty( $_POST['group'] ) || empty( $_POST['text'] ) || empty( $_POST['sub'] ) ) {
-					echo __( 'Empty value', 'learndash' );
-					exit;
-				}
-
-		require_once ABSPATH . 'wp-includes/pluggable.php';
 		
-				$current_user       = wp_get_current_user();
-				$group_leader_email = $current_user->user_email;
-				$group_leader_name  = $current_user->display_name;
-				$status             = '';
-				$er                 = learndash_get_groups_user_ids( $_POST['group'] );
-				$sent               = '';
-				$notsent            = '';
-
-				foreach ( $er as $k => $v ) {
-
-					$user    = get_userdata( $er[ $k ] );
-					$email   = $user->user_email;
-					$message = nl2br( stripcslashes( $_POST['text'] ) );
-					$sub     = $_POST['sub'];
-
-					$headers = 'MIME-Version: 1.0' . "\r\n";
-					$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-					// old format	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-					//$headers .= "From: ".$user->display_name." <".$user->user_email.">" ;
-					$headers .= 'From: ' . $group_leader_name . ' <' . $group_leader_email . '>';
-
-					$state = wp_mail( $email, $sub, $message, $headers );
-
-					if ( $state ) {
-						$sent .= empty( $sent) ? $user->user_email : ', ' . $user->user_email;
-					} else {
-						$notsent .= empty( $notsent) ? $user->user_email : ', ' . $user->user_email;
-					}
-
-				}
-
-				if ( ! empty( $notsent) ) {
-					echo "\n" . __( 'Email could not be sent to: ', 'learndash' ) . $notsent . ' ' . $group_leader_email . ':' . $group_leader_name;
-				}
-
-				if ( ! empty( $sent) ) {
-					echo "\n" . __( 'Email sent to: ', 'learndash' ) . $sent;
-				}
-
-				exit;
-			}
-		}
-		*/
-
 		// End of functions
 	}
 }
 
 function learndash_data_group_reports_ajax() {
-	//error_log('_POST<pre>'. print_r($_POST, true) .'</pre>');
-
 	$reply_data = array( 'status' => false);
 
 	

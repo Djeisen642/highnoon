@@ -1,11 +1,13 @@
 <?php
 /**
  * Donation Form shortcode class.
- * @package  Charitable/Shortcodes/Donation Form
- * @category Class
- * @author   Eric Daams
- * @since    1.5.0
- * @version  1.5.7
+ *
+ * @package   Charitable/Shortcodes/Donation Form
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.5.0
+ * @version   1.5.7
  */
 
 // Exit if accessed directly.

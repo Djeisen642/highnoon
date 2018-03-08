@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign_Widget_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.0
+ * @version   1.5.9
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -73,9 +73,10 @@ if ( ! class_exists( 'Charitable_Campaign_Widget_Endpoint' ) ) :
 		 * @since  1.5.0
 		 *
 		 * @global WP_Query $wp_query
+		 * @param  array $args Mixed args.
 		 * @return boolean
 		 */
-		public function is_page() {
+		public function is_page( $args = array() ) {
 			global $wp_query;
 
 			return $wp_query->is_main_query()

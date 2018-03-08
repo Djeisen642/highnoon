@@ -5,7 +5,7 @@
  * @package		Charitable/Classes/Charitable_Form
  * @version 	1.0.0
  * @author 		Eric Daams
- * @copyright 	Copyright (c) 2017, Studio 164a
+ * @copyright 	Copyright (c) 2018, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -346,7 +346,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * @param  string $key   Key of the field to sort.
 		 * @param  array  $field Field definition.
 		 * @param  array  $ret   Return value that we're carrying.
-		 * @return  array[]
+		 * @return array[]
 		 */
 		public function sort_field_by_data_type( $key, $field, $ret ) {
 			/* Filter out paragraphs and fields without a type. */
@@ -472,7 +472,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			$overrides = wp_parse_args( $overrides, $defaults );
 
 			return $overrides;
-		}		
+		}
 
 		/**
 		 * Return the template name used for this field.
@@ -492,7 +492,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 				'Charitable_Public_Form_View::get_template_name()'
 			);
 
-			return $form->view()->get_template_name( $field );			
+			return $form->view()->get_template_name( $field );
 		}
 
 		/**
@@ -561,7 +561,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			 */
 			remove_filter( 'charitable_form_field_increment', array( $this, 'increment_index' ), 10, 2 );
 
-			return $this->view()->increment_index( $field );			
+			return $this->view()->increment_index( $field );
 		}
 
 		/**

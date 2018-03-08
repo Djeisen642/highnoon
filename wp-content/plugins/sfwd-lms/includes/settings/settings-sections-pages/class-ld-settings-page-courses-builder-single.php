@@ -9,7 +9,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 			$this->parent_menu_page_url		=	'edit.php?post_type=sfwd-courses';
 			$this->menu_page_capability		=	LEARNDASH_ADMIN_CAPABILITY_CHECK;
 			$this->settings_page_id 		= 	'courses-builder';
-			$this->settings_page_title 		= 	sprintf( _x( '%s Builder', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
+			$this->settings_page_title 		= 	sprintf( esc_html_x( '%s Builder', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
 			$this->settings_tab_title		=	$this->settings_page_title;
 			
 			add_action( 'load-sfwd-courses_page_courses-builder', 	array( $this, 'on_load') );			
@@ -31,8 +31,8 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 						<div id="course-builder-title-box">
 							<h2 class="course-title"><?php echo $course_post->post_title; ?></h2>
 							<p class="course-links">
-								<strong><?php _e('Permalink:') ?></strong> <a href="<?php echo get_permalink( $course_id ) ?>"><?php echo get_permalink( $course_id ) ?></a><br />
-								<strong><?php _e('Edit:') ?></strong> <a href="<?php echo get_edit_post_link( $course_id ) ?>"><?php echo get_edit_post_link( $course_id ) ?></a>
+								<strong><?php esc_html_e('Permalink:') ?></strong> <a href="<?php echo get_permalink( $course_id ) ?>"><?php echo get_permalink( $course_id ) ?></a><br />
+								<strong><?php esc_html_e('Edit:') ?></strong> <a href="<?php echo get_edit_post_link( $course_id ) ?>"><?php echo get_edit_post_link( $course_id ) ?></a>
 							</p>
 						</div>
 						<?php
@@ -88,9 +88,9 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 			if ( $this->update_success === true ) {
 				?>
 				<div class="notice notice-success is-dismissible"> 
-					<p><strong><?php _e('Settings saved.') ?></strong></p>
+					<p><strong><?php esc_html_e('Settings saved.') ?></strong></p>
 					<button type="button" class="notice-dismiss">
-						<span class="screen-reader-text"><?php _e('Dismiss this notice.') ?></span>
+						<span class="screen-reader-text"><?php esc_html_e('Dismiss this notice.') ?></span>
 					</button>
 				</div>
 				<?php
@@ -103,13 +103,13 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 			if ( ( $pagenow == 'edit.php') && ( $typenow == 'sfwd-courses' ) && ( is_a( $course_post, 'WP_Post' ) ) ) {
 				if ( ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) && ( !isset( $row_actions['ld-course-builder'] ) ) ) {
 					if ( apply_filters( 'learndash_show_course_builder_row_actions', true, $course_post ) === true ) {
-						$course_label = sprintf( _x( 'Use %s Builder', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
+						$course_label = sprintf( esc_html_x( 'Use %s Builder', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course') );
 				
 						$row_actions['ld-course-builder'] = sprintf(
 							'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
 							add_query_arg(array('page' => 'courses-builder','course_id' => $course_post->ID), admin_url('admin.php')) ,
 							esc_attr( $course_label ),
-							__('Builder', 'learndash')
+							esc_html__('Builder', 'learndash')
 						);
 					}
 				}

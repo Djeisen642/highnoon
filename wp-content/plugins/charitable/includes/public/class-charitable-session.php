@@ -3,7 +3,7 @@
  * Responsible for managing user sessions.
  *
  * @package   Charitable/Classes/Charitable Session
- * @copyright Copyright (c) 2017, Eric Daams
+ * @copyright Copyright (c) 2018, Eric Daams
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.4

@@ -5,7 +5,7 @@
  * @version   1.5.0
  * @package   Charitable/Classes/Charitable_Emails
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -109,7 +109,7 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 				'offline_donation_notification',
 			) );
 
-			foreach ( $emails as $email )  {
+			foreach ( $emails as $email ) {
 				$class  = $this->get_email( $email );
 				$object = new $class;
 

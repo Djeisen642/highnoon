@@ -5,7 +5,7 @@
  * @version     1.0.0
  * @package     Charitable/Classes/Charitable_Donation_Processor
  * @author      Eric Daams
- * @copyright   Copyright (c) 2017, Studio 164a
+ * @copyright   Copyright (c) 2018, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -329,7 +329,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 * @return  void
 		 */
 		public static function make_donation_streamlined() {
-
 			$processor = self::get_instance();
 			$campaign  = $processor->get_campaign();
 
@@ -345,23 +344,22 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			 */
 			do_action( 'charitable_before_process_donation_amount_form', $processor, $form );
 
-			if ( ! $form->validate_submission() ) {
-				return;
+			/**
+			 * Form validated, so add the donation to session.
+			 */
+			if ( $form->validate_submission() ) {
+
+				$submitted = $form->get_donation_values();
+
+				charitable_get_session()->add_donation( $submitted['campaign_id'], $submitted['amount'] );
+
+				/**
+				 * @hook charitable_after_process_donation_amount_form
+				 */
+				do_action( 'charitable_after_process_donation_amount_form', $processor, $submitted );
 			}
 
-			$submitted = $form->get_donation_values();
-
-			charitable_get_session()->add_donation( $submitted['campaign_id'], $submitted['amount'] );
-
-			/**
-			 * @hook charitable_after_process_donation_amount_form
-			 */
-			do_action( 'charitable_after_process_donation_amount_form', $processor, $submitted );
-
-			/**
-			 * If we get this far, forward the user through to the donation page.
-			 */
-			$redirect_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $submitted['campaign_id'] ) );
+			$redirect_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign->ID ) );
 
 			if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
 				$redirect_url .= '#charitable-donation-form';
@@ -388,9 +386,9 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			/**
 			 * Filter the donation values to be saved.
 			 *
-			 * @since   1.0.0
+			 * @since 1.0.0
 			 *
-			 * @param 	array $values The donation values to be saved.
+			 * @param array $values The donation values to be saved.
 			 */
 			$this->donation_data = apply_filters( 'charitable_donation_values', $values );
 
@@ -415,9 +413,9 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			/**
 			 * Do something right before the donation is inserted into the database.
 			 *
-			 * @since   1.0.0
+			 * @since 1.0.0
 			 *
-			 * @param 	Charitable_Donation_Processor $this The Processor instance.
+			 * @param Charitable_Donation_Processor $this The Processor instance.
 			 */
 			do_action( 'charitable_before_save_donation', $this );
 
@@ -522,7 +520,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					if ( count( array_diff( $args, $campaign_donation ) ) ) {
 						charitable_get_table( 'campaign_donations' )->update( $campaign_donation_id, $args, 'campaign_donation_id' );
 					}
-
 				} else {
 
 					/* Add a new donation */

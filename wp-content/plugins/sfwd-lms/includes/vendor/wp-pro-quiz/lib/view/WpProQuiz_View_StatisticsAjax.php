@@ -23,18 +23,18 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th scope="col"><?php _e('Username', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 200px;"><?php _e('Date', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Correct', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Incorrect', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Points', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 60px;"><?php _e('Results', 'wp-pro-quiz'); ?></th>
+					<th scope="col"><?php esc_html_e('Username', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 200px;"><?php esc_html_e('Date', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Correct', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Incorrect', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Points', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 60px;"><?php esc_html_e('Results', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
 				</tr>
 			</thead>
 			<tbody id="wpProQuiz_statistics_form_data">
 				<?php if(!count($this->historyModel)) { ?>
 				<tr>
-					<td colspan="6" style="text-align: center; font-weight: bold; padding: 10px;"><?php _e('No data available', 'wp-pro-quiz'); ?></td>
+					<td colspan="6" style="text-align: center; font-weight: bold; padding: 10px;"><?php esc_html_e('No data available', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></td>
 				</tr>
 				<?php } else { ?>
 				<?php foreach($this->historyModel as $model) { /* @var $model WpProQuiz_Model_StatisticHistory */ ?>
@@ -44,7 +44,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 						
 						<div class="row-actions">
 							<span>
-								<a style="color: red;" class="wpProQuiz_delete" href="#"><?php _e('Delete', 'wp-pro-quiz'); ?></a>
+								<a style="color: red;" class="wpProQuiz_delete" href="#"><?php esc_html_e('Delete', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></a>
 							</span>
 						</div>
 						
@@ -86,12 +86,12 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 			return;
 		}
 		?>
-		<h2><?php printf(__('User statistics: %s', 'wp-pro-quiz'), esc_html($this->userName)); ?></h2>
+		<h2><?php printf( esc_html_x('User statistics: %s', 'placeholder: user name', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN ), $this->userName ); ?></h2>
 		<?php if($this->avg) { ?>
 		<h2>
-			<?php echo date_i18n(get_option('wpProQuiz_statisticTimeFormat', 'Y/m/d g:i A'), $this->statisticModel->getMinCreateTime()); ?>
+			<?php echo date_i18n( get_option('wpProQuiz_statisticTimeFormat', 'Y/m/d g:i A'), $this->statisticModel->getMinCreateTime() ); ?>
 			 - 
-			<?php echo date_i18n(get_option('wpProQuiz_statisticTimeFormat', 'Y/m/d g:i A'), $this->statisticModel->getMaxCreateTime()); ?>
+			<?php echo date_i18n( get_option('wpProQuiz_statisticTimeFormat', 'Y/m/d g:i A'), $this->statisticModel->getMaxCreateTime() ); ?>
 		</h2>
 		<?php } else { ?>
 		<h2><?php 
@@ -105,14 +105,14 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 			<thead>
 				<tr>
 					<th scope="col" style="width: 50px;"></th>
-					<th scope="col"><?php _e('Question', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Points', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Correct', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Incorrect', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Hints used', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Time', 'wp-pro-quiz'); ?> <span style="font-size: x-small;">(hh:mm:ss)</span></th>
-					<th scope="col" style="width: 100px;"><?php _e('Points scored', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 95px;"><?php _e('Results', 'wp-pro-quiz'); ?></th>
+					<th scope="col"><?php esc_html_e('Question', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Points', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Correct', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Incorrect', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Hints used', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Time', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?> <span style="font-size: x-small;">(hh:mm:ss)</span></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Points scored', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 95px;"><?php esc_html_e('Results', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -124,7 +124,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 				?>
 				<tr class="categoryTr">
 					<th colspan="9">
-						<span><?php _e('Category', 'wp-pro-quiz'); ?>:</span> 
+						<span><?php esc_html_e('Category', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?>:</span>
 						<span style="font-weight: bold;"><?php echo esc_html($cat['categoryName']); ?></span>
 					</th>
 				</tr>
@@ -158,7 +158,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 							if ( !empty( $q['questionName'] ) ) {
 								echo wpautop( $q['questionName'] );
 							}
-							?><a href="#" class="statistic_data"><?php _e( '(view)', 'learndash') ?></a><?php
+							?><a href="#" class="statistic_data"><?php esc_html_e( '(view)', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) ?></a><?php
 							
 						} else {
 							//echo strip_shortcodes(strip_tags($q['questionName']));
@@ -169,7 +169,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 							if ( !empty( $q['questionName'] ) ) {
 								echo wpautop( $q['questionName'] );
 							}
-							?><a href="#" class="statistic_data"><?php _e( '(view)', 'learndash') ?></a><?php
+							?><a href="#" class="statistic_data"><?php esc_html_e( '(view)', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) ?></a><?php
 						} ?>
 					</th>
 					<th><?php echo $q['gPoints']; ?></th>
@@ -239,7 +239,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 				?>
 				<tr class="categoryTr" id="wpProQuiz_ctr_222">
 					<th colspan="2">
-						<span><?php _e('Sub-Total: ', 'wp-pro-quiz'); ?></span> 
+						<span><?php esc_html_e('Sub-Total: ', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></span>
 					</th>
 					<th><?php echo $cGPoints; ?></th>
 					<th style="color: green;"><?php echo $cCorrect.' ('.round(100 * $cCorrect / $sum, 2).'%)'; ?></th>
@@ -271,7 +271,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 			<tfoot>
 				<tr id="wpProQuiz_tr_0">
 					<th></th>
-					<th><?php _e('Total', 'wp-pro-quiz'); ?></th>
+					<th><?php esc_html_e('Total', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
 					<th><?php echo $gGPoints; ?></th>
 					<th style="color: green;"><?php echo $gCorrect.' ('.round(100 * $gCorrect / $sum, 2).'%)'; ?></th>
 					<th style="color: red;"><?php echo $gIncorrect.' ('.round(100 * $gIncorrect / $sum, 2).'%)'; ?></th>
@@ -285,11 +285,11 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 	
 		<div style="margin-top: 10px;">
 			<div style="float: left;">
-				<a class="button-secondary wpProQuiz_update" href="#"><?php _e('Refresh', 'wp-pro-quiz'); ?></a>
+				<a class="button-secondary wpProQuiz_update" href="#"><?php esc_html_e('Refresh', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></a>
 			</div>
 			<div style="float: right;">
 				<?php if(current_user_can('wpProQuiz_reset_statistics')) { ?>
-					<a class="button-secondary" href="#" id="wpProQuiz_resetUserStatistic"><?php _e('Reset statistics', 'wp-pro-quiz'); ?></a>
+					<a class="button-secondary" href="#" id="wpProQuiz_resetUserStatistic"><?php esc_html_e('Reset statistics', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></a>
 				<?php } ?>
 			</div>
 			<div style="clear: both;"></div>
@@ -360,7 +360,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 							value="<?php echo esc_attr($sAnswerData[0]); ?>">
 					</label>
 					<br>
-					<?php _e('Correct', 'wp-pro-quiz'); ?>:
+					<?php esc_html_e('Correct', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?>:
 					<?php echo implode(', ', $t); ?>
 				</li>
 				<?php } else if($anserType === 'sort_answer') { 
@@ -490,21 +490,21 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 						if ( $essay_post instanceof WP_Post ) {
 							$essay_post_status_str = '';
 							if ($essay_post->post_status == 'graded') {
-								$essay_post_status_str = __('Graded', 'wp-pro-quiz');
+								$essay_post_status_str = esc_html__('Graded', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 							} else {
-								$essay_post_status_str = __('Not Graded', 'wp-pro-quiz');
+								$essay_post_status_str = esc_html__('Not Graded', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 							}
 							?><li class="<?php echo $correct; ?>">
 								<div class="wpProQuiz_sortable">
 									<?php 
-										echo __('Status', 'wp_pro_quiz') .' : '. $essay_post_status_str; 
+										esc_html_e('Status', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) .' : '. $essay_post_status_str; 
 									
 										if ( ( learndash_is_group_leader_user() ) || ( learndash_is_admin_user() ) || ( $essay_post->post_author == get_current_user_id() ) ) {
-											?> (<a target="_blank" href="<?php echo get_permalink( $sAnswerData['graded_id'] ); ?>"><?php _e('view', 'wp-pro-quiz') ?></a>)<?php
+											?> (<a target="_blank" href="<?php echo get_permalink( $sAnswerData['graded_id'] ); ?>"><?php esc_html_e('view', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) ?></a>)<?php
 										}
 									
 										if ( current_user_can( 'edit_post', $sAnswerData['graded_id'] ) ) {
-											?> (<a target="_blank" href="<?php echo get_edit_post_link( $sAnswerData['graded_id'] ); ?>"><?php _e('edit', 'wp-pro-quiz') ?></a>)<?php
+											?> (<a target="_blank" href="<?php echo get_edit_post_link( $sAnswerData['graded_id'] ); ?>"><?php esc_html_e('edit', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) ?></a>)<?php
 										}
 									?>
 								</div>
@@ -648,7 +648,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 		<div id="wpProQuiz_form_box">
 			<div id="poststuff">
 				<div class="postbox">
-					<h3 class="hndle"><?php _e('Custom fields', 'wp-pro-quiz'); ?></h3>
+					<h3 class="hndle"><?php esc_html_e('Custom fields', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></h3>
 					<div class="inside">
 						<table>
 							<tbody>
@@ -674,10 +674,10 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 													echo esc_html($str);
 													break;
 												case WpProQuiz_Model_Form::FORM_TYPE_CHECKBOX:
-													echo $str == '1' ? __('ticked', 'wp-pro-quiz') : __('not ticked', 'wp-pro-quiz');
+													echo $str == '1' ? esc_html__('ticked', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) : esc_html__('not ticked', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 													break;
 												case WpProQuiz_Model_Form::FORM_TYPE_YES_NO:
-													echo $str == 1 ? __('Yes') : __('No');
+													echo $str == 1 ? esc_html__('Yes', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN) : esc_html__('No', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 													break;
 												case WpProQuiz_Model_Form::FORM_TYPE_DATE:
 													echo date_format(date_create($str), get_option('date_format'));
@@ -713,19 +713,19 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th scope="col"><?php _e('User', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Points', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Correct', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Incorrect', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Hints used', 'wp-pro-quiz'); ?></th>
-					<th scope="col" style="width: 100px;"><?php _e('Time', 'wp-pro-quiz'); ?> <span style="font-size: x-small;">(hh:mm:ss)</span></th>
-					<th scope="col" style="width: 60px;"><?php _e('Results', 'wp-pro-quiz'); ?></th>
+					<th scope="col"><?php esc_html_e('User', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Points', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Correct', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Incorrect', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Hints used', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
+					<th scope="col" style="width: 100px;"><?php esc_html_e('Time', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?> <span style="font-size: x-small;">(hh:mm:ss)</span></th>
+					<th scope="col" style="width: 60px;"><?php esc_html_e('Results', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if(!count($this->statisticModel)) { ?>
 				<tr>
-					<td colspan="7" style="text-align: center; font-weight: bold; padding: 10px;"><?php _e('No data available', 'wp-pro-quiz'); ?></td>
+					<td colspan="7" style="text-align: center; font-weight: bold; padding: 10px;"><?php esc_html_e('No data available', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></td>
 				</tr>
 				<?php } else { ?>
 				
@@ -734,7 +734,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 					$sum = $model->getCorrectCount() + $model->getIncorrectCount();
 					
 					if(!$model->getUserId())
-						$model->setUserName(__('Anonymous', 'wp-pro-quiz'));
+						$model->setUserName(__('Anonymous', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 					
 					if($sum) {
 						$points = $model->getPoints();
@@ -759,7 +759,7 @@ class WpProQuiz_View_StatisticsAjax extends WpProQuiz_View_View {
 						
 						<div <?php echo $sum ? 'class="row-actions"' : 'style="visibility: hidden;"'; ?>>
 							<span>
-								<a style="color: red;" class="wpProQuiz_delete" href="#"><?php _e('Delete', 'wp-pro-quiz'); ?></a>
+								<a style="color: red;" class="wpProQuiz_delete" href="#"><?php esc_html_e('Delete', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN); ?></a>
 							</span>
 						</div>
 						

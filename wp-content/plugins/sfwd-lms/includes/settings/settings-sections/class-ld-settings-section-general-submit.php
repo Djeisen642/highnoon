@@ -10,7 +10,7 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->setting_option_key 				= 	'submitdiv';
 		
 			// Section label/header
-			$this->settings_section_label			=	__( 'Save Options', 'learndash' );
+			$this->settings_section_label			=	esc_html__( 'Save Options', 'learndash' );
 		
 			$this->metabox_context					=	'side';
 			$this->metabox_priority					=	'high';
@@ -30,7 +30,7 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				<div id="major-publishing-actions">
 					<div id="publishing-action">
 						<span class="spinner"></span>
-						<?php submit_button( esc_attr( __( 'Save', 'learndash' ) ), 'primary', 'submit', false );?>
+						<?php submit_button( esc_attr( esc_html__( 'Save', 'learndash' ) ), 'primary', 'submit', false );?>
 					</div>
 
 					<div class="clear"></div>

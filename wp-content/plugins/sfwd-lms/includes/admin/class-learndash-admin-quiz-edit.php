@@ -36,7 +36,7 @@ if ( !class_exists( 'Learndash_Admin_Quiz_Edit' ) ) {
 			}
 			add_meta_box(
 				'learndash_quiz_advanced',
-				sprintf( _x( '%s Advanced', 'placeholder: Quiz', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+				sprintf( esc_html_x( '%s Advanced', 'placeholder: Quiz', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 				array( $this, 'quiz_advanced_page_box' ),
 				$this->quiz_post_type
 			);

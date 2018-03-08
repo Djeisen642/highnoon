@@ -82,13 +82,13 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 			}
 
 			if ( 'edit' === $request['context'] && $post && ! $this->check_update_permission( $post ) ) {
-				return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit this post.' ), array( 'status' => rest_authorization_required_code() ) );
+				return new WP_Error( 'rest_forbidden_context', esc_html__( 'Sorry, you are not allowed to edit this post.' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 
 			if ( $post && ! empty( $request['password'] ) ) {
 				// Check post password, and return error if invalid.
 				if ( ! hash_equals( $post->post_password, $request['password'] ) ) {
-					return new WP_Error( 'rest_post_incorrect_password', __( 'Incorrect post password.' ), array( 'status' => 403 ) );
+					return new WP_Error( 'rest_post_incorrect_password', esc_html__( 'Incorrect post password.' ), array( 'status' => 403 ) );
 				}
 			}
 
@@ -158,7 +158,7 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 			global $learndash_post_types;
 
 			if ( in_array( $this->post_type, $learndash_post_types ) === false ) {	
-				return new WP_Error( 'rest_post_invalid_id_2', __( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
+				return new WP_Error( 'rest_post_invalid_id_2', esc_html__( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
 			}
 			
 			switch( $this->post_type ) {
@@ -176,13 +176,13 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 					if ( !empty( $args['course_id'] ) ) {
 						$this->ld_course_steps_object = LDLMS_Factory_Post::course_steps( intval( $request['course_id'] ) );
 						if ( is_null( $this->ld_course_steps_object ) ) {
-							return new WP_Error( 'rest_post_invalid_id_3', __( 'Invalid Course ID.' ), array( 'status' => 404 ) );
+							return new WP_Error( 'rest_post_invalid_id_3', esc_html__( 'Invalid Course ID.' ), array( 'status' => 404 ) );
 						}
 					
 						$course_price_type = get_course_meta_setting( $args['course_id'], 'course_price_type' );
 						$has_access = sfwd_lms_has_access( $args['course_id'], $current_user_id );
 						if ( ( ! $has_access ) && ( $course_price_type != 'open' ) ) {
-							return new WP_Error( 'rest_cannot_view', __( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
+							return new WP_Error( 'rest_cannot_view', esc_html__( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
 						}
 
 						if ( $this->post_type === 'sfwd-lessons' ) {
@@ -357,7 +357,7 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 			
 
 			if ( in_array( $this->post_type, $learndash_post_types ) === false ) {	
-				return new WP_Error( 'rest_post_invalid_id_2', __( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
+				return new WP_Error( 'rest_post_invalid_id_2', esc_html__( 'Invalid post ID.', 'learndash' ), array( 'status' => 404 ) );
 			}
 
 			switch( $this->post_type ) {
@@ -367,13 +367,13 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 				default:
 					$course = get_post( $request['course_id'] );
 					if ( ( !$course ) || ( $course->post_type !== 'sfwd-courses' ) ) {
-						return new WP_Error( 'rest_post_invalid_id_1', __( 'Invalid Course ID.' ), array( 'status' => 404 ) );
+						return new WP_Error( 'rest_post_invalid_id_1', esc_html__( 'Invalid Course ID.' ), array( 'status' => 404 ) );
 					}
 
 					$course_price_type = get_course_meta_setting( $course->ID, 'course_price_type' );
 					$has_access = sfwd_lms_has_access( $course->ID, $current_user_id );
 					if ( ( ! $has_access ) && ( $course_price_type != 'open' ) ) {
-						return new WP_Error( 'rest_cannot_view', __( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
+						return new WP_Error( 'rest_cannot_view', esc_html__( 'Sorry, you are not allowed view items.' ), array( 'status' => rest_authorization_required_code() ) );
 					}
 			}
 			return true;
@@ -488,7 +488,7 @@ if ( !class_exists('LD_REST_Posts_Controller' ) ) {
 
 		function update_course_item_permissions_check( $request ) {
 			if ( ! current_user_can( 'edit_courses', $request['id'] ) ) {
-				return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit/update this post.', 'learndash' ), array( 'status' => rest_authorization_required_code() ) );
+				return new WP_Error( 'rest_cannot_edit', esc_html__( 'Sorry, you are not allowed to edit/update this post.', 'learndash' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 
 			return true;

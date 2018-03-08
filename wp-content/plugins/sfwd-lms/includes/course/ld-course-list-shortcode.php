@@ -23,7 +23,13 @@ function ld_course_list( $attr ) {
 	global $learndash_shortcode_used;
 	
 	$attr_defaults = apply_filters( 'ld_course_list_shortcode_attr_defaults', array(
+		
+		'include_outer_wrapper' => 'true',
+		
 		'num' => '-1', 
+		//'per_page' => -1,
+		'paged' => 1,
+		
 		'post_type' => 'sfwd-courses', 
 		'post_status' => 'publish', 
 		'order' => 'DESC', 
@@ -57,6 +63,9 @@ function ld_course_list( $attr ) {
 		'tax_compare' => 'AND',
 		'categoryselector' => '', 
 		
+		'show_thumbnail' => 'true',
+		'show_content' => 'true',
+
 		'post__in' => '',
 		'author__in' => '', 
 		'col' => '',
@@ -104,14 +113,24 @@ function ld_course_list( $attr ) {
 	}
 	
 	$atts = shortcode_atts( $attr_defaults, $attr );
-	
-	if ( $atts['mycourses'] == 'true' ) 
-		$atts['mycourses'] = 'enrolled';
-	else if ( $atts['mycourses'] === false ) 
+
+	if ( is_user_logged_in() ) {
+		if ( ( $atts['mycourses'] == 'true' ) || ( $atts['mycourses'] == 'enrolled' ) ) {
+			$atts['mycourses'] = 'enrolled';
+		} else if ( $atts['mycourses'] == 'not-enrolled' ) {
+			$atts['mycourses'] = 'not-enrolled';
+		} else {
+			$atts['mycourses'] = null;
+		}
+	} else {
 		$atts['mycourses'] = null;
+	}
+
+	if ( isset( $atts['num'] ) )
+		$atts['num'] = intval( $atts['num'] );
 
 	$atts = apply_filters( 'ld_course_list_shortcode_attr_values', $atts, $attr );
-
+	
 	extract( $atts );
 	
 	global $post;
@@ -120,6 +139,7 @@ function ld_course_list( $attr ) {
 		'post_type' => $post_type, 
 		'post_status' => $post_status, 
 		'posts_per_page' => $num, 
+		'paged' => $paged,
 		'order' => $order, 
 		'orderby' => $orderby
 	);
@@ -583,15 +603,225 @@ function ld_course_list( $attr ) {
 		$filter['meta_compare'] = $meta_compare;
 	}
 	
+	// Logic to determine the exact post ids to query. This will help drive the category selectors below and prevent extra queries. 
+	
+	$shortcode_course_id = null;
+	if ( $mycourses == 'enrolled' ) {
+		$filter['post__in'] = learndash_user_get_enrolled_courses( get_current_user_id() );
+	} else if ( $mycourses == 'not-enrolled' ) {
+		$filter['post__not_in'] = learndash_user_get_enrolled_courses( get_current_user_id() );
+		/*
+		$all_courses_query_args = array( 
+			'post_type' 		=> 	'sfwd-courses', 
+			'post_status' 		=> 	'publish',  
+			'posts_per_page' 	=> 	-1,
+			'fields'			=>	'ids'
+		);
+		$all_courses_query_results = new WP_Query( $all_courses_query_args );
+		if ( !is_wp_error( $all_courses_query_results ) ) {
+			$all_course_ids = $all_courses_query_results->posts;
+		} else {
+			$all_course_ids = array();
+		}
+		$shortcode_course_id = array_diff( $all_course_ids, $enrolled_course_ids );
+		*/
+	} else {
+		/*
+		$all_courses_query_args = array( 
+			'post_type' 		=> 	'sfwd-courses', 
+			'post_status' 		=> 	'publish',  
+			'posts_per_page' 	=> 	-1,
+			'fields'			=>	'ids'
+		);
+		$all_courses_query_results = new WP_Query( $all_courses_query_args );
+		if ( !is_wp_error( $all_courses_query_results ) ) {
+			$shortcode_course_id = $all_courses_query_results->posts;
+		} else {
+			$shortcode_course_id = array();
+		}
+		*/
+	}
+	
 	$filter = apply_filters('learndash_ld_course_list_query_args', $filter, $atts );
 	
-	if ( $array ) {
+	if ( $array == 'true' ) {
 		return get_posts( $filter );
 	}
 	
 	if ( @$post->post_type == $post_type ) {
-		$filter['post__not_in'] = array( $post->ID );
+		if ( ( isset( $filter['post__not_in'] ) ) && ( !empty( $filter['post__not_in'] ) ) ) {
+			$filter['post__not_in'][] = $post->ID;
+		} else {
+			$filter['post__not_in'] = array( $post->ID );
+		}
 	}
+	
+	// At this point the $filter var contains all the shortcode processing logic. 
+	// So now we want to save off the var to one used by the category selector (if used).
+	$filter_cat = $filter;
+	$filter_cat['posts_per_page'] = -1;
+			
+	$ld_categorydropdown = '';
+
+	$categories = array();
+	$ld_categories = array();
+
+	//if ( $include_outer_wrapper == 'true' ) {
+
+		if ( ( trim( $categoryselector ) == 'true' ) && ( LearnDash_Settings_Section::get_section_setting( $post_type_Class, 'wp_post_category' ) == 'yes') ) {
+			$cats = array();
+
+			if ( ( isset( $_GET['catid'] ) ) && ( !empty( $_GET['catid'] ) ) ) {
+				$atts['cat'] = intval( $_GET['catid'] );
+				
+				if ( !isset( $filter['tax_query'] ) ) 
+					$filter['tax_query'] = array();
+		
+				$filter['tax_query'][] = array(
+					'taxonomy'	=>	'category',
+					'field'		=>	'term_id',
+					'terms'		=>	intval( $_GET['catid'] )
+				);
+			}
+		
+			//if ( isset( $filter_cat['post__in'] ) ) {
+				//$filter_cat['include'] = $filter_cat['post__in'];
+			//	unset( $filter_cat['post__in'] );
+			//}
+			//if ( isset( $filter_cat['post__not_in'] ) ) {
+				//$filter_cat['include'] = $filter_cat['post__in'];
+			//	unset( $filter_cat['post__not_in'] );
+			//}
+		
+			$posts = get_posts( $filter_cat );
+		
+			// We first need to build a listing of the categories used by each of the queried posts. 
+			if ( !empty( $posts ) ) {
+				foreach( $posts as $post ) {
+					$post_categories = wp_get_post_categories( $post->ID );
+					if ( !empty( $post_categories ) ) {
+						foreach( $post_categories as $c ) {
+
+							if ( empty( $cats[ $c ] ) ) {
+								$cat = get_category( $c );
+								$cats[ $c ] = array(
+									'id' => $cat->cat_ID, 
+									'name' => $cat->name, 
+									'slug' => $cat->slug, 
+									'parent' => $cat->parent, 
+									'count' => 0, 
+									'posts' => array()
+								); 
+							}
+
+							$cats[ $c ]['count']++;
+							$cats[ $c ]['posts'][] = $post->ID;
+						}
+					}
+				}
+			
+				// Once we have these categories we need to requery the categories in order to get them into a proper ordering. 
+				if ( !empty( $cats ) ) {
+		
+					// And also let this query be filtered.
+					$get_categories_args = apply_filters(
+						'learndash_course_list_category_args', 
+						array(
+							'taxonomy'	=>	'category',
+							'type' 		=>	$post_type,
+							'include'	=>	array_keys($cats),
+							'orderby'	=>	'name',
+							'order'		=>	'ASC'
+						)
+					);
+		
+					if ( !empty( $get_categories_args ) ) {
+						$categories = get_categories( $get_categories_args );
+					}
+				}
+			}
+		} else {
+			$categoryselector = '';
+			$atts['categoryselector'];
+		}
+	
+	
+		// We can only support one of the other category OR course_category selectors
+		if ( ( trim( $atts[$post_type_slug .'_categoryselector'] ) == 'true' ) && ( empty( $categoryselector ) )
+		  && ( LearnDash_Settings_Section::get_section_setting( $post_type_Class, 'ld_'. $post_type_slug .'_category' ) == 'yes') ) {
+			$ld_cats = array();
+		
+			if ( ( isset( $_GET[$post_type_slug . '_catid'] ) ) && ( !empty( $_GET[$post_type_slug . '_catid'] ) ) ) {
+				
+				$atts[$post_type_slug .'_cat'] = intval( $_GET[$post_type_slug . '_catid'] );
+				
+				if ( !isset( $filter['tax_query'] ) ) 
+					$filter['tax_query'] = array();
+		
+				$filter['tax_query'][] = array(
+					'taxonomy'	=>	'ld_'. $post_type_slug .'_category',
+					'field'		=>	'term_id',
+					'terms'		=>	intval( $_GET[$post_type_slug . '_catid'] )
+				);
+			}
+			
+			$posts = get_posts( $filter_cat );
+		
+			// We first need to build a listing of the categories used by each of the queried posts. 
+			if ( !empty( $posts ) ) {
+				$args = array('fields' => 'ids');
+				foreach( $posts as $post ) {
+					$post_categories = wp_get_object_terms($post->ID, 'ld_'. $post_type_slug .'_category', $args);
+					if ( !empty( $post_categories ) ) {
+						foreach( $post_categories as $c ) {
+
+							if ( empty( $ld_cats[ $c ] ) ) {
+								$ld_cat = get_term( $c, 'ld_'. $post_type_slug .'_category' );
+								$ld_cats[ $c ] = array(
+									'id' => $ld_cat->cat_ID, 
+									'name' => $ld_cat->name, 
+									'slug' => $ld_cat->slug, 
+									'parent' => $ld_cat->parent, 
+									'count' => 0, 
+									'posts' => array()
+								); 
+							}
+
+							$ld_cats[ $c ]['count']++;
+							$ld_cats[ $c ]['posts'][] = $post->ID;
+						}
+					}
+				}
+			
+				// Once we have these categories we need to requery the categories in order to get them into a proper ordering. 
+				if ( !empty( $ld_cats ) ) {
+				
+					// And also let this query be filtered.
+					$get_ld_categories_args = apply_filters(
+						'learndash_course_list_'. $post_type_slug .'_category_args', 
+						array(
+							'taxonomy'	=>	'ld_'. $post_type_slug .'_category',
+							'type' 		=>	$post_type,
+							'include'	=>	array_keys( $ld_cats ),
+							'orderby'	=>	'name',
+							'order'		=>	'ASC'
+						)
+					);
+		
+					$post_type_object = get_post_type_object( $atts['post_type'] );
+					//error_log('post_type_slug['. $atts['post_type'] .'] post_type_object<pre>'. print_r($post_type_object, true) .'</pre>');
+				
+					$tax_object = get_taxonomy('ld_'. $post_type_slug .'_category');
+				
+					if ( !empty( $get_ld_categories_args ) ) {
+						$ld_categories = get_terms( $get_ld_categories_args );
+					}
+				}
+			}
+		} else {
+			$atts[$post_type_slug .'_categoryselector'] = '';
+		}
+	//}
 	
 	//error_log('filter<pre>'. print_r($filter, true) .'</pre>');
 	$loop = new WP_Query( $filter );
@@ -599,197 +829,92 @@ function ld_course_list( $attr ) {
 	
 	$level = ob_get_level();
 	ob_start();
-	$ld_categorydropdown = '';
 
-	if ( ( trim( $categoryselector ) == 'true' ) && ( LearnDash_Settings_Section::get_section_setting( $post_type_Class, 'wp_post_category' ) == 'yes') ) {
-		$cats = array();
-		$posts = get_posts( $filter );
+	if ( $include_outer_wrapper == 'true' ) {
+		if ( !empty( $categories ) ) {
+
+			$categorydropdown = '<div id="ld_categorydropdown">';
+			$categorydropdown.= '<form method="get">
+					<label for="ld_categorydropdown_select">' . esc_html__( 'Categories', 'learndash' ) . '</label>
+					<select id="ld_categorydropdown_select" name="catid" onChange="jQuery(\'#ld_categorydropdown form\').submit()">';
+			$categorydropdown.= '<option value="">' . esc_html__( 'Select category', 'learndash' ) . '</option>';
+
+			foreach( $categories as $category ) {
 		
-		
-		// We first need to build a listing of the categories used by each of the queried posts. 
-		if ( !empty( $posts ) ) {
-			foreach( $posts as $post ) {
-				$post_categories = wp_get_post_categories( $post->ID );
-				if ( !empty( $post_categories ) ) {
-					foreach( $post_categories as $c ) {
-
-						if ( empty( $cats[ $c ] ) ) {
-							$cat = get_category( $c );
-							$cats[ $c ] = array(
-								'id' => $cat->cat_ID, 
-								'name' => $cat->name, 
-								'slug' => $cat->slug, 
-								'parent' => $cat->parent, 
-								'count' => 0, 
-								'posts' => array()
-							); 
-						}
-
-						$cats[ $c ]['count']++;
-						$cats[ $c ]['posts'][] = $post->ID;
-					}
+				if ( isset( $cats[$category->term_id] ) ) {
+					$cat = $cats[$category->term_id];
+					$selected =( empty( $_GET['catid'] ) || $_GET['catid'] != $cat['id'] ) ? '' : 'selected="selected"';
+					$categorydropdown.= "<option value='" . $cat['id'] . "' " . $selected . '>' . $cat['name'] . ' (' . $cat['count'] . ')</option>';
 				}
 			}
-			
-			// Once we have these categories we need to requery the categories in order to get them into a proper ordering. 
-			if ( !empty( $cats ) ) {
-		
-				// And also let this query be filtered.
-				$get_categories_args = apply_filters(
-					'learndash_course_list_category_args', 
-					array(
-						'taxonomy'	=>	'category',
-						'type' 		=>	$post_type,
-						'include'	=>	array_keys($cats),
-						'orderby'	=>	'name',
-						'order'		=>	'ASC'
-					)
-				);
-		
-				if ( !empty( $get_categories_args ) ) {
-					$categories = get_categories( $get_categories_args );
-					if ( !empty( $categories ) ) {
 
-						$categorydropdown = '<div id="ld_categorydropdown">';
-						$categorydropdown.= '<form method="get">
-								<label for="ld_categorydropdown_select">' . __( 'Categories', 'learndash' ) . '</label>
-								<select id="ld_categorydropdown_select" name="catid" onChange="jQuery(\'#ld_categorydropdown form\').submit()">';
-						$categorydropdown.= '<option value="">' . __( 'Select category', 'learndash' ) . '</option>';
+			$categorydropdown.= "</select><input type='submit' style='display:none'></form></div>";
 
-						foreach( $categories as $category ) {
-						
-							if ( isset( $cats[$category->term_id] ) ) {
-								$cat = $cats[$category->term_id];
-								$selected =( empty( $_GET['catid'] ) || $_GET['catid'] != $cat['id'] ) ? '' : 'selected="selected"';
-								$categorydropdown.= "<option value='" . $cat['id'] . "' " . $selected . '>' . $cat['name'] . ' (' . $cat['count'] . ')</option>';
-							}
-						}
-
-						$categorydropdown.= "</select><input type='submit' style='display:none'></form></div>";
-
-						/**
-						 * Filter HTML output of category dropdown
-						 * 
-						 * @since 2.1.0
-						 * 
-						 * @param  string  $categorydropdown
-						 */
-						echo apply_filters( 'ld_categorydropdown', $categorydropdown, $atts, $filter );
-					}
-				}
-			}
+			/**
+			 * Filter HTML output of category dropdown
+			 * 
+			 * @since 2.1.0
+			 * 
+			 * @param  string  $categorydropdown
+			 */
+			echo apply_filters( 'ld_categorydropdown', $categorydropdown, $atts, $filter );
 		}
-	} else {
-		$categoryselector = '';
-		$atts['categoryselector'];
-	}
 	
-	
-	// We can only support one of the other category OR course_category selectors
-	if ( ( trim( $atts[$post_type_slug .'_categoryselector'] ) == 'true' ) && ( empty( $categoryselector ) )
-	  && ( LearnDash_Settings_Section::get_section_setting( $post_type_Class, 'ld_'. $post_type_slug .'_category' ) == 'yes') ) {
-		$ld_cats = array();
-		$posts = get_posts( $filter );
+		if ( !empty( $ld_categories ) ) {
+
+			$ld_categorydropdown = '<div id="ld_'. $post_type_slug .'_categorydropdown">';
+			$ld_categorydropdown.= '<form method="get">
+					<label for="ld_'. $post_type_slug .'_categorydropdown_select">' . $tax_object->labels->name . '</label>
+					<select id="ld_'. $post_type_slug .'_categorydropdown_select" name="'. $post_type_slug .'_catid" onChange="jQuery(\'#ld_'. $post_type_slug .'_categorydropdown form\').submit()">';
+			$ld_categorydropdown.= '<option value="">' . sprintf( esc_html_x( 'Select %s', 'placeholder: LD Category label', 'learndash' ), $tax_object->labels->name )  . '</option>';
+
+			foreach( $ld_categories as $ld_category ) {
 		
-		// We first need to build a listing of the categories used by each of the queried posts. 
-		if ( !empty( $posts ) ) {
-			$args = array('fields' => 'ids');
-			foreach( $posts as $post ) {
-				$post_categories = wp_get_object_terms($post->ID, 'ld_'. $post_type_slug .'_category', $args);
-				if ( !empty( $post_categories ) ) {
-					foreach( $post_categories as $c ) {
-
-						if ( empty( $ld_cats[ $c ] ) ) {
-							$ld_cat = get_term( $c, 'ld_'. $post_type_slug .'_category' );
-							$ld_cats[ $c ] = array(
-								'id' => $ld_cat->cat_ID, 
-								'name' => $ld_cat->name, 
-								'slug' => $ld_cat->slug, 
-								'parent' => $ld_cat->parent, 
-								'count' => 0, 
-								'posts' => array()
-							); 
-						}
-
-						$ld_cats[ $c ]['count']++;
-						$ld_cats[ $c ]['posts'][] = $post->ID;
-					}
+				if ( isset( $ld_cats[$ld_category->term_id] ) ) {
+					$ld_cat = $ld_cats[$ld_category->term_id];
+					$selected =( empty( $_GET[$post_type_slug . '_catid'] ) || $_GET[$post_type_slug . '_catid'] != $ld_category->term_id ) ? '' : 'selected="selected"';
+					$ld_categorydropdown .= "<option value='" . $ld_category->term_id . "' " . $selected . '>' . $ld_cat['name'] . ' (' . $ld_cat['count'] . ')</option>';
 				}
 			}
-			
-			// Once we have these categories we need to requery the categories in order to get them into a proper ordering. 
-			if ( !empty( $ld_cats ) ) {
-				
-				// And also let this query be filtered.
-				$get_ld_categories_args = apply_filters(
-					'learndash_course_list_'. $post_type_slug .'_category_args', 
-					array(
-						'taxonomy'	=>	'ld_'. $post_type_slug .'_category',
-						'type' 		=>	$post_type,
-						'include'	=>	array_keys( $ld_cats ),
-						'orderby'	=>	'name',
-						'order'		=>	'ASC'
-					)
-				);
-		
-				$post_type_object = get_post_type_object( $atts['post_type'] );
-				//error_log('post_type_slug['. $atts['post_type'] .'] post_type_object<pre>'. print_r($post_type_object, true) .'</pre>');
-				
-				$tax_object = get_taxonomy('ld_'. $post_type_slug .'_category');
-				
-				if ( !empty( $get_ld_categories_args ) ) {
-					$ld_categories = get_terms( $get_ld_categories_args );
-					if ( !empty( $ld_categories ) ) {
 
-						$ld_categorydropdown = '<div id="ld_'. $post_type_slug .'_categorydropdown">';
-						$ld_categorydropdown.= '<form method="get">
-								<label for="ld_'. $post_type_slug .'_categorydropdown_select">' . $tax_object->labels->name . '</label>
-								<select id="ld_'. $post_type_slug .'_categorydropdown_select" name="'. $post_type_slug .'_catid" onChange="jQuery(\'#ld_'. $post_type_slug .'_categorydropdown form\').submit()">';
-						$ld_categorydropdown.= '<option value="">' . sprintf( _x( 'Select %s', 'placeholder: LD Category label', 'learndash' ), $tax_object->labels->name )  . '</option>';
+			$ld_categorydropdown.= "</select><input type='submit' style='display:none'></form></div>";
 
-						foreach( $ld_categories as $ld_category ) {
-						
-							if ( isset( $ld_cats[$ld_category->term_id] ) ) {
-								$ld_cat = $ld_cats[$ld_category->term_id];
-								$selected =( empty( $_GET[$post_type_slug . '_catid'] ) || $_GET[$post_type_slug . '_catid'] != $ld_category->term_id ) ? '' : 'selected="selected"';
-								$ld_categorydropdown .= "<option value='" . $ld_category->term_id . "' " . $selected . '>' . $ld_cat['name'] . ' (' . $ld_cat['count'] . ')</option>';
-							}
-						}
-
-						$ld_categorydropdown.= "</select><input type='submit' style='display:none'></form></div>";
-
-						/**
-						 * Filter HTML output of category dropdown
-						 * 
-						 * @since 2.1.0
-						 * 
-						 * @param  string  $categorydropdown
-						 */
-						echo apply_filters( 'ld_'. $post_type_slug .'_categorydropdown', $ld_categorydropdown, $atts, $filter );
-					}
-				}
-			}
+			/**
+			 * Filter HTML output of category dropdown
+			 * 
+			 * @since 2.1.0
+			 * 
+			 * @param  string  $categorydropdown
+			 */
+			echo apply_filters( 'ld_'. $post_type_slug .'_categorydropdown', $ld_categorydropdown, $atts, $filter );
 		}
-	} else {
-		$atts[$post_type_slug .'_categoryselector'] = '';
 	}
-	
-
+		
 	$col = intval($col);
 	if (!empty($col)) {
 		$row_item_count = 0;
 	}
 	
+	$filter_json = htmlspecialchars( json_encode( $atts ) );
+	$filter_md5 = md5( $filter_json ); 
+	
+	//error_log('include_outer_wrapper['. $include_outer_wrapper .']');
+	
+	if ( $include_outer_wrapper == 'true' ) {
+		?><div id="ld-course-list-content-<?php echo $filter_md5 ?>" class="ld-course-list-content" data-shortcode-atts="<?php echo $filter_json; ?>"><?php
+	}
+	?><div class="ld-course-list-items"><?php
+	
 	while ( $loop->have_posts() ) {
 		$loop->the_post();
-		if ( trim( $categoryselector ) == 'true' && ! empty( $_GET['catid'] ) && !in_array( get_the_ID(), (array)@$cats[ $_GET['catid']]['posts'] ) ) {
-			continue;
-		} else if ( trim( $atts[$post_type_slug . '_categoryselector'] ) == 'true' && ! empty( $_GET[$post_type_slug . '_catid'] ) && !in_array( get_the_ID(), (array)@$ld_cats[ $_GET[$post_type_slug . '_catid']]['posts'] ) ) {
-			continue;
-		}
+		//if ( trim( $categoryselector ) == 'true' && ! empty( $_GET['catid'] ) && !in_array( get_the_ID(), (array)@$cats[ $_GET['catid']]['posts'] ) ) {
+		//	continue;
+		//} else if ( trim( $atts[$post_type_slug . '_categoryselector'] ) == 'true' && ! empty( $_GET[$post_type_slug . '_catid'] ) && !in_array( get_the_ID(), (array)@$ld_cats[ $_GET[$post_type_slug . '_catid']]['posts'] ) ) {
+		//	continue;
+		//}
 
 		
-		if ( ( is_null( $mycourses ) ) || ( $mycourses === false ) || ( ( $mycourses == 'enrolled' ) && ( sfwd_lms_has_access( get_the_ID() ) ) ) || ( ( $mycourses == 'not-enrolled' ) && ( !sfwd_lms_has_access( get_the_ID() ) ) ) ) {
+		//if ( ( is_null( $mycourses ) ) || ( $mycourses === false ) || ( ( $mycourses == 'enrolled' ) && ( sfwd_lms_has_access( get_the_ID() ) ) ) || ( ( $mycourses == 'not-enrolled' ) && ( !sfwd_lms_has_access( get_the_ID() ) ) ) ) {
 			if ( !empty( $col ) ) {
 				$row_item_count += 1;
 
@@ -820,11 +945,35 @@ function ld_course_list( $attr ) {
 					$row_item_count = 0;
 				}
 			}
-		}
+		//}
+	}
+	?></div><?php
+	
+	if ( ( isset( $filter['posts_per_page'] ) ) && ( intval( $filter['posts_per_page'] ) > 0 ) ) {
+		$course_list_pager = array();
+		if ( isset( $loop->query_vars['paged'] ) )
+			$course_list_pager['paged'] = $loop->query_vars['paged'];
+		else 
+			$course_list_pager['paged'] = $filter['paged'];
+			
+		$course_list_pager['total_items'] = intval( $loop->found_posts );
+		$course_list_pager['total_pages'] = intval( $loop->max_num_pages );
+		
+		echo SFWD_LMS::get_template( 
+			'learndash_pager.php', 
+			array(
+				'pager_results' => $course_list_pager, 
+				'pager_context' => 'course_list'
+			) 
+		);
+	}
+
+	if ( $include_outer_wrapper == 'true' ) {
+		?></div><?php
 	}
 
 	$output = learndash_ob_get_clean( $level );
-	wp_reset_query();
+	//wp_reset_query();
 
 	$learndash_shortcode_used = true;
 
@@ -860,6 +1009,20 @@ function ld_lesson_list( $attr = array() ) {
 	
 	$attr['post_type'] = 'sfwd-lessons';
 	$attr['mycourses'] = false;
+	
+	// If we have a course_id. Then we set the orderby to match the items within the course. 
+	if ( ( isset( $attr['course_id'] ) ) && ( !empty( $attr['course_id'] ) ) ) {
+		if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {
+			if ( !isset( $attr['order'] ) ) $attr['order'] = 'ASC';
+			if ( !isset( $attr['orderby'] ) ) $attr['orderby'] = 'post__in';
+		
+			$course_steps = learndash_course_get_steps_by_type( intval( $attr['course_id'] ), $attr['post_type'] );
+			if ( !empty( $course_steps ) ) {
+				$attr['post__in'] = $course_steps;
+			}
+		}
+	} 
+		
 	return ld_course_list( $attr );
 }
 
@@ -885,6 +1048,20 @@ function ld_quiz_list( $attr = array() ) {
 
 	$attr['post_type'] = 'sfwd-quiz';
 	$attr['mycourses'] = false;
+	
+	// If we have a course_id. Then we set the orderby to match the items within the course. 
+	if ( ( isset( $attr['course_id'] ) ) && ( !empty( $attr['course_id'] ) ) ) {
+		if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {
+			if ( !isset( $attr['order'] ) ) $attr['order'] = 'ASC';
+			if ( !isset( $attr['orderby'] ) ) $attr['orderby'] = 'post__in';
+		
+			$course_steps = learndash_course_get_steps_by_type( intval( $attr['course_id'] ), $attr['post_type'] );
+			if ( !empty( $course_steps ) ) {
+				$attr['post__in'] = $course_steps;
+			}
+		}
+	} 
+	
 	return ld_course_list( $attr );
 }
 
@@ -910,6 +1087,20 @@ function ld_topic_list( $attr = array() ) {
 	
 	$attr['post_type'] = 'sfwd-topic';
 	$attr['mycourses'] = false;
+	
+	// If we have a course_id. Then we set the orderby to match the items within the course. 
+	if ( ( isset( $attr['course_id'] ) ) && ( !empty( $attr['course_id'] ) ) ) {
+		if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'enabled' ) == 'yes' ) {
+			if ( !isset( $attr['order'] ) ) $attr['order'] = 'ASC';
+			if ( !isset( $attr['orderby'] ) ) $attr['orderby'] = 'post__in';
+		
+			$course_steps = learndash_course_get_steps_by_type( intval( $attr['course_id'] ), $attr['post_type'] );
+			if ( !empty( $course_steps ) ) {
+				$attr['post__in'] = $course_steps;
+			}
+		}
+	} 
+	
 	return ld_course_list( $attr );
 }
 
@@ -1095,7 +1286,7 @@ function learndash_course_complete_shortcode( $atts, $content ) {
 	global $learndash_shortcode_used;
 	$learndash_shortcode_used = true;
 	
-	return learndash_course_status_content_shortcode( $atts, $content, __( 'Completed', 'learndash' ) );
+	return learndash_course_status_content_shortcode( $atts, $content, esc_html__( 'Completed', 'learndash' ) );
 }
 
 add_shortcode( 'course_complete', 'learndash_course_complete_shortcode' );
@@ -1115,7 +1306,7 @@ function learndash_course_inprogress_shortcode( $atts, $content ) {
 	global $learndash_shortcode_used;
 	$learndash_shortcode_used = true;
 	
-	return learndash_course_status_content_shortcode( $atts, $content, __( 'In Progress', 'learndash' ) );
+	return learndash_course_status_content_shortcode( $atts, $content, esc_html__( 'In Progress', 'learndash' ) );
 }
 
 add_shortcode( 'course_inprogress', 'learndash_course_inprogress_shortcode' );
@@ -1135,7 +1326,7 @@ function learndash_course_notstarted_shortcode( $atts, $content ) {
 	global $learndash_shortcode_used;
 	$learndash_shortcode_used = true;
 	
-	return learndash_course_status_content_shortcode( $atts, $content, __( 'Not Started', 'learndash' ) );
+	return learndash_course_status_content_shortcode( $atts, $content, esc_html__( 'Not Started', 'learndash' ) );
 }
 
 add_shortcode( 'course_notstarted', 'learndash_course_notstarted_shortcode' );
@@ -1160,8 +1351,8 @@ function learndash_course_expire_status_shortcode( $atts, $content ) {
 		array(
 			'course_id' 	=> 	learndash_get_course_id(), 
 			'user_id' 		=> 	get_current_user_id(), 
-			'label_before'	=>	sprintf( _x('%s access will expire on:', 'Course access will expire on:', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ),
-			'label_after'	=>	sprintf( _x('%s access expired on:', 'Course access expired on:', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ),
+			'label_before'	=>	sprintf( esc_html_x('%s access will expire on:', 'Course access will expire on:', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ),
+			'label_after'	=>	sprintf( esc_html_x('%s access expired on:', 'Course access expired on:', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) ),
 			'format'		=>	get_option('date_format') .' '. get_option('time_format')
 		), 
 		$atts
@@ -1312,3 +1503,32 @@ function learndash_quiz_shortcode( $atts, $content = '' ) {
 }
 add_shortcode( 'ld_quiz', 'learndash_quiz_shortcode' );
 
+function ld_course_list_shortcode_pager() {
+	$reply_data = array();
+
+	//error_log('_POST<pre>'. print_r( $_POST, true ) .'</pre>' );
+
+	if ( ( isset( $_POST['paged'] ) ) && ( !empty( $_POST['paged'] ) ) ) 
+		$paged = intval( $_POST['paged'] );
+	else
+		$paged = 1;
+	
+
+	if ( ( isset( $_POST['shortcode_atts'] ) ) && ( !empty( $_POST['shortcode_atts'] ) ) ) 
+		$shortcode_atts = $_POST['shortcode_atts'];
+	else
+		$shortcode_atts = array();
+	
+	$shortcode_atts['include_outer_wrapper'] = 'false';
+	$shortcode_atts['paged'] = $paged;
+	//error_log('shortcode_atts<pre>'. print_r( $shortcode_atts, true ) .'</pre>' );
+		
+	$reply_data['content'] = ld_course_list( $shortcode_atts );
+	
+	echo json_encode( $reply_data );
+	die();
+	
+}
+	
+add_action( 'wp_ajax_ld_course_list_shortcode_pager', 'ld_course_list_shortcode_pager' );
+add_action( 'wp_ajax_nopriv_ld_course_list_shortcode_pager', 'ld_course_list_shortcode_pager' );

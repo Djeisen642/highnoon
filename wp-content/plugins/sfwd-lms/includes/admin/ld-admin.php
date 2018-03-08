@@ -141,7 +141,7 @@ function learndash_admin_bar_link() {
 		$wp_admin_bar->add_menu( array(
 			'id' => 'edit_fixed',
 			'parent' => false,
-			'title' => sprintf( _x( 'Edit %s', 'Edit Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+			'title' => sprintf( esc_html_x( 'Edit %s', 'Edit Topic Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 			'href' => get_edit_post_link( $post->id )
 		) );
 	}
@@ -157,13 +157,13 @@ function learndash_admin_bar_link() {
 function learndash_lms_reports_page() {
 	?>
 		<div  id="learndash-reports"  class="wrap">
-			<h1><?php _e( 'User Reports', 'learndash' ); ?></h1>
+			<h1><?php esc_html_e( 'User Reports', 'learndash' ); ?></h1>
 			<br>
 			<div class="sfwd_settings_left">
 				<div class=" " id="sfwd-learndash-reports_metabox">
 					<div class="inside">
-						<a class="button-primary" href="<?php echo admin_url( 'admin.php?page=learndash-lms-reports&action=sfp_update_module&nonce-sfwd='.wp_create_nonce( 'sfwd-nonce' ).'&page_options=sfp_home_description&courses_export_submit=Export' ); ?>"><?php printf( _x( 'Export User %s Data', 'Export User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></a>
-						<a class="button-primary" href="<?php echo admin_url( 'admin.php?page=learndash-lms-reports&action=sfp_update_module&nonce-sfwd='.wp_create_nonce( 'sfwd-nonce' ).'&page_options=sfp_home_description&quiz_export_submit=Export' ); ?>"><?php printf( _x( 'Export %s Data', 'Export Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></a>
+						<a class="button-primary" href="<?php echo admin_url( 'admin.php?page=learndash-lms-reports&action=sfp_update_module&nonce-sfwd='.wp_create_nonce( 'sfwd-nonce' ).'&page_options=sfp_home_description&courses_export_submit=Export' ); ?>"><?php printf( esc_html_x( 'Export User %s Data', 'Export User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></a>
+						<a class="button-primary" href="<?php echo admin_url( 'admin.php?page=learndash-lms-reports&action=sfp_update_module&nonce-sfwd='.wp_create_nonce( 'sfwd-nonce' ).'&page_options=sfp_home_description&quiz_export_submit=Export' ); ?>"><?php printf( esc_html_x( 'Export %s Data', 'Export Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></a>
 						<?php
 							/**
 							 * Run actions after report page buttons print
@@ -224,7 +224,7 @@ function learndash_select_menu() {
 function add_shortcode_data_columns( $cols ) {
 	return array_merge(
 		array_slice( $cols, 0, 3 ),
-		array( 'shortcode' => __( 'Shortcode', 'learndash' ) ),
+		array( 'shortcode' => esc_html__( 'Shortcode', 'learndash' ) ),
 		array_slice( $cols, 3 )
 	);
 }
@@ -246,13 +246,13 @@ function add_course_data_columns( $cols ) {
 	
 	if ( in_array( $typenow, array( 'sfwd-assignment' ) ) !== false ) {
 		$new_columns = 	array( 
-			'course' => sprintf( _x( 'Assigned %s', 'Assigned Course Label', 'learndash' ) , LearnDash_Custom_Label::get_label( 'course' ) ),
-			'lesson' => sprintf( _x( 'Assigned %s', 'Assigned Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+			'course' => sprintf( esc_html_x( 'Assigned %s', 'Assigned Course Label', 'learndash' ) , LearnDash_Custom_Label::get_label( 'course' ) ),
+			'lesson' => sprintf( esc_html_x( 'Assigned %s', 'Assigned Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 		);
 	} else {
 		if ( LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
 			$new_columns = 	array( 
-				'course' => sprintf( _x( 'Assigned %s', 'Assigned Course Label', 'learndash' ) , LearnDash_Custom_Label::get_label( 'course' ) ),
+				'course' => sprintf( esc_html_x( 'Assigned %s', 'Assigned Course Label', 'learndash' ) , LearnDash_Custom_Label::get_label( 'course' ) ),
 			);
 		}
 	}
@@ -283,8 +283,8 @@ function add_lesson_data_columns( $cols ) {
 		$cols = array_merge(
 			array_slice( $cols, 0, 3 ),
 			array(
-				'course' => sprintf( _x( 'Assigned %s', 'Assigned Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-				'lesson' => sprintf( _x( 'Assigned %s', 'Assigned Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
+				'course' => sprintf( esc_html_x( 'Assigned %s', 'Assigned Course Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+				'lesson' => sprintf( esc_html_x( 'Assigned %s', 'Assigned Lesson Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ),
 			),
 			array_slice( $cols, 3 )
 		);
@@ -307,8 +307,8 @@ function add_assignment_data_columns( $cols ) {
 	return array_merge(
 		array_slice( $cols, 0, 3 ),
 		array(
-			'approval_status' => __( 'Status', 'learndash' ),
-			'approval_points' => __( 'Points', 'learndash' ),
+			'approval_status' => esc_html__( 'Status', 'learndash' ),
+			'approval_points' => esc_html__( 'Points', 'learndash' ),
 		),
 		array_slice( $cols, 3 )
 	);
@@ -338,7 +338,7 @@ function remove_tags_column( $cols ){
  * @param array 	$cols 	admin columns for post type
  * @return array 	$cols 	admin columns for post type
  */
-function remove_categories_column( $cols ){
+function remove_categories_column( $cols ) {
 	unset( $cols['categories'] );
 	return $cols;
 }
@@ -357,19 +357,22 @@ function manage_asigned_assignment_columns( $column_name, $assignment_id ) {
 	switch ( $column_name ) {
 		case 'approval_status':
 			
-		//$current_screen = get_current_screen();
-		//error_log('current_screen<pre>'. print_r($current_screen, true) .'</pre>');
-			
-			$approval_status_flag = learndash_is_assignment_approved_by_meta( $assignment_id );
-			if ($approval_status_flag == 1) {
-				$approval_status_label = __( 'Approved', 'learndash' );
-			} else {
-				$approval_status_label = __( 'Not Approved', 'learndash' );
+			$assignment_lesson_id = intval( get_post_meta( $assignment_id, 'lesson_id', true ) );
+			if ( !empty( $assignment_lesson_id ) ) {
+				$approval_status_flag = learndash_is_assignment_approved_by_meta( $assignment_id );
+				if ( $approval_status_flag == 1 ) {
+					$approval_status_label = esc_html__( 'Approved', 'learndash' );
+				} else {
+					$approval_status_flag = 0;
+					$approval_status_label = esc_html__( 'Not Approved', 'learndash' );
+				}
+				$approval_status_url = admin_url( 'edit.php?post_type='.@$_GET['post_type'].'&approval_status='. $approval_status_flag );
+		
+				echo '<a " href="'. $approval_status_url .'">'. $approval_status_label .'</a>';
+				if ( $approval_status_flag != 1 ) {
+					?> <button id="assignment_approve_<?php echo $assignment_id ?>" class="small assignment_approve_single"><?php esc_html_e('approve', 'learndash'); ?></button><?php
+				}
 			}
-			$approval_status_url = admin_url( 'edit.php?post_type='.@$_GET['post_type'].'&approval_status='. $approval_status_flag );
-			
-			echo '<a " href="'. $approval_status_url .'">'. $approval_status_label .'</a>';
-			
 			break;
 			
 		case 'approval_points':
@@ -387,18 +390,13 @@ function manage_asigned_assignment_columns( $column_name, $assignment_id ) {
 					if ( $approval_status_flag != 1 ) {
 						$current_points = '<input id="assignment_points_'. $assignment_id .'" class="small-text" type="number" value="0" max="'. $max_points .'" min="0" step="1" name="assignment_points['. $assignment_id .']" />';
 					} else {
-						$current_points = 0;
+						$current_points = '0';
 					}
 				}
-				echo sprintf( _x('%s / %s', 'placeholders: current points / maximum point for assignment', 'learndash'), $current_points, $max_points);
-				
-				$approval_status_flag = learndash_is_assignment_approved_by_meta( $assignment_id );
-				if ($approval_status_flag != 1) {
-					?> <button id="assignment_approve_<?php echo $assignment_id ?>" class="small assignment_approve_single"><?php _e('approve', 'learndash'); ?></button><?php
-				}
+				echo sprintf( esc_html_x('%1$s / %2$s', 'placeholders: current points / maximum point for assignment', 'learndash'), $current_points, $max_points);
 			
 			} else {
-				_e('Not Enabled', 'learndash');
+				esc_html_e('Not Enabled', 'learndash');
 			}		
 			break;
 			
@@ -450,8 +448,8 @@ function manage_asigned_course_columns( $column_name, $id ) {
 				$edit_url = get_edit_post_link( $course_id );
 			
 				echo '<a href="'. $edit_url .'">'. get_the_title( $course_id  ) .'</a>';
-				$row_actions['edit'] = '<a href="'. $edit_url .'">' . __('edit', 'learndash' ) .'</a>';
-				$row_actions['filter_post'] = '<a href="'. add_query_arg( 'course_id', $course_id ) .'">' . __('filter', 'learndash' ) .'</a>';
+				$row_actions['edit'] = '<a href="'. $edit_url .'">' . esc_html__('edit', 'learndash' ) .'</a>';
+				$row_actions['filter_post'] = '<a href="'. add_query_arg( 'course_id', $course_id ) .'">' . esc_html__('filter', 'learndash' ) .'</a>';
 				echo learndash_list_table_row_actions( $row_actions );
 			
 			} else {
@@ -459,7 +457,7 @@ function manage_asigned_course_columns( $column_name, $id ) {
 					if ( get_post_type( $id ) === 'sfwd-quiz' ) {
 						echo '&#8212;';
 					} else {
-						echo '<span class="ld-error dashicons dashicons-warning" title="' . sprintf( _x( '%s Required', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '"></span>'; 
+						echo '<span class="ld-error dashicons dashicons-warning" title="' . sprintf( esc_html_x( '%s Required', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '"></span>';
 					}
 				} else {
 					echo '&#8212;';
@@ -509,8 +507,8 @@ function manage_asigned_course_columns( $column_name, $id ) {
 				}
 				
 				echo  '<a href="'. $edit_url .'">'. get_the_title( $lesson_id ) .'</a>';
-				$row_actions['edit'] = '<a href="'. $edit_url .'">' . __('edit', 'learndash' ) .'</a>';
-				$row_actions['filter_post'] = '<a href="'. $filter_url .'">' . __('filter', 'learndash' ) .'</a>';
+				$row_actions['edit'] = '<a href="'. $edit_url .'">' . esc_html__('edit', 'learndash' ) .'</a>';
+				$row_actions['filter_post'] = '<a href="'. $filter_url .'">' . esc_html__('filter', 'learndash' ) .'</a>';
 				echo learndash_list_table_row_actions( $row_actions );
 			} else {
 				if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Courses_Builder', 'shared_steps' ) != 'yes' ) {
@@ -518,7 +516,7 @@ function manage_asigned_course_columns( $column_name, $id ) {
 					if ( get_post_type( $id ) === 'sfwd-quiz' ) {
 						echo '&#8212;';
 					} else {
-						echo '<span class="ld-error dashicons dashicons-warning" title="' . sprintf( _x( '%s Required', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) . '"></span>'; 
+						echo '<span class="ld-error dashicons dashicons-warning" title="' . sprintf( esc_html_x( '%s Required', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ) ) . '"></span>';
 					}
 				} else {
 					echo '&#8212;';					
@@ -546,7 +544,7 @@ function learndash_list_table_row_actions( $actions, $always_visible = false ) {
     }
     $out .= '</div>';
  
-    $out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+    $out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details' ) . '</span></button>';
  
     return $out;
 }
@@ -614,7 +612,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 				'selected' => $selected
 			);
 			
-			echo '<label class="screen-reader-text" for="'. $taxonomy_slug .'">' . sprintf( __( 'Filter by %s', 'learndash' ), get_taxonomy( $taxonomy_slug )->labels->singular_name ) . '</label>';
+			echo '<label class="screen-reader-text" for="'. $taxonomy_slug .'">' . sprintf( esc_html__( 'Filter by %s', 'learndash' ), get_taxonomy( $taxonomy_slug )->labels->singular_name ) . '</label>';
 			wp_dropdown_categories( $dropdown_options );
 		}
 	}
@@ -691,14 +689,14 @@ function restrict_listings_by_course( $post_type, $location = '') {
 			}
 
 			echo "<select ". $lazy_load_data ." name='course_id' id='course_id' class='postform'>";
-			echo "<option value=''>". sprintf( _x( 'Show All %s', 'Show All Courses Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ).'</option>';
+			echo "<option value=''>". sprintf( esc_html_x( 'Show All %s', 'Show All Courses Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ).'</option>';
 
 			foreach ( $query_posts_course->posts as $p ) {
 				echo '<option value='. $p->ID, ( @$_GET['course_id'] == $p->ID ? ' selected="selected"' : '').'>' . $p->post_title .'</option>';
 			}
 			echo '</select>';
 		
-			$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. __('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
+			$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. esc_html__('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
 			echo $lazy_load_spinner;
 		
 		} 
@@ -708,7 +706,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 	if ( in_array( $_GET['post_type'], $cpt_filters_shown['sfwd-lessons'] ) ) {
 
 		echo "<select name='lesson_id' id='lesson_id' class='postform'>";
-		echo "<option value=''>".sprintf( _x( 'Show All %s', 'Show All Lessons Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ) ).'</option>';
+		echo "<option value=''>".sprintf( esc_html_x( 'Show All %s', 'Show All Lessons Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ) ).'</option>';
 		if ( ( isset( $_GET['course_id'] ) ) && ( !empty( $_GET['course_id'] ) ) ) {
 			if ( $_GET['post_type'] == 'sfwd-topic' ) {
 				$lessons_items = $sfwd_lms->select_a_lesson_or_topic( intval( $_GET['course_id'] ), false );
@@ -795,7 +793,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 			}
 
 			echo "<select ". $lazy_load_data ." name='topic_id' id='topic_id' class='postform'>";
-			echo "<option value=''>".sprintf( _x( 'Show All %s', 'Show All Topics Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ).'</option>';
+			echo "<option value=''>".sprintf( esc_html_x( 'Show All %s', 'Show All Topics Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ) ).'</option>';
 			foreach ( $query_posts_topic->posts as $p ) {
 				echo '<option value='. $p->ID, ( @$_GET['topic_id'] == $p->ID ? ' selected="selected"' : '').'>' . $p->post_title .'</option>';
 			}
@@ -809,7 +807,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 		//$quiz    = new WpProQuiz_Model_QuizMapper();
 		//$quizzes = $quiz->fetchAll();
 		//echo "<select name='quiz_id' id='quiz_id' class='postform'>";
-		//echo "<option value=''>". sprintf( _x( 'Show All %s', 'Show All Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ) .'</option>';
+		//echo "<option value=''>". sprintf( esc_html_x( 'Show All %s', 'Show All Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ) .'</option>';
 		//foreach ( $quizzes as $quiz ) {
 		//	echo '<option value='. $quiz->getId(), ( @$_GET['quiz_id'] == $quiz->getId() ? ' selected="selected"' : '').'>' . $quiz->getName() .'</option>';
 		//}
@@ -866,7 +864,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 			}
 
 			echo "<select ". $lazy_load_data ." name='quiz_id' id='quiz_id' class='postform'>";
-			echo "<option value=''>".sprintf( _x( 'Show All %s', 'Show All Quizzes Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ).'</option>';
+			echo "<option value=''>".sprintf( esc_html_x( 'Show All %s', 'Show All Quizzes Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ).'</option>';
 			foreach ( $query_posts_quiz->posts as $p ) {
 				$quiz_pro_id = get_post_meta( $p->ID, 'quiz_pro_id', true );
 				if ( !empty( $quiz_pro_id ) ) {
@@ -876,7 +874,7 @@ function restrict_listings_by_course( $post_type, $location = '') {
 			echo '</select>';
 		} else {
 			echo "<select name='quiz_id' id='quiz_id' class='postform'>";
-			echo "<option value=''>".sprintf( _x( 'Show All %s', 'Show All Quizzes Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ).'</option>';
+			echo "<option value=''>".sprintf( esc_html_x( 'Show All %s', 'Show All Quizzes Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ).'</option>';
 			echo '</select>';			
 		}
 	}
@@ -902,9 +900,9 @@ function restrict_listings_by_course( $post_type, $location = '') {
 		}
 		?>
 			<select name='approval_status' id='approval_status' class='postform'>
-				<option value='-1'><?php _e( 'Approval Status', 'learndash' ); ?></option>
-				<option value='1' <?php echo $selected_1; ?>><?php _e( 'Approved', 'learndash' ); ?></option>
-				<option value='0' <?php echo $selected_0; ?>><?php _e( 'Not Approved', 'learndash' ); ?></option>
+				<option value='-1'><?php esc_html_e( 'Approval Status', 'learndash' ); ?></option>
+				<option value='1' <?php echo $selected_1; ?>><?php esc_html_e( 'Approved', 'learndash' ); ?></option>
+				<option value='0' <?php echo $selected_0; ?>><?php esc_html_e( 'Not Approved', 'learndash' ); ?></option>
 			</select>
 		<?php
 	}
@@ -1502,7 +1500,7 @@ add_filter( 'plugin_row_meta', 'learndash_plugin_row_meta', 10, 4 );
 function learndash_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
 	if ( $plugin_file == LEARNDASH_LMS_PLUGIN_KEY ) {
 		if ( !isset( $plugin_meta['changelog'] ) ) {
-			$plugin_meta['changelog'] = '<a target="_blank" href="https://www.learndash.com/changelog">'. __('Changelog', 'learndash' ) .'</a>';
+			$plugin_meta['changelog'] = '<a target="_blank" href="https://www.learndash.com/changelog">'. esc_html__('Changelog', 'learndash' ) .'</a>';
 		}
 	}
 	
@@ -1515,7 +1513,7 @@ function learndash_manage_edit_post_tag_columns( $columns = array() ) {
 	if ( ( isset( $_GET['post_type'] ) ) && ( !empty( $_GET['post_type'] ) ) ) {
 		if ( in_array( $_GET['post_type'], array('sfwd-courses', 'sfwd-lessons', 'sfwd-topic' ) ) ) {
 			if ( isset( $columns['posts'] ) ) unset( $columns['posts'] );
-			$columns['ld_posts'] = __( 'Count', 'learndash' );
+			$columns['ld_posts'] = esc_html__( 'Count', 'learndash' );
 		}
 	}
 
@@ -1527,7 +1525,7 @@ add_filter('manage_edit-post_tag_columns', 'learndash_manage_edit_post_tag_colum
 //	if ( ( isset( $_GET['post_type'] ) ) && ( !empty( $_GET['post_type'] ) ) ) {
 //		if ( isset( $columns['posts'] ) ) unset( $columns['posts'] );
 //		
-//		$columns['ld_posts'] = __( 'Count', 'learndash' );
+//		$columns['ld_posts'] = esc_html__( 'Count', 'learndash' );
 //	}
 //
 //    return $columns;
@@ -1760,7 +1758,7 @@ function learndash_user_list_columns( $columns = array() ) {
 	}
 	
 	if ( !isset( $columns['groups'] ) ) {
-		$columns['groups'] = __('Groups', 'learndash');
+		$columns['groups'] = esc_html__('Groups', 'learndash');
 	}
 	
     return $columns;
@@ -1901,14 +1899,14 @@ function learndash_add_user_nav_filter( $which = '' ) {
 			}
 
 			$filter_output .= '<select '. $lazy_load_data .' name="course_id" id="course_id" class="postform" style="max-width: 200px;">';
-			$filter_output .= '<option value="">'. sprintf( _x( 'Show All %s', 'Show All Courses Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ) . '</option>';
+			$filter_output .= '<option value="">'. sprintf( esc_html_x( 'Show All %s', 'Show All Courses Option Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ) . '</option>';
 
 			foreach ( $query_posts_course->posts as $p ) {
 				$filter_output .= '<option value="'. $p->ID .'" '.  selected( @$_GET['course_id'], $p->ID, false ) .'>' . $p->post_title .'</option>';
 			}
 			$filter_output .= '</select>';
 	
-			$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. __('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
+			$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. esc_html__('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
 			$filter_output .= $lazy_load_spinner;	
 		}
 
@@ -1968,14 +1966,14 @@ function learndash_add_user_nav_filter( $which = '' ) {
 				}
 
 				$filter_output .= '<select '. $lazy_load_data .' name="group_id" id="group_id" class="postform" style="max-width: 200px;">';
-				$filter_output .= '<option value="">'. __( 'Show All Groups', 'learndash' ) . '</option>';
+				$filter_output .= '<option value="">'. esc_html__( 'Show All Groups', 'learndash' ) . '</option>';
 
 				foreach ( $query_user_groups->posts as $p ) {
 					$filter_output .= '<option value="'. $p->ID .'" '. selected( @$_GET['group_id'], $p->ID, false ) .'>' . $p->post_title .'</option>';
 				}
 				$filter_output .= '</select>';
 	
-				$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. __('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
+				$lazy_load_spinner = '<span style="display:none;" class="learndash_lazy_loading"><img class="learndash_lazy_load_spinner" alt="'. esc_html__('loading', 'learndash') .'" src="'. admin_url('/images/wpspin_light.gif') .'" /> </span>';
 				$filter_output .= $lazy_load_spinner;	
 			}
 		}
@@ -1983,7 +1981,7 @@ function learndash_add_user_nav_filter( $which = '' ) {
 		if ( ( $SHOW_USER_GROUPS_FILTER === true ) || ( $SHOW_USER_COURSES_FILTER === true ) ) {
 			$button_id = 'bottom' === $which ? 'ld_submit' : 'ld_submit_bottom';
 		
-			$filter_output .= get_submit_button( __( 'Filter' ), 'learndash', $button_id, false );
+			$filter_output .= get_submit_button( esc_html__( 'Filter' ), 'learndash', $button_id, false );
 		}
 		
 		if ( !empty( $filter_output ) ) {

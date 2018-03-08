@@ -19,7 +19,7 @@ class WpProQuiz_Controller_GlobalSettings extends WpProQuiz_Controller_Controlle
 		
 		if(isset($this->_post['submit'])) {
 			$mapper->save(new WpProQuiz_Model_GlobalSettings($this->_post));
-			WpProQuiz_View_View::admin_notices(__('Settings saved', 'wp-pro-quiz'), 'info');
+			WpProQuiz_View_View::admin_notices(__('Settings saved', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'info');
 			
 			$toplistDateFormat = $this->_post['toplist_date_format'];
 			
@@ -43,7 +43,7 @@ class WpProQuiz_Controller_GlobalSettings extends WpProQuiz_Controller_Controlle
 			$mapper->saveUserEmailSettiongs($this->_post['userEmail']);
 			
 		} else if(isset($this->_post['databaseFix'])) {
-			WpProQuiz_View_View::admin_notices(__('Database repaired', 'wp-pro-quiz'), 'info');
+			WpProQuiz_View_View::admin_notices(__('Database repaired', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN), 'info');
 			
 			$DbUpgradeHelper = new WpProQuiz_Helper_DbUpgrade();
 			$DbUpgradeHelper->databaseDelta();

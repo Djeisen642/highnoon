@@ -53,7 +53,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 		$category = $categoryMapper->fetchAll();
 		$categoryEmpty = new WpProQuiz_Model_Category();
 		
-		$categoryEmpty->setCategoryName(__('No category', 'wp-pro-quiz'));
+		$categoryEmpty->setCategoryName(__('No category', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 		
 		$list = array();
 		$cats = array();
@@ -567,7 +567,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 			/*@var $model WpProQuiz_Model_StatisticFormOverview */
 			
 			if(!$model->getUserId())
-				$model->setUserName(__('Anonymous', 'wp-pro-quiz'));
+				$model->setUserName(__('Anonymous', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			
 			$sum = $model->getCorrectCount() + $model->getIncorrectCount();
 			$result = round((100 * $model->getPoints() / ($sum * $maxPoints / $sumQuestion)), 2).'%';
@@ -614,9 +614,9 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 			/*@var $model WpProQuiz_Model_StatisticHistory */
 			
 			if(!$model->getUserId())
-				$model->setUserName(__('Anonymous', 'wp-pro-quiz'));
+				$model->setUserName(__('Anonymous', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			else if($model->getUserName() == '')
-				$model->setUserName(__('Deleted user', 'wp-pro-quiz'));
+				$model->setUserName(__('Deleted user', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN));
 			
 			$sum = $model->getCorrectCount() + $model->getIncorrectCount();
 			$result = round(100 * $model->getPoints() / $model->getGPoints(), 2).'%';
@@ -686,7 +686,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 				$output[$statistic->getCategoryId()] = array(
 					'questions' => array(),
 					'categoryId' => $statistic->getCategoryId(),
-					'categoryName' => $statistic->getCategoryId() ? $statistic->getCategoryName() : __('No category', 'wp-pro-quiz')
+					'categoryName' => $statistic->getCategoryId() ? $statistic->getCategoryName() : esc_html__('No category', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN)
 				);
 			}
 			
@@ -762,7 +762,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 					$essay_post_status = get_post_status( intval( $question_item['statistcAnswerData']['graded_id'] ) );
 					if ( $essay_post_status == 'not_graded' ) {
 						$question_item['incorrect'] = 0;
-						$question_item['result'] = __( 'Ungraded', 'learndash' );
+						$question_item['result'] = esc_html__( 'Ungraded', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN );
 					}
 				}
 			} 
@@ -781,7 +781,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 		$view->avg = $avg;
 		$view->statisticModel = $statisticRefMapper->fetchByRefId($refIdUserId, $quizId, $avg);
 		
-		$view->userName = __('Anonymous', 'wp-pro-quiz');
+		$view->userName = esc_html__('Anonymous', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 		
 		if($view->statisticModel->getUserId()) {
 			$userInfo = get_userdata($view->statisticModel->getUserId());
@@ -789,7 +789,7 @@ class WpProQuiz_Controller_Statistics extends WpProQuiz_Controller_Controller {
 			if($userInfo !== false)
 				$view->userName = $userInfo->user_login.' ('.$userInfo->display_name.')';
 			else 
-				$view->userName = __('Deleted user', 'wp-pro-quiz');
+				$view->userName = esc_html__('Deleted user', LEARNDASH_WPPROQUIZ_TEXT_DOMAIN);
 		}
 		
 		if(!$avg) {

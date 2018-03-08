@@ -3,10 +3,11 @@
  * Base Charitable_Field model.
  *
  * @package   Charitable/Classes/Charitable_Field
- * @version   1.5.0
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.5.0
+ * @version   1.5.0
  */
 
 // Exit if accessed directly.
@@ -18,6 +19,8 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 	 * Charitable_Field
 	 *
 	 * @since 1.5.0
+	 *
+	 * @property string $field
 	 */
 	abstract class Charitable_Field implements Charitable_Field_Interface {
 
@@ -50,7 +53,7 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 		public function __construct( $field, array $args = array() ) {
 			$this->field = $field;
 			$this->args  = $this->parse_args( $args );
-		}   
+		}
 
 		/**
 		 * Set a specific argument.
@@ -86,7 +89,7 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 		 * @return array
 		 */
 		protected function get_defaults() {
-			return array();			
+			return array();
 		}
 
 		/**
@@ -97,7 +100,7 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 		 * @param  array $args Mixed set of field arguments.
 		 * @return array       Parsed arguments.
 		 */
-		protected function parse_args( $args ) {		
+		protected function parse_args( $args ) {
 			$args      = array_merge( $this->get_defaults(), $args );
 			$keys      = array_keys( $args );
 			$sanitized = array_map( array( $this, 'sanitize_arg' ), $keys, $args );

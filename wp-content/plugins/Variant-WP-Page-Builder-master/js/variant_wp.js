@@ -241,7 +241,7 @@ mr_variant.wp.saveHTML = function($html) {
     //Lock in resolved HTML and pass to our meta key
     $html = el.find('.main-container').html();
     
-    console.log($html);
+    //console.log($html);
 	
 	//Check var $html exists, so we don't overwrite the page layout with nothing!
 	if( typeof $html !== typeof undefined && $html !== false ){

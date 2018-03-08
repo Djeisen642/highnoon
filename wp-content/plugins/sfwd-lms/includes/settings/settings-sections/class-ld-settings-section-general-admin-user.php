@@ -15,11 +15,8 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 			$this->settings_section_key				= 	'settings_admin_user';
 		
 			// Section label/header
-			$this->settings_section_label			=	__( 'Admin User Settings', 'learndash' );
+			$this->settings_section_label			=	esc_html__( 'Admin User Settings', 'learndash' );
 		
-			// Used to show the section description above the fields. Can be empty
-			//$this->settings_section_description		=	__( '<p>Settings Section One Description.</p>', 'learndash' );
-
 			parent::__construct(); 
 		}
 		
@@ -47,32 +44,32 @@ if ( ( class_exists( 'LearnDash_Settings_Section' ) ) && ( !class_exists( 'Learn
 				'courses_autoenroll_admin_users' => array(
 					'name'  		=> 	'courses_autoenroll_admin_users', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( '%s Auto-enroll', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Admin users will be automatically enrolled in all %s.', 'placeholder: Courses', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
+					'label' 		=> 	sprintf( esc_html_x( '%s Auto-enroll', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Admin users will be automatically enrolled in all %s.', 'placeholder: Courses', 'learndash' ), LearnDash_Custom_Label::get_label( 'courses' ) ),
 					'value' 		=> 	isset( $this->setting_option_values['courses_autoenroll_admin_users'] ) ? $this->setting_option_values['courses_autoenroll_admin_users'] : 'no',
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 				'bypass_course_limits_admin_users' => array(
 					'name'  		=> 	'bypass_course_limits_admin_users', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	sprintf( _x( 'Bypass %s limits', 'placeholder: Course','learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
-					'help_text'  	=> 	sprintf( _x( 'Admin users will bypass restrictions like %s Progression, %s and %s Prerequisites, %s Points limits and %s/%s timers.', 'placeholder: Course, Course, Lesson, Course, Lesson, Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
+					'label' 		=> 	sprintf( esc_html_x( 'Bypass %s limits', 'placeholder: Course','learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+					'help_text'  	=> 	sprintf( esc_html_x( 'Admin users will bypass restrictions like %s Progression, %s and %s Prerequisites, %s Points limits and %s/%s timers.', 'placeholder: Course, Course, Lesson, Course, Lesson, Topic', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topic' ) ),
 					'value' 		=> 	isset( $this->setting_option_values['bypass_course_limits_admin_users'] ) ? $this->setting_option_values['bypass_course_limits_admin_users'] : 'yes',
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 				'reports_include_admin_users' => array(
 					'name'  		=> 	'reports_include_admin_users', 
 					'type'  		=> 	'checkbox',
-					'label' 		=> 	__( 'Include in Reports', 'learndash' ),
-					'help_text'  	=> 	sprintf( _x( 'Admin users will be included in the %s and %s CSV reports.</p>', 'placeholders: Course, Quiz', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
+					'label' 		=> 	esc_html__( 'Include in Reports', 'learndash' ),
+					'help_text'  	=> 	sprintf( wp_kses_post( _x( 'Admin users will be included in the %s and %s CSV reports.</p>', 'placeholders: Course, Quiz', 'learndash' ) ), LearnDash_Custom_Label::get_label( 'course' ), LearnDash_Custom_Label::get_label( 'quiz' ) ),
 					
 					'value' 		=> 	isset( $this->setting_option_values['reports_include_admin_users'] ) ? $this->setting_option_values['reports_include_admin_users'] : 'no',
 					'options'		=>	array(
-											'yes'	=>	__('Yes', 'learndash'),
+											'yes'	=>	esc_html__('Yes', 'learndash'),
 										)
 				),
 			);

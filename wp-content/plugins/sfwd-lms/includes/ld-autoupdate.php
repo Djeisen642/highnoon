@@ -41,7 +41,7 @@ class nss_plugin_updater_sfwd_lms {
 	 */
 	public $code;
 
-
+	private $ld_updater;
 
 	/**
 	 * Initialize a new instance of the WordPress Auto-Update class
@@ -75,7 +75,7 @@ class nss_plugin_updater_sfwd_lms {
 		add_filter( 'pre_set_site_transient_update_plugins', array( &$this, 'check_update' ) );
 
 		// Define the alternative response for information checking
-		add_filter( 'plugins_api', array( &$this, 'check_info' ), 10, 3 );
+		add_filter( 'plugins_api', array( &$this, 'check_info' ), 50, 3 );
 		//    add_action( 'admin_notices', array( &$this, 'admin_notice' ));
 		add_action( 'in_admin_header', array( &$this, 'check_notice' ) );
 	}
@@ -164,7 +164,7 @@ class nss_plugin_updater_sfwd_lms {
 			$licensepage = get_admin_url( null, 'admin.php?page=nss_plugin_license-sfwd_lms-settings' );
 			?>
 			<div class="notice notice-error below-h2 is-dismissible">
-				<p><?php _e('License of your plugin <strong>'. $this->get_plugin_data()->Name .'</strong> is invalid or incomplete. Please click <a href="'. $licensepage .'">here</a> and update your license.', 'learndash' ) ?></p>
+				<p><?php echo wp_kses_post( __('License of your plugin <strong>'. $this->get_plugin_data()->Name .'</strong> is invalid or incomplete. Please click <a href="'. $licensepage .'">here</a> and update your license.', 'learndash' ) ) ?></p>
 			</div>
 			<?php
 		}
@@ -224,9 +224,11 @@ class nss_plugin_updater_sfwd_lms {
 		// Get the remote version
 		if ( empty( $remote_version) ) {
 			$info = $this->getRemote_information();
-			$remote_version = $info->new_version;
-			update_option( 'nss_plugin_remote_version_'.$this->slug, $remote_version );
-			update_option( 'nss_plugin_info_'.$this->slug, $info);
+			if ( property_exists( $info, 'new_version' ) ) {
+				$remote_version = $info->new_version;
+				update_option( 'nss_plugin_remote_version_'.$this->slug, $remote_version );
+				update_option( 'nss_plugin_info_'.$this->slug, $info );
+			}
 		}
 
 		if ( empty( $license) ) {
@@ -242,13 +244,41 @@ class nss_plugin_updater_sfwd_lms {
 			add_action( 'admin_notices', array( &$this, 'admin_notice' ) ); }
 
 		// If a newer version is available, add the update
-		if ( version_compare( $this->current_version, $remote_version, '<' ) ) {
+		if ( version_compare( $this->current_version, $remote_version, '<' ) ) {			
 			$obj = new stdClass();
 			$obj->slug = $this->slug;
 			$obj->new_version = $remote_version;
+			$obj->plugin = 'sfwd-lms/'. $this->slug;
 			$obj->url = $this->update_path;
 			$obj->package = $this->update_path;
-			$obj->tested	= $info->tested;
+			
+			if ( is_null( $this->ld_updater ) ) {
+				$this->ld_updater = new LearnDash_Addon_Updater();
+			}
+			$plugin_readme = $this->ld_updater->update_plugin_readme( 'learndash-core-readme' );
+			
+			if ( !empty( $plugin_readme ) ) {
+				// First we remove the properties we DON'T want from the support site
+				foreach( array( 'sections', 'requires', 'tested', 'last_updated' ) as $property_key ) {
+					if ( property_exists ( $obj, $property_key ) ) {
+						unset( $obj->$property_key );
+					}
+				}
+				
+				foreach( $plugin_readme as $key => $val ) {
+					if ( !property_exists ( $obj, $key ) ) {
+						$obj->$key = $val;
+					}
+				}
+			}
+						
+			if ( !property_exists ( $obj, 'icons' ) ) {
+				// Add an image for the WP 4.9.x plugins update screen.
+				$obj->icons = array(
+					'default' => LEARNDASH_LMS_PLUGIN_URL .'/assets/images/ld-plugin-image.jpg'
+				);
+			}
+			
 			$transient->response[ $this->plugin_slug ] = $obj;
 		}
 
@@ -282,10 +312,12 @@ class nss_plugin_updater_sfwd_lms {
 				}
 			}
 
-			$information = $this->getRemote_information();
-			update_option( 'nss_plugin_info_'.$this->slug, $information );
-			return $information;
-
+			if ( 'plugin_information' == $action ) {
+				$information = $this->getRemote_information();
+				
+				update_option( 'nss_plugin_info_'.$this->slug, $information );
+				$false = $information;
+			}
 		}
 
 		return $false;
@@ -318,7 +350,35 @@ class nss_plugin_updater_sfwd_lms {
 		$request = wp_remote_post( $this->update_path, array( 'body' => array( 'action' => 'info' ) ) );
 
 		if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
-			return unserialize( $request['body'] );
+			$information = @unserialize( $request['body'] );
+			if ( empty( $information ) ) {
+				$information = new stdClass();
+			}
+			
+			if ( is_null( $this->ld_updater ) ) {
+				$this->ld_updater = new LearnDash_Addon_Updater();
+			}
+			$plugin_readme = $this->ld_updater->update_plugin_readme( 'learndash-core-readme' );
+			
+			if ( !empty( $plugin_readme ) ) {
+				// First we remove the properties we DON'T want from the support site
+				foreach( array( 'sections', 'requires', 'tested', 'last_updated' ) as $property_key ) {
+					if ( property_exists ( $information, $property_key ) ) {
+						unset( $information->$property_key );
+					}
+				}
+				
+				foreach( $plugin_readme as $key => $val ) {
+					if ( !property_exists ( $information, $key ) ) {
+						$information->$key = $val;
+					}
+				}
+							
+				//$information_array = $this->ld_updater->convert_readme( (array)$information );
+				//$information = (object)$information_array;
+			}
+			
+			return $information;
 		}
 
 		return false;
@@ -400,7 +460,7 @@ class nss_plugin_updater_sfwd_lms {
 
 		//must check that the user has the required capability
 		if ( !learndash_is_admin_user( ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		// Read in existing option value from database
@@ -450,29 +510,28 @@ class nss_plugin_updater_sfwd_lms {
 		</style>
 		<div class=wrap>
 			<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-				<h1><?php echo __( 'License Settings', 'learndash' ); ?></h1>
+				<h1><?php esc_html_e( 'License Settings', 'learndash' ); ?></h1>
 				<br>
 				<?php
 				if ( ! isset( $_POST[ 'update_nss_plugin_license_'.$code ] ) ):
 
 					if ( empty( $license_status) || $license_status == 'false' || $license_status == 'not_found' ): ?>
-						<?php /* ?><div class="error"><?php echo sprintf( __( 'Please enter a valid license or %s one now.', 'learndash' ),"<a href='http://www.learndash.com/' target='_blank'>".__( 'buy', 'learndash' ).'</a>' ); ?></div><?php */ ?>
 						
 						<div class="notice notice-error">
-							<p><?php echo sprintf( __( 'Please enter a valid license or %s one now.', 'learndash' ), "<a href='http://www.learndash.com/' target='_blank'>". __( 'buy', 'learndash' ).'</a>' ); ?></p>
+							<p><?php echo sprintf( esc_html_x( 'Please enter a valid license or %s one now.', 'placeholder: link to purchase LearnDash', 'learndash' ), "<a href='http://www.learndash.com/' target='_blank'>". esc_html__( 'buy', 'learndash' ).'</a>' ); ?></p>
 						</div>
 						
 				<?php else: ?>
-						<?php /* ?><div class="updated"><?php _e( 'Your license is valid.' ); ?></div><?php */ ?>
+						
 						<div class="notice notice-success">
-							<p><?php _e( 'Your license is valid.', 'learndash' ); ?></p>
+							<p><?php esc_html_e( 'Your license is valid.', 'learndash' ); ?></p>
 						</div>
 						
 				<?php
 					endif;
 				endif;
 				?>
-				<p><label for="nss_plugin_license_email_<?php echo $code; ?>"><?php _e( 'Email:', 'learndash' ); ?></label><br />
+				<p><label for="nss_plugin_license_email_<?php echo $code; ?>"><?php esc_html_e( 'Email:', 'learndash' ); ?></label><br />
 
 				<?php
 				/**
@@ -484,13 +543,13 @@ class nss_plugin_updater_sfwd_lms {
 				 * @param  string $email 'nss_plugin_license_email_' appended with this object property $code
 				 */
 				?>
-				<input id="nss_plugin_license_email_<?php echo $code; ?>" name="nss_plugin_license_email_<?php echo $code; ?>" style="min-width:30%" value="<?php echo _e( apply_filters( 'format_to_edit', $email ), 'learndash' ) ?>" /></p>
+				<input id="nss_plugin_license_email_<?php echo $code; ?>" name="nss_plugin_license_email_<?php echo $code; ?>" style="min-width:30%" value="<?php esc_html_e( apply_filters( 'format_to_edit', $email ), 'learndash' ) ?>" /></p>
 
-				<p><label ><?php _e( 'License Key:', 'learndash' ); ?></label><br />
-				<input id="nss_plugin_license_<?php echo $code; ?>" name="nss_plugin_license_<?php echo $code; ?>" style="min-width:30%" value="<?php echo _e( apply_filters( 'format_to_edit', $license ), 'learndash' ) ?>" /></p>
+				<p><label ><?php esc_html_e( 'License Key:', 'learndash' ); ?></label><br />
+				<input id="nss_plugin_license_<?php echo $code; ?>" name="nss_plugin_license_<?php echo $code; ?>" style="min-width:30%" value="<?php esc_html_e( apply_filters( 'format_to_edit', $license ), 'learndash' ) ?>" /></p>
 
 				<div class="submit">
-					<input type="submit" name="update_nss_plugin_license_<?php echo $code; ?>" value="<?php _e( 'Update License', 'learndash' ) ?>" class="button button-primary"/>
+					<input type="submit" name="update_nss_plugin_license_<?php echo $code; ?>" value="<?php esc_html_e( 'Update License', 'learndash' ) ?>" class="button button-primary"/>
 				</div>
 			</form>
 

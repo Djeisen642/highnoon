@@ -57,7 +57,7 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 		}
 		
 		function admin_footer() {
-			$this->learndash_course_builder_assets['learndash_upload_message'] = __('You have unsaved Course Builder changes. Are you sure you want to leave?');
+			$this->learndash_course_builder_assets['learndash_upload_message'] = esc_html__('You have unsaved Course Builder changes. Are you sure you want to leave?');
 			$this->learndash_course_builder_assets['course_id'] = $this->course_id;
 			
 			wp_localize_script( 'ld-course-builder-script', 'learndash_course_builder_assets', $this->learndash_course_builder_assets );
@@ -94,20 +94,20 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 					<input type="hidden" id="<?php echo $this->cb_prefix ?>_data" name="<?php echo $this->cb_prefix ?>[<?php echo $this->courses_post_type ?>][<?php echo $this->course_id ?>]" value="<?php echo $course_steps; ?>" />
 					<div class="learndash_selectors">
 						<div class="learndash-header-right">
-							<span class="ld-show-all"><?php _e('Expand All', 'learndash'); ?></span>
+							<span class="ld-show-all"><?php esc_html_e('Expand All', 'learndash'); ?></span>
 							<span class="ld-divide-all">|</span>
-							<span class="ld-hide-all"><?php _e('Collapse All', 'learndash'); ?></span>
+							<span class="ld-hide-all"><?php esc_html_e('Collapse All', 'learndash'); ?></span>
 						</div>
 						<?php $this->show_selectors(); ?>
 					</div>
 					<div class="learndash_builder_items">
 						<div class="learndash-header-left">
-							<span class="ld-course-steps-total"><?php echo sprintf( _x('Total Steps: <span class="ld-course-steps-value">%d</span>', 'placeholder: integer number of steps', 'learndash'), $this->ld_course_steps_object->get_steps_count() ); ?></span>
+							<span class="ld-course-steps-total"><?php echo sprintf( esc_html_x('Total Steps: %s', 'placeholder: number of steps', 'learndash' ), '<span class="ld-course-steps-value">'. $this->ld_course_steps_object->get_steps_count() .'</span>'  ); ?></span>
 						</div>
 						<div class="learndash-header-right">
-							<span class="ld-show-all"><?php _e('Expand All', 'learndash'); ?></span>
+							<span class="ld-show-all"><?php esc_html_e('Expand All', 'learndash'); ?></span>
 							<span class="ld-divide-all">|</span>
-							<span class="ld-hide-all"><?php _e('Collapse All', 'learndash'); ?></span>
+							<span class="ld-hide-all"><?php esc_html_e('Collapse All', 'learndash'); ?></span>
 						</div>
 						<?php echo $this->course_steps_html; ?>
 					</div>
@@ -129,17 +129,17 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 						content: "<?php echo sprintf( _x( 'Drop %s Here', 'placeholder: Lessons', 'learndash' ), LearnDash_Custom_Label::get_label( 'lessons' ) ); ?>";
 					}
 					#learndash_course_builder_box_wrap .learndash_builder_items .ld-course-builder-topic-items:empty:after {
-						content: "<?php echo sprintf( _x( 'Drop %s %s Here', 'placeholder: Lesson, Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topics' ) ); ?>";
+						content: "<?php echo sprintf( _x( 'Drop %1$s %2$s Here', 'placeholder: Lesson, Topics', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'topics' ) ); ?>";
 					}
 					#learndash_course_builder_box_wrap .learndash_builder_items .ld-course-builder-quiz-items:empty:after {
 						content: "<?php echo sprintf( _x( 'Drop Global %s Here', 'placeholder: Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ); ?>";
 					}
 
 					#learndash_course_builder_box_wrap .learndash_builder_items .ld-course-builder-lesson-items .ld-course-builder-quiz-items:empty:after {
-						content: "<?php echo sprintf( _x( 'Drop %s %s Here', 'placeholder: Lesson, Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ); ?>";
+						content: "<?php echo sprintf( _x( 'Drop %1$s %2$s Here', 'placeholder: Lesson, Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'lesson' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ); ?>";
 					}
 					#learndash_course_builder_box_wrap .learndash_builder_items .ld-course-builder-lesson-items .ld-course-builder-topic-items .ld-course-builder-quiz-items:empty:after {
-						content: "<?php echo sprintf( _x( 'Drop %s %s Here', 'placeholder: Topic, Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ); ?>";
+						content: "<?php echo sprintf( _x( 'Drop %1$s %2$s Here', 'placeholder: Topic, Quizzes', 'learndash' ), LearnDash_Custom_Label::get_label( 'topic' ), LearnDash_Custom_Label::get_label( 'quizzes' ) ); ?>";
 					}
 				
 				</style>
@@ -179,11 +179,10 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 				$post_type_object = get_post_type_object( $selector_post_type );
 				if ( is_a( $post_type_object, 'WP_Post_Type' ) ) {
 					
-					$this->learndash_course_builder_assets['confirm_remove_'. $selector_post_type] = sprintf( _x("Are you sure you want to remove this %s from the %s? (This will also remove all sub-items)", 'placeholder: '. $post_type_object->label, 'learndash'), LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type ) ), LearnDash_Custom_Label::get_label( 'Course' ) );
+					$this->learndash_course_builder_assets['confirm_remove_'. $selector_post_type] = sprintf( esc_html_x('Are you sure you want to remove this %1$s from the %2$s? (This will also remove all sub-items)', 'placeholders: will be post type labels like Course, Lesson, Topic', 'learndash'), LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type ) ), LearnDash_Custom_Label::get_label( 'Course' ) );
 
-					$this->learndash_course_builder_assets['confirm_trash_'. $selector_post_type] = sprintf( _x('Are you sure you want to move this %s to Trash?', 'placeholder: '. $post_type_object->label, 'learndash'), LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type ) ) );
+					$this->learndash_course_builder_assets['confirm_trash_'. $selector_post_type] = sprintf( esc_html_x('Are you sure you want to move this %s to Trash?', 'placeholder: will be post type label like Course, Lesson, Topic', 'learndash'), LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type ) ) );
 								
-
 
 					$post_type_query_args = $this->build_selector_query(
 						array(
@@ -201,7 +200,7 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 						$selector_post_type_steps = htmlspecialchars( json_encode( $selector_post_type_steps ) );
 						?>
 						<div class="learndash-selector-container learndash-selector-container-<?php echo $selector_post_type ?>" data-ld-type="<?php echo $selector_post_type ?>" data-ld-selected="<?php echo $selector_post_type_steps; ?>">
-							<h3 class="learndash-selector-header"><span class="learndash-selector-title"><?php echo LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type, false ) ); ?></span><span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show dashicons" title="<?php _e( 'Expand/Collape Section', 'learndash' ) ?>"></span><span class="ld-course-builder-action ld-course-builder-action-add dashicons" title="<?php _e( 'New', 'learndash' ) ?>"><img src="<?php echo admin_url('images/wpspin_light-2x.gif') ?>" alt="" /></span></h3>
+							<h3 class="learndash-selector-header"><span class="learndash-selector-title"><?php echo LearnDash_Custom_Label::get_label( $this->get_label_for_post_type( $selector_post_type, false ) ); ?></span><span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show dashicons" title="<?php esc_html_e( 'Expand/Collape Section', 'learndash' ) ?>"></span><span class="ld-course-builder-action ld-course-builder-action-add dashicons" title="<?php esc_html_e( 'New', 'learndash' ) ?>"><img src="<?php echo admin_url('images/wpspin_light-2x.gif') ?>" alt="" /></span></h3>
 							<div class="learndash-selector-post-listing">
 								
 								<?php
@@ -217,7 +216,7 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 										<?php echo $this->build_selector_pages_buttons( $post_type_query ); ?>
 									</p>	
 								</div>
-								<div class="learndash-selector-search"><input type="text" placeholder="<?php _e('Search...', 'learndash' ); ?>" /></div>
+								<div class="learndash-selector-search"><input type="text" placeholder="<?php esc_html_e('Search...', 'learndash' ); ?>" /></div>
 								
 								<ul id="learndash-selector-post-listing-<?php echo $selector_post_type ?>" class="learndash-selector-post-listing dropfalse"><?php 
 									if ( $post_type_query->have_posts() ) {
@@ -369,17 +368,17 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 				$p_title = $selector_post_type_object->labels->singular_name;
 			}
 			
-			$selector_sub_actions .= '<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-'. $selector_slug .'-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'Edit %s Settings (new window)', 'placeholder: '. $selector_label, 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'</span></a>';
+			$selector_sub_actions .= '<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-'. $selector_slug .'-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'Edit %s Settings (new window)', 'placeholder: will contain post type label', 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'</span></a>';
 
-			$selector_sub_actions .= '<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-'. $selector_slug .'-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'View %s (new window)', 'placeholder: '. $selector_label, 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'</span></a>';
+			$selector_sub_actions .= '<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-'. $selector_slug .'-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'View %s (new window)', 'placeholder: will contain post type label', 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'</span></a>';
 
 			if ( current_user_can('delete_courses' ) ) {
 				
 				$selector_sub_actions .= '<span class="ld-course-builder-action ld-course-builder-action-trash ld-course-builder-action-'. $selector_slug .'-trash dashicons" title="'. 
-					sprintf( _x( 'Move %s to Trash', 'placeholder: '. $selector_label, 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'"></span>';
+					sprintf( esc_html_x( 'Move %s to Trash', 'placeholder: will contain post type label', 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'"></span>';
 			}
 			$selector_sub_actions .= '<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-'. $selector_slug .'-remove dashicons" title="'. 
-				sprintf( _x( 'Remove %s from %s', 'placeholders: '. $selector_label .', Course', 'learndash' ), 
+				sprintf( esc_html_x( 'Remove %1$s from %2$s', 'placeholders: will contain post type label, Course', 'learndash' ),
 				LearnDash_Custom_Label::get_label( $selector_slug ), LearnDash_Custom_Label::get_label('Course') ) .'"></span>';
 
 			$selector_sub_items	= '';
@@ -388,11 +387,11 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 				$selector_sub_items .= '<div class="ld-course-builder-topic-items ld-course-builder-lesson-topic-items"></div>';
 				$selector_sub_items .= '<div class="ld-course-builder-quiz-items ld-course-builder-lesson-quiz-items"></div>';
 
-				$selector_action_expand = '<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-'. $selector_slug .'-show dashicons" title="'. __( 'Expand/Collape Section', 'learndash' ) .'"></span>';
+				$selector_action_expand = '<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-'. $selector_slug .'-show dashicons" title="'. esc_html__( 'Expand/Collape Section', 'learndash' ) .'"></span>';
 
 			} else if ( $selector_post_type == 'sfwd-topic' ) {
 				$selector_sub_items .= '<div class="ld-course-builder-quiz-items ld-course-builder-topic-quiz-items"></div>';
-				$selector_action_expand = '<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-'. $selector_slug .'-show dashicons" title="'. __( 'Expand/Collape Section', 'learndash' ) .'"></span>';
+				$selector_action_expand = '<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-'. $selector_slug .'-show dashicons" title="'. esc_html__( 'Expand/Collape Section', 'learndash' ) .'"></span>';
 				
 			} else if ( $selector_post_type == 'sfwd-quiz' ) {
 			}
@@ -400,13 +399,13 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 			$selector_row .= '<li id="ld-post-'. $p_id .'" class="ld-course-builder-item ld-course-builder-'. $selector_slug .'-item " data-ld-type="'. $selector_post_type .'" data-ld-id="'. $p_id .'">
 				<div class="ld-course-builder-'. $selector_slug .'-header ld-course-builder-header">
 					<span class="ld-course-builder-actions">
-						<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-'. $selector_slug .'-move dashicons" title="'. sprintf( _x( 'Move %s', 'placeholder: '. $selector_label, 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'"></span>
+						<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-'. $selector_slug .'-move dashicons" title="'. sprintf( esc_html_x( 'Move %s', 'placeholder: will contain post type label', 'learndash' ), LearnDash_Custom_Label::get_label( $selector_slug ) ) .'"></span>
 						<span class="ld-course-builder-sub-actions">'. $selector_sub_actions .'</span>
 					</span>
 					<span class="ld-course-builder-title"><span class="ld-course-builder-title-text">'. $p_title . '</span>
-						<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. __( 'Edit Title', 'learndash' ) .'" ></span>
-						<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. __( 'Ok', 'learndash' ) .'" ></span>
-						<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. __( 'Cancel', 'learndash' ) .'" ></span>
+						<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. esc_html__( 'Edit Title', 'learndash' ) .'" ></span>
+						<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. esc_html__( 'Ok', 'learndash' ) .'" ></span>
+						<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. esc_html__( 'Cancel', 'learndash' ) .'" ></span>
 					</span>
 					'. $selector_action_expand .'
 				</div>
@@ -450,22 +449,22 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 								$steps_section_item_html = '<div id="ld-post-'. $steps_id .'" class="ld-course-builder-item ld-course-builder-lesson-item" data-ld-type="'. $steps_type .'" data-ld-id="'. $steps_id.'">
 									<div class="ld-course-builder-lesson-header ld-course-builder-header">
 										<span class="ld-course-builder-actions">
-											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-lesson-move dashicons" title="'. sprintf( _x( 'Move %s', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'"></span>
+											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-lesson-move dashicons" title="'. sprintf( esc_html_x( 'Move %s', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'"></span>
 											<span class="ld-course-builder-sub-actions">
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-lesson-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'Edit %s Settings (new window)', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'</span></a>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-lesson-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'Edit %s Settings (new window)', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'</span></a>
 
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-lesson-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'View %s (new window)', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'"</span></a>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-lesson-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'View %s (new window)', 'placeholder: Lesson', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson') ) .'"</span></a>
 										
-												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-lesson-remove dashicons" title="'. sprintf( _x( 'Remove %s from %s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
+												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-lesson-remove dashicons" title="'. sprintf( esc_html_x( 'Remove %1$s from %2$s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Lesson'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
 											</span>
 										</span>
 										<span class="ld-course-builder-title"><span class="ld-course-builder-title-text">'. get_the_title( $steps_id ) .'</span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. __( 'Edit Title', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. __( 'Ok', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. __( 'Cancel', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. esc_html__( 'Edit Title', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. esc_html__( 'Ok', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. esc_html__( 'Cancel', 'learndash' ) .'" ></span>
 										</span>
 
-										<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-lesson-show dashicons" title="'. __( 'Expand/Collape Section', 'learndash' ) .'"></span>
+										<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-lesson-show dashicons" title="'. esc_html__( 'Expand/Collape Section', 'learndash' ) .'"></span>
 										
 									</div>
 									<div class="ld-course-builder-sub-items" style="display:none">'. $steps_section_item_html .'</div>
@@ -474,20 +473,20 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 								$steps_section_item_html = '<div id="ld-post-'. $steps_id .'" class="ld-course-builder-item ld-course-builder-topic-item" data-ld-type="'. $steps_type .'" data-ld-id="'. $steps_id .'">
 									<div class="ld-course-builder-topic-header ld-course-builder-header">
 										<span class="ld-course-builder-actions">
-											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-topic-move dashicons" title="'. __( 'Move', 'learndash' ) .'"></span>
+											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-topic-move dashicons" title="'. esc_html__( 'Move', 'learndash' ) .'"></span>
 											<span class="ld-course-builder-sub-actions">
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-topic-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'Edit %s Settings (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Topic') ) .'" ></span></a>
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-topic-edit dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'View %s (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Topic') ) .'</span></a>
-												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-topic-remove dashicons" title="'. sprintf( _x( 'Remove %s from %s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Topic'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-topic-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'Edit %s Settings (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Topic') ) .'" ></span></a>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-topic-edit dashicons" href="'. $view_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'View %s (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Topic') ) .'</span></a>
+												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-topic-remove dashicons" title="'. sprintf( esc_html_x( 'Remove %1$s from %2$s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Topic'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
 											</span>
 										</span>
 										<span class="ld-course-builder-title"><span class="ld-course-builder-title-text">'. get_the_title( $steps_id ) .'</span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. __( 'Edit Title', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. __( 'Ok', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. __( 'Cancel', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. esc_html__( 'Edit Title', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. esc_html__( 'Ok', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. esc_html__( 'Cancel', 'learndash' ) .'" ></span>
 										</span>
 										
-										<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-topic-show dashicons" title="'. __( 'Expand/Collape Section', 'learndash' ) .'"></span>
+										<span class="ld-course-builder-action ld-course-builder-action-show-hide ld-course-builder-action-show ld-course-builder-action-topic-show dashicons" title="'. esc_html__( 'Expand/Collape Section', 'learndash' ) .'"></span>
 									</div>
 									<div class="ld-course-builder-sub-items" style="display:none">'. $steps_section_item_html .'</div>			
 								</div>';
@@ -496,17 +495,17 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 								$steps_section_item_html = '<div id="ld-post-'. $steps_id .'" class="ld-course-builder-item ld-course-builder-quiz-item" data-ld-type="'. $steps_type .'" data-ld-id="'. $steps_id .'">
 									<div class="ld-course-builder-quiz-header ld-course-builder-header">
 										<span class="ld-course-builder-actions">
-											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-quiz-move dashicons" title="'. __( 'Move', 'learndash' ) .'"></span>
+											<span class="ld-course-builder-action ld-course-builder-action-move ld-course-builder-action-quiz-move dashicons" title="'. esc_html__( 'Move', 'learndash' ) .'"></span>
 											<span class="ld-course-builder-sub-actions">
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-quiz-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( _x( 'Edit %s Settings (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz') ) .'" ></span></a>
-												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-quiz-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text" >'. sprintf( _x( 'View %s (new window)', 'placeholder: Quiz', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz') ) .'"></span></a>
-												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-quiz-remove dashicons" title="'. sprintf( _x( 'Remove %s from %s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-edit ld-course-builder-action-quiz-edit dashicons" href="'. $edit_post_link .'"><span class="screen-reader-text">'. sprintf( esc_html_x( 'Edit %s Settings (new window)', 'placeholder: Topic', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz') ) .'" ></span></a>
+												<a target="_blank" class="ld-course-builder-action ld-course-builder-action-view ld-course-builder-action-quiz-view dashicons" href="'. $view_post_link .'"><span class="screen-reader-text" >'. sprintf( esc_html_x( 'View %s (new window)', 'placeholder: Quiz', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz') ) .'"></span></a>
+												<span class="ld-course-builder-action ld-course-builder-action-remove ld-course-builder-action-quiz-remove dashicons" title="'. sprintf( esc_html_x( 'Remove %1$s from %2$s', 'placeholders: Lesson, Course', 'learndash' ), LearnDash_Custom_Label::get_label('Quiz'), LearnDash_Custom_Label::get_label('Course') ) .'"></span>
 											</span>
 										</span>
 										<span class="ld-course-builder-title"><span class="ld-course-builder-title-text">'. get_the_title( $steps_id ) .'</span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. __( 'Edit Title', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. __( 'Ok', 'learndash' ) .'" ></span>
-											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. __( 'Cancel', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-pencil dashicons" title="'. esc_html__( 'Edit Title', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-ok dashicons" title="'. esc_html__( 'Ok', 'learndash' ) .'" ></span>
+											<span class="ld-course-builder-action ld-course-builder-edit-title-cancel dashicons" title="'. esc_html__( 'Cancel', 'learndash' ) .'" ></span>
 										</span>
 									</div>
 									<div class="ld-course-builder-sub-items"  style="display:none">'. $steps_section_item_html .'</div>			
@@ -718,10 +717,10 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 			}
 			if ( ( empty( $post_args['post_type'] ) ) || ( empty( $post_args['post_id'] ) ) ) {
 				$reply_data['status'] = false;
-				$reply_data['error_message'] = __( '#1: Invalid post data', 'learndash' );
+				$reply_data['error_message'] = esc_html__( '#1: Invalid post data', 'learndash' );
 			} else if ( in_array( $post_args['post_type'], array( 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz' )  ) === false ) {
 				$reply_data['status'] = false;
-				$reply_data['error_message'] = __( '#2: Invalid post data', 'learndash' );
+				$reply_data['error_message'] = esc_html__( '#2: Invalid post data', 'learndash' );
 			} else {
 				$new_step_id = wp_trash_post( $post_args['post_id'] );
 				$reply_data['status'] = true;
@@ -751,10 +750,10 @@ if (!class_exists('Learndash_Admin_Metabox_Course_Builder' ) ) {
 
 			if ( ( empty( $post_title ) ) || ( empty( $post_args['post_type'] ) ) || ( empty( $post_args['post_id'] ) ) ) {
 				$reply_data['status'] = false;
-				$reply_data['error_message'] = __( '#1: Invalid post data', 'learndash' );
+				$reply_data['error_message'] = esc_html__( '#1: Invalid post data', 'learndash' );
 			} else if ( in_array( $post_args['post_type'], array( 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz' )  ) === false ) {
 				$reply_data['status'] = false;
-				$reply_data['error_message'] = __( '#2: Invalid post data', 'learndash' );
+				$reply_data['error_message'] = esc_html__( '#2: Invalid post data', 'learndash' );
 			} else {
 				$edit_post = array(
 					'ID'			=> $post_args['post_id'],

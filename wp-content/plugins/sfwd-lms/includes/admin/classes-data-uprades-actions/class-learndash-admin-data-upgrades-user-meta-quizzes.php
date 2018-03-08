@@ -98,7 +98,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Upgrades_User_Meta_Quizzes' ) ) {
 						
 						$data['result_count'] 		= 	$data['total_count'] - count( $data['process_users'] );
 						$data['progress_percent'] 	= 	($data['result_count'] / $data['total_count']) * 100;
-						$data['progress_label']		= 	sprintf( __('%d of %s Users', 'learndash'), $data['result_count'], $data['total_count']);
+						$data['progress_label']		= 	sprintf( esc_html_x('%1$d of %2$s Users', 'placeholders: result count, total count', 'learndash'), $data['result_count'], $data['total_count']);
 
 						$this->set_transient( $this->transient_key, $data );
 						
@@ -112,7 +112,7 @@ if ( !class_exists( 'Learndash_Admin_Settings_Upgrades_User_Meta_Quizzes' ) ) {
 									unset( $data['process_users'][$user_idx] );
 									$data['result_count'] 		= 	$data['total_count'] - count( $data['process_users'] );
 									$data['progress_percent'] 	= 	($data['result_count'] / $data['total_count']) * 100;
-									$data['progress_label']		= 	sprintf( __('%d of %s Users', 'learndash'), $data['result_count'], $data['total_count']);
+									$data['progress_label']		= 	sprintf( esc_html_x('%1$d of %2$s Users', 'placeholders: result count, total count', 'learndash'), $data['result_count'], $data['total_count']);
 						
 									$this->set_transient( $this->transient_key, $data );
 									//break;
@@ -150,9 +150,9 @@ if ( !class_exists( 'Learndash_Admin_Settings_Upgrades_User_Meta_Quizzes' ) ) {
 			$user_quiz_upgraded = get_user_meta($user_id, $this->meta_key, true);
 			if ( $user_quiz_upgraded == 'COMPLETE' ) return true;
 			
-			//if ( empty( $user_quiz_upgraded ) ) {
-			//	learndash_report_clear_user_activity_by_types( $user_id, array( 'quiz' ) );
-			//}
+			if ( empty( $user_quiz_upgraded ) ) {
+				learndash_report_clear_user_activity_by_types( $user_id, array( 'quiz' ) );
+			}
 			
 			$user_quiz_upgraded = intval( $user_quiz_upgraded );
 			

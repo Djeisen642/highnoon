@@ -4,7 +4,7 @@
   src: url("../fonts/charitable.eot?#iefixo8h719") format("embedded-opentype"), url("../fonts/charitable.ttf?o8h719") format("truetype"), url("../fonts/charitable.woff?o8h719") format("woff"), url("../fonts/charitable.svg?o8h719#charitable") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"] {
+[class="charitable-icon"] {
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -16,19 +16,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.icon-donations:before {
+.charitable-icon-donations:before {
   content: "\e600";
   font-family: 'charitable'; }
 
-.icon-charitable:before {
+.charitable-icon-charitable:before {
   content: "\e601";
   font-family: 'charitable'; }
 
-.icon-campaign-creator:before {
+.charitable-icon-campaign-creator:before {
   content: "\e602";
   font-family: 'charitable'; }
 
-.icon-donations-grab:before {
+.charitable-icon-donations-grab:before {
   content: "\e603";
   font-family: 'charitable'; }
 

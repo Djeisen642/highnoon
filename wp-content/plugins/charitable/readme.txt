@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.9.1
-Stable tag: 1.5.8
+Tested up to: 4.9.4
+Stable tag: 1.5.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,34 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.5.11 =
+* FIX: Preserve pre-existing donor data when editing donations. [#526](https://github.com/Charitable/Charitable/issues/526)
+* FIX: Flush donation cache when transferring a donation from one campaign to another campaign. The stats of both the old and new campaigns should be updated automatically. [#527](https://github.com/Charitable/Charitable/issues/527)
+* FIX: Improved the way the Javascript is structured to ensure better compatibility with pages containing multiple donation forms. In one specific scenario (using Stripe with Stripe Checkout enabled) this could prevent donation forms from processing on these pages.
+
+= 1.5.10 =
+* FIX: Ensure that campaigns without end dates are saved with the correct value of 0 for the end date meta field. [#524](https://github.com/Charitable/Charitable/issues/524)
+
+= 1.5.9 =
+* NEW: Added `Charitable_Campaign_Processor` class in preparation for new version of Charitable Ambassadors.
+* NEW: Added `Charitable_Data_Processor` class in preparation for new version of Charitable Ambassadors. This will also be used eventually by other forms in Charitable core.
+* NEW: Allow `Charitable_Deprecated` class to be extended by plugins. [#503](https://github.com/Charitable/Charitable/issues/503)
+* NEW: Added support for showing helper text in Charitable's admin forms/meta boxes. [#511](https://github.com/Charitable/Charitable/pull/511)
+* FIX: Tweaked Donor role in Charitable, ensuring it does not take away permissions from users who are already registered. [#522](https://github.com/Charitable/Charitable/issues/522)
+* FIX: Ensured that custom donation fields with a checkbox are correctly saved. [#500](https://github.com/Charitable/Charitable/issues/500)
+* FIX: Improved styling of links within frontend Charitable notices. [#519](https://github.com/Charitable/Charitable/issues/519)
+* FIX: Always direct the donor to the main donation form when they submit the Donate widget. [#515](https://github.com/Charitable/Charitable/issues/515)
+* FIX: Made sure the Charitable loading gif has a transparent background to avoid display issues. [#518](https://github.com/Charitable/Charitable/issues/518)
+* FIX: Fixed a bug that broke the filtering of donations by date in the admin donations table in some non-English languages. [#506](https://github.com/Charitable/Charitable/issues/506)
+* FIX: Remove the "Send an email receipt..." checkbox when adding donations manually if the donation receipt email is disabled. [#490](https://github.com/Charitable/Charitable/issues/490)
+* FIX: Preserve redirection URL when proceeding to registration page from login page. [#504](https://github.com/Charitable/Charitable/issues/504)
+* FIX: Allow `charitable_template_from_session` to receive a different class name, to allow extensions to re-use it. [#509](https://github.com/Charitable/Charitable/issues/509)
+* FIX: Removed object caching for admin list of pages; we're using a single-request cache instead. [#505](https://github.com/Charitable/Charitable/issues/505)
+* FIX: Added namespace to Charitable icons to avoid clashes with other plugins/themes, including Redux. [#499](https://github.com/Charitable/Charitable/issues/499)
+* FIX: Re-order Forgot Password, Reset Password and Registration endpoints. [#502](https://github.com/Charitable/Charitable/issues/502)
+* FIX: Avoid fatal error with A2 Optimized fork of W3TC. [#496](https://github.com/Charitable/Charitable/issues/496)
+* FIX: Ensured that filters run as expected when checking what the current endpoint is. [#501](https://github.com/Charitable/Charitable/issues/501)
 
 = 1.5.8 =
 * FIX: Updated the data that is sent to PayPal to provide better compatibility with IPNs.

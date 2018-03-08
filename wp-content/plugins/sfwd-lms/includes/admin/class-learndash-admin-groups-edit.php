@@ -53,7 +53,7 @@ if (!class_exists('Learndash_Admin_Groups_Edit')) {
 			
 			add_meta_box(
 				'learndash_groups',
-				__( 'LearnDash Group Admin', 'learndash' ), 
+				esc_html__( 'LearnDash Group Admin', 'learndash' ),
 				array( $this, 'learndash_groups_page_box' ),
 				$this->groups_type
 			);
@@ -86,7 +86,7 @@ if (!class_exists('Learndash_Admin_Groups_Edit')) {
 				
 				$ld_auto_enroll_group_courses = get_post_meta( $post_id, 'ld_auto_enroll_group_courses', true );
 				
-				?><p><input type="checkbox" id="learndash_auto_enroll_group_courses" name="learndash_auto_enroll_group_courses" value="yes" <?php checked( $ld_auto_enroll_group_courses, 'yes' ) ?> /> <?php printf( _x('Enable automatic group enrollment when a user enrolls into any associated group %s', 'placeholder: course', 'learndash'), LearnDash_Custom_Label::label_to_lower( 'course' ) ); ?></p><?php
+				?><p><input type="checkbox" id="learndash_auto_enroll_group_courses" name="learndash_auto_enroll_group_courses" value="yes" <?php checked( $ld_auto_enroll_group_courses, 'yes' ) ?> /> <?php printf( esc_html_x('Enable automatic group enrollment when a user enrolls into any associated group %s', 'placeholder: course', 'learndash'), LearnDash_Custom_Label::label_to_lower( 'course' ) ); ?></p><?php
 
 				$ld_binary_selector_group_courses = new Learndash_Binary_Selector_Group_Courses(
 					array(
@@ -221,9 +221,9 @@ if (!class_exists('Learndash_Admin_Groups_Edit')) {
 			
 			foreach( $columns as $col_key => $col_label ) {
 				if ($col_key == 'date') {
-					$columns_new['groups_group_leaders'] = __('Group Leaders', 'learndash');
-					$columns_new['groups_group_courses'] = sprintf( _x('Group %s', 'Group Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ));
-					$columns_new['groups_group_users'] = __('Group Users', 'learndash');
+					$columns_new['groups_group_leaders'] = esc_html__('Group Leaders', 'learndash');
+					$columns_new['groups_group_courses'] = sprintf( esc_html_x('Group %s', 'Group Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ));
+					$columns_new['groups_group_users'] = esc_html__('Group Users', 'learndash');
 				}
 				$columns_new[$col_key] = $col_label;
 			}

@@ -9,8 +9,8 @@ if ( !class_exists( 'LearnDash_Permalinks' ) ) {
 			add_filter( 'get_edit_post_link', array( $this, 'get_edit_post_link' ), 10, 3 );
 			add_filter( 'get_sample_permalink', array( $this, 'get_sample_permalink' ), 99, 5 );
 
-			//add_filter( 'page_row_actions', array( $this, 'row_actions' ), 99, 2 );
-			//add_filter( 'post_row_actions', array( $this, 'row_actions' ), 99, 2 );
+			add_action( 'comment_form_top', array( $this, 'comment_form_top' ) );
+			add_action( 'comment_post', array( $this, 'comment_post' ) );
 		}
 		
 		/**
@@ -381,6 +381,45 @@ if ( !class_exists( 'LearnDash_Permalinks' ) ) {
 			}
 			
 			return $permalink;
+		}
+
+
+		/**
+		 * Action for comment form when nested URLs are enabled. This way ther user is returned to this course step URL
+		 *
+		 * @since 2.5.5
+		 */
+		function comment_form_top( ) {
+			$queried_object = get_queried_object();
+			
+			if ( ( is_a( $queried_object, 'WP_Post' ) ) && ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_Permalinks', 'nested_urls' ) == 'yes' ) ) {
+				if ( in_array( $queried_object->post_type, array( 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz' ) ) ) {
+					echo '<input type="hidden" name="step_id" value="'. $queried_object->ID .'" />';
+
+					$course_id = learndash_get_course_id( $queried_object->ID );
+					if ( !empty( $course_id ) ) {
+						echo '<input type="hidden" name="course_id" value="'. $course_id .'" />';
+						
+						$redirect_to = learndash_get_step_permalink( $queried_object->ID, $course_id );
+						if ( !empty( $redirect_to ) ) {
+							// This 'redirect_to' is used by WP in wp-comments-post.php to redirect back to a specific URL. 
+							// This is the important part. 
+							echo '<input type="hidden" name="redirect_to" value="'. $redirect_to .'" />';
+						}
+					}
+				}
+			}
+		}
+		
+		/**
+		 * Add the course_id to comment meta
+		 *
+		 * @since 2.5.5
+		 */
+		function comment_post( $comment_ID = 0 ) {
+			if ( ( isset( $_POST['course_id'] ) ) && ( !empty( $_POST['course_id'] ) ) ) {
+				update_comment_meta( $comment_ID, 'course_id', intval( $_POST['course_id'] ) );
+			}
 		}
 
 		// End of function

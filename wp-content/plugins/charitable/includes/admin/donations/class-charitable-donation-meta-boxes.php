@@ -6,7 +6,7 @@
  * @since     1.5.0
  * @version   1.5.0
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -35,7 +35,7 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 		private $meta_box_helper;
 
 		/**
-		 * Create object instance.		 
+		 * Create object instance.
 		 *
 		 * @since 1.5.0
 		 *
@@ -142,7 +142,7 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 		 */
 		public function get_form_meta_box() {
 			global $post;
-			
+
 			$form       = new Charitable_Admin_Donation_Form( charitable_get_donation( $post->ID ) );
 			$meta_boxes = array(
 				'donation-form' => array(
@@ -192,7 +192,8 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 					'title'    => __( 'Donation Actions', 'charitable' ),
 					'context'  => 'side',
 					'priority' => 'high',
-					'view'     => 'metaboxes/donation/donation-actions',
+					'view'     => 'metaboxes/actions',
+					'actions'  => charitable_get_donation_actions(),
 				),
 				'donation-details' => array(
 					'title'    => __( 'Donation Details', 'charitable' ),
@@ -269,7 +270,7 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 			}
 
 			$form = new Charitable_Admin_Donation_Form( charitable_get_donation( $donation_id ) );
-			
+
 			if ( $form->validate_submission() ) {
 				$this->disable_automatic_emails();
 

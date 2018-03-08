@@ -458,5 +458,7 @@
     .charitable-notice > ul li {
       padding: 0;
       border: none; }
+  .charitable-notice a {
+    text-decoration: underline; }
 
 /*# sourceMappingURL=charitable.css.map */

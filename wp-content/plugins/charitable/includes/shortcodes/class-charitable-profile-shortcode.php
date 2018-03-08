@@ -2,10 +2,12 @@
 /**
  * Profile shortcode class.
  *
- * @version     1.5.7
- * @package     Charitable/Shortcodes/Profile
- * @category    Class
- * @author      Eric Daams
+ * @package   Charitable/Shortcodes/Profile
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.5.7
  */
 
 // Exit if accessed directly.

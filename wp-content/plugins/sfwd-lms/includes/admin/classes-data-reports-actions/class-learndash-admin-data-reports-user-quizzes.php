@@ -43,7 +43,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Reports_Quizzes' ) ) {
 			?>
 			<tr id="learndash-data-reports-container-<?php echo $this->data_slug ?>" class="learndash-data-reports-container">
 				<td class="learndash-data-reports-button-container" style="width:20%">
-					<button class="learndash-data-reports-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-reports-'. $this->data_slug .'-'. get_current_user_id() ); ?>" data-slug="<?php echo $this->data_slug ?>"><?php printf( _x( 'Export User %s Data', 'Export User Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></button></td>
+					<button class="learndash-data-reports-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-reports-'. $this->data_slug .'-'. get_current_user_id() ); ?>" data-slug="<?php echo $this->data_slug ?>"><?php printf( esc_html_x( 'Export User %s Data', 'Export User Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></button></td>
 				<td class="learndash-data-reports-status-container" style="width: 80%">
 
 					<div style="display:none;" class="meter learndash-data-reports-status">
@@ -268,7 +268,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Reports_Quizzes' ) ) {
 						
 						$data['result_count'] 		= 	$data['total_count'] - count( $this->transient_data['users_ids'] );
 						$data['progress_percent'] 	= 	( $data['result_count'] / $data['total_count'] ) * 100;
-						$data['progress_label']		= 	sprintf( __('%d of %s Users', 'learndash'), $data['result_count'], $data['total_count']);
+						$data['progress_label']		= 	sprintf( esc_html_x('%1$d of %2$s Users', 'placeholders: result count, total count', 'learndash'), $data['result_count'], $data['total_count']);
 			
 					}
 				}
@@ -358,7 +358,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Reports_Quizzes' ) ) {
 
 			$this->data_headers['quiz_passed']				=	array( 
 																		'label'		=>	'passed',
-																		'default'	=>	_x('NO', 'Quiz Passed Report label: NO', 'learndash'),
+																		'default'	=> esc_html_x('NO', 'Quiz Passed Report label: NO', 'learndash'),
 																		'display'	=>	array( $this, 'report_column' )
 																	);
 		
@@ -407,7 +407,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Reports_Quizzes' ) ) {
 		
 			$ld_wp_upload_filename = $wp_upload_dir['basedir'] . $ld_file_part;
 			if ( wp_mkdir_p( dirname( $ld_wp_upload_filename ) ) === false ) {
-				$data['error_message'] = __("ERROR: Cannot create working folder. Check that the parent folder is writable", 'learndash') ." ". $ld_wp_upload_dir;
+				$data['error_message'] = esc_html__("ERROR: Cannot create working folder. Check that the parent folder is writable", 'learndash') ." ". $ld_wp_upload_dir;
 				return $data;
 			}
 			file_put_contents( trailingslashit( dirname( $ld_wp_upload_filename ) ) .'index.php', '// nothing to see here');
@@ -557,11 +557,11 @@ if ( !class_exists( 'Learndash_Admin_Data_Reports_Quizzes' ) ) {
 					break;
 					
 				case 'quiz_passed':
-					//$column_value = _x('NO', 'Quiz Passed Report label: NO', 'learndash');
+					//$column_value = esc_html_x('NO', 'Quiz Passed Report label: NO', 'learndash');
 
 					if ( ( property_exists( $report_item, 'activity_meta' ) ) && ( !empty( $report_item->activity_meta ) ) ) {
 						if ( ( isset( $report_item->activity_meta['pass'] ) ) && ( $report_item->activity_meta['pass'] == 1 ) ) {
-							$column_value = _x('YES', 'Quiz Passed Report label: YES', 'learndash');
+							$column_value = esc_html_x('YES', 'Quiz Passed Report label: YES', 'learndash');
 						}
 					}
 					break;

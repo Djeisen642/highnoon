@@ -96,7 +96,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Upgrades_User_Meta_Courses' ) ) {
 						
 						$data['result_count'] 		= 	$data['total_count'] - count( $data['process_users'] );
 						$data['progress_percent'] 	= 	($data['result_count'] / $data['total_count']) * 100;
-						$data['progress_label']		= 	sprintf( __('%d of %s Users', 'learndash'), $data['result_count'], $data['total_count']);
+						$data['progress_label']		= 	sprintf( esc_html_x('%1$d of %2$s Users', 'placeholders: result count, total count', 'learndash'), $data['result_count'], $data['total_count']);
 
 						$this->set_transient( $this->transient_key, $data );
 
@@ -111,7 +111,7 @@ if ( !class_exists( 'Learndash_Admin_Data_Upgrades_User_Meta_Courses' ) ) {
 									unset( $data['process_users'][$user_idx] );
 									$data['result_count'] 		= 	$data['total_count'] - count( $data['process_users'] );
 									$data['progress_percent'] 	= 	($data['result_count'] / $data['total_count']) * 100;
-									$data['progress_label']		= 	sprintf( __('%d of %s Users', 'learndash'), $data['result_count'], $data['total_count']);
+									$data['progress_label']		= 	sprintf( esc_html_x('%1$d of %2$s Users', 'placeholders: result count, total count', 'learndash'), $data['result_count'], $data['total_count']);
 						
 									$this->set_transient( $this->transient_key, $data );
 									//break;
@@ -390,8 +390,8 @@ if ( !class_exists( 'Learndash_Admin_Data_Upgrades_User_Meta_Courses' ) ) {
 			
 				$activity_ids_delete = array_diff( $activity_ids['existing'], $activity_ids['current'] );
 				if ( !empty( $activity_ids_delete ) ) {
-					error_log('user_id['. $user_id .'] activity_ids<pre>'. print_r($activity_ids, true) .'</pre>');
-					error_log('activity_ids_delete<pre>'. print_r( $activity_ids_delete, true) .'</pre>');
+					//error_log('user_id['. $user_id .'] activity_ids<pre>'. print_r($activity_ids, true) .'</pre>');
+					//error_log('activity_ids_delete<pre>'. print_r( $activity_ids_delete, true) .'</pre>');
 					learndash_report_clear_by_activity_ids( $activity_ids_delete );
 				}
 			}

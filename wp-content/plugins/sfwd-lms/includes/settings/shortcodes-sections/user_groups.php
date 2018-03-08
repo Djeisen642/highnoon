@@ -6,9 +6,9 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 			$this->fields_args = $fields_args;
 
 			$this->shortcodes_section_key 			= 	'user_groups';
-			$this->shortcodes_section_title 		= 	__( 'User Groups', 'learndash' );
+			$this->shortcodes_section_title 		= 	esc_html__( 'User Groups', 'learndash' );
 			$this->shortcodes_section_type			=	1;
-			$this->shortcodes_section_description	=	 __( 'This shortcode displays the list of groups users are assigned to as users or leaders.', 'learndash' );
+			$this->shortcodes_section_description	=	 esc_html__( 'This shortcode displays the list of groups users are assigned to as users or leaders.', 'learndash' );
 			
 			parent::__construct(); 
 		}
@@ -19,8 +19,8 @@ if ( ( class_exists( 'LearnDash_Shortcodes_Section' ) ) && ( !class_exists( 'Lea
 					'id'			=>	$this->shortcodes_section_key . '_user_id',
 					'name'  		=> 	'user_id', 
 					'type'  		=> 	'number',
-					'label' 		=> 	__( 'User ID', 'learndash' ),
-					'help_text'		=>	__('Enter specific User ID. Leave blank for current User.', 'learndash' ),
+					'label' 		=> 	esc_html__( 'User ID', 'learndash' ),
+					'help_text'		=>	esc_html__('Enter specific User ID. Leave blank for current User.', 'learndash' ),
 					'value' 		=> 	'',
 					'class'			=>	'small-text'
 				),

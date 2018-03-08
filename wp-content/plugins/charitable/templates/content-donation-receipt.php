@@ -43,4 +43,4 @@ do_action( 'charitable_donation_receipt', $donation );
  *
  * @param   Charitable_Donation $donation The Donation object.
  */
-do_action( 'charitable_donation_receipt_before', $donation );
+do_action( 'charitable_donation_receipt_after', $donation );

@@ -142,11 +142,17 @@ add_action( 'admin_init', 'learndash_add_essay_caps' );
  *
  * @return array
  */
-function learndash_map_metacap_essays( $caps, $cap, $user_id, $args ) {
+function learndash_map_metacap_essays( $caps, $cap, $user_id, $args = array() ) {
+	if ( !is_string( $cap ) ) return $caps;
 
 	/* If editing, deleting, or reading a essays, get the post and post type object. */
 	if ( 'edit_essay' == $cap || 'delete_essay' == $cap || 'read_essay' == $cap ) {
-
+		
+		// Ensure $args is valid
+		if ( ( !is_array( $args ) ) || ( !isset( $args[0] ) ) ) {
+			return $caps;
+		}
+		
 		$post      = get_post( $args[0] );
 		if ( ! is_a( $post, 'WP_Post' ) ) {
 			return $caps;
@@ -205,7 +211,7 @@ function learndash_register_essay_post_status() {
 		'exclude_from_search'       => true,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Graded <span class="count">(%s)</span>', 'Graded <span class="count">(%s)</span>' ),
+		'label_count'               => _n_noop( 'Graded <span class="count">(%s)</span>', 'Graded <span class="count">(%s)</span>', 'learndash' ),
 	) );
 
 	register_post_status( 'not_graded', array(
@@ -214,7 +220,7 @@ function learndash_register_essay_post_status() {
 		'exclude_from_search'       => true,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Not Graded <span class="count">(%s)</span>', 'Not Graded <span class="count">(%s)</span>' ),
+		'label_count'               => _n_noop( 'Not Graded <span class="count">(%s)</span>', 'Not Graded <span class="count">(%s)</span>', 'learndash' ),
 	) );
 }
 
@@ -312,6 +318,10 @@ function learndash_populate_essay_cpt_columns( $column, $post_id ) {
 			if ( ( !empty( $post_status_object ) ) && ( is_object( $post_status_object ) ) && ( property_exists( $post_status_object, 'label' ) ) ) {
 				echo $post_status_object->label;
 			}
+			$essay 			= get_post( $post_id );
+			if ( $essay->post_status == 'not_graded' ) {
+				?><button id="essay_approve_<?php echo $post_id ?>" class="small essay_approve_single"><?php esc_html_e( 'approve', 'learndash' ); ?></button><?php
+			}
 			break;
 			
 		case 'approval_points':
@@ -321,7 +331,7 @@ function learndash_populate_essay_cpt_columns( $column, $post_id ) {
 
 			if ( ! empty( $quiz_id ) ) {
 				$questionMapper = new WpProQuiz_Model_QuestionMapper();
-				$question       = $questionMapper->fetchById( intval( $question_id ) );
+				$question       = $questionMapper->fetchById( intval( $question_id ), null );
 				if ( $question instanceof WpProQuiz_Model_Question ) {
 								
 					$submitted_essay_data = learndash_get_submitted_essay_data( $quiz_id, $question_id, $essay );
@@ -334,11 +344,9 @@ function learndash_populate_essay_cpt_columns( $column, $post_id ) {
 				
 					if ( $essay->post_status == 'not_graded' ) {
 						$current_points = '<input id="essay_points_'. $post_id .'" class="small-text" type="number" value="'. $current_points .'" max="'. $max_points .'" min="0" step="1" name="essay_points['. $post_id .']" />';
-					} 
-					echo sprintf( esc_html_x('%1$d / %1$d', 'placeholders: current points / maximum point for assignment', 'learndash'), $current_points, $max_points);
-				
-					if ( $essay->post_status == 'not_graded' ) {
-						?><button id="essay_approve_<?php echo $post_id ?>" class="small essay_approve_single"><?php esc_html_e('approve', 'learndash'); ?></button><?php
+						echo sprintf( _x( '%1$s / %2$d', 'placeholders: input points / maximum point for essay', 'learndash' ), $current_points, $max_points );
+					} else {
+						echo sprintf( esc_html_x( '%1$d / %2$d', 'placeholders: current awarded points / maximum point for essay', 'learndash'), $current_points, $max_points );
 					}
 				} else {
 					echo '-';
@@ -783,7 +791,8 @@ function learndash_essay_grading_meta_box( $essay ) {
 
 	if ( ! empty( $quiz_id ) ) {
 		$questionMapper = new WpProQuiz_Model_QuestionMapper();
-		$question       = $questionMapper->fetchById( intval( $question_id ) );
+		$question       = $questionMapper->fetchById( intval( $question_id ), null );
+
 	}
 
 	if ( $question && is_a( $question, 'WpProQuiz_Model_Question' ) )  {
@@ -912,7 +921,7 @@ function learndash_essay_grading_meta_box( $essay ) {
 				/* translators: Publish box date format, see http://php.net/date */
 				$datef = esc_html__( 'M j, Y @ H:i' );
 				if ( 0 != $essay->ID ) :
-					$stamp = wp_kses_post( __( 'Submitted on: <b>%1$s</b>' ) );
+					$stamp = wp_kses_post( __( 'Submitted on: <b>%1$s</b>', 'learndash' ) );
 					$date  = date_i18n( $datef, strtotime( $essay->post_date ) );
 				endif;
 
@@ -947,9 +956,9 @@ function learndash_essay_grading_meta_box( $essay ) {
 				<?php
 				if ( current_user_can( "delete_post", $essay->ID ) ) :
 					if ( ! EMPTY_TRASH_DAYS ) :
-						$delete_text = esc_html__( 'Delete Permanently' );
+						$delete_text = esc_html__( 'Delete Permanently', 'learndash' );
 					else :
-						$delete_text = esc_html__( 'Move to Trash' );
+						$delete_text = esc_html__( 'Move to Trash', 'learndash' );
 					endif;
 					?>
 					<a class="submitdelete deletion" href="<?php echo get_delete_post_link( $essay->ID ); ?>"><?php echo $delete_text; ?></a><?php
@@ -1459,14 +1468,26 @@ function learndash_essay_fileupload_process( $uploadfiles, $question_id ) {
 			$filename = sprintf( 'question_%d_%s.%s', $question_id, $filetitle, $filetype['ext'] );
 			$filename = apply_filters( 'learndash_essay_upload_filename', $filename, $question_id, $filetitle, $filetype['ext'] );
 			$upload_dir = wp_upload_dir();
-			$upload_dir_base = $upload_dir['basedir'];
+			$upload_dir_base = str_replace( '\\', '/', $upload_dir['basedir'] );
 			$upload_url_base = $upload_dir['baseurl'];
 			$upload_dir_path = $upload_dir_base . apply_filters( 'learndash_essay_upload_dirbase', '/essays', $filename, $upload_dir );
 			$upload_url_path = $upload_url_base . apply_filters( 'learndash_essay_upload_urlbase', '/essays/', $filename, $upload_dir );
 
 			if ( ! file_exists( $upload_dir_path ) ) {
-				mkdir( $upload_dir_path );
+				if ( is_writable( dirname( $upload_dir_path ) ) ) {
+					wp_mkdir_p( $upload_dir_path );
+				} else {
+					die( esc_html__( 'Unable to write to UPLOADS directory. Is this directory writable by the server?', 'learndash' ) );
+					return;
+				}
 			}
+
+			// Add an index.php file to prevent directory browesing
+			$_index = trailingslashit( $upload_dir_path ) . 'index.php';
+			if ( !file_exists( $_index ) ) {
+				file_put_contents ( $_index , '//LearnDash is THE Best LMS' );
+			}					
+			
 
 			/**
 			 * Check if the filename already exist in the directory and rename the

@@ -38,23 +38,21 @@ add_action( 'after_setup_theme', 'learndash_add_theme_support' );
 function learndash_get_quiz_id_by_pro_quiz_id( $quiz_id ) {
 	global $wpdb;
 
-	$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s ", 'quiz_pro_id_' . intval( $quiz_id ) );
-	//error_log('sql_str['. $sql_str .']');
+	//$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s ", 'quiz_pro_id_' . intval( $quiz_id ) );
+	$sql_str = $wpdb->prepare("SELECT post_id FROM ". $wpdb->postmeta ." as postmeta INNER JOIN ". $wpdb->posts ." as posts ON posts.ID=postmeta.post_id
+		WHERE posts.post_type = %s AND posts.post_status = %s AND postmeta.meta_key = %s", 'sfwd-quiz', 'publish', 'quiz_pro_id_' . intval( $quiz_id ));
 	$quiz_post_id = $wpdb->get_var( $sql_str );
-	//error_log('quiz_post_id['. $quiz_post_id .']');
 	if ( $quiz_post_id != '' ) {
-		//error_log('#1: quiz_id['. $quiz_id .'] found['. $quiz_post_id .']');
 		return intval($quiz_post_id);
 	}
 	
 	
-	$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s AND meta_value=%d", 'quiz_pro_id', intval( $quiz_id ) );
-	//error_log('sql_str['. $sql_str .']');
+	//$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s AND meta_value=%d", 'quiz_pro_id', intval( $quiz_id ) );
+	$sql_str = $wpdb->prepare("SELECT post_id FROM ". $wpdb->postmeta ." as postmeta INNER JOIN ". $wpdb->posts ." as posts ON posts.ID=postmeta.post_id
+		WHERE posts.post_type = %s AND posts.post_status = %s AND meta_key = %s AND meta_value = %d", 'sfwd-quiz', 'publish', 'quiz_pro_id', intval( $quiz_id ));
 	$quiz_post_id = $wpdb->get_var( $sql_str );
-	//error_log('quiz_post_id['. $quiz_post_id .']');
 	if ( $quiz_post_id != '' ) {
 		update_post_meta( intval($quiz_post_id), 'quiz_pro_id_' . intval($quiz_id), intval($quiz_id) );
-		//error_log('#2: quiz_id['. $quiz_id .'] found['. $quiz_post_id .']');
 		return intval($quiz_post_id);
 	} 
 
@@ -68,122 +66,13 @@ function learndash_get_quiz_id_by_pro_quiz_id( $quiz_id ) {
 	//$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s AND meta_value LIKE '". $like_i ."' OR meta_value LIKE '". $like_s ."'", '_sfwd-quiz' );
 	
 	// Using REGEX because it is slightly faster then OR on text fields pattern search
-	$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " WHERE meta_key=%s AND meta_value REGEXP '". $like_i ."|". $like_s ."'", '_sfwd-quiz' );
-	//error_log('sql_str['. $sql_str .']');
+	$sql_str = $wpdb->prepare( "SELECT post_id FROM ". $wpdb->postmeta . " as postmeta INNER JOIN ". $wpdb->posts ." as posts ON posts.ID=postmeta.post_id WHERE posts.post_type = %s AND posts.post_status = %s AND postmeta.meta_key=%s AND postmeta.meta_value REGEXP '". $like_i ."|". $like_s ."'", 'sfwd-quiz', 'publish', '_sfwd-quiz' );
 	$quiz_post_id = $wpdb->get_var( $sql_str );
-	//error_log('quiz_post_id['. $quiz_post_id .']');
 	if ( $quiz_post_id != '' ) {
 		update_post_meta( intval($quiz_post_id), 'quiz_pro_id_' . intval($quiz_id), intval($quiz_id) );
 		update_post_meta( intval($quiz_post_id), 'quiz_pro_id', intval($quiz_id) );
-		//error_log('#3: quiz_id['. $quiz_id .'] found['. $quiz_post_id .']');
 		return $quiz_post_id;
 	} 
-
-	//error_log('#4: quiz_id['. $quiz_id .'] !found');	
-	/*
-	// DON'T DO THIS. We don't want to create the Quiz Post if there is an orphaned ProQuiz. 
-	$sql_str = $wpdb->prepare( "SELECT * FROM ". $wpdb->prefix . "wp_pro_quiz_master WHERE id=%d ", intval( $quiz_id ) );
-	//error_log('sql_str['. $sql_str .']');
-	$quiz_pro = $wpdb->get_row( $sql_str );	
-	//error_log('quiz_pro<pre>'. print_r($quiz_pro, true) .'</pre>');
-	if ($quiz_pro) {
-		$user_id = get_current_user_id();
-
-		$quiz_post_id = wp_insert_post(
-			array(
-				'post_title' => $quiz_pro->name,
-				'post_type' => 'sfwd-quiz',
-				'post_status' => 'draft',
-				'post_author' => $user_id,
-			)
-		);
-		if ( ! empty( $quiz_post_id ) ) {
-			learndash_update_setting( $quiz_post_id, 'quiz_pro', intval($quiz_id) );
-			update_post_meta( intval($quiz_post_id), 'quiz_pro_id_' . intval($quiz_id), intval($quiz_id) );
-			update_post_meta( intval($quiz_post_id), 'quiz_pro_id', intval($quiz_id) );
-		}
-		//error_log('#4: quiz_post_id['. $quiz_post_id .']');
-		
-		return intval( $quiz_post_id );
-	}
-	*/
-}
-
-function learndash_get_quiz_id_by_pro_quiz_id_v22( $quiz_id ) {
-
-	$opt = array(
-		'post_type' 		=> 	'sfwd-quiz',
-		'post_status' 		=> 	array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
-		'posts_per_page'	=> 	1,
-		'orderby'			=>	'date',
-		'order'				=>	'ASC',
-		'meta_query' => array(
-			array(
-				'key'		=>	'quiz_pro_id',
-				'value'		=>	intval($quiz_id),
-				'compare'	=>	'=',
-			),
-		),
-	);
-	
-	$quizzes = get_posts( $opt );
-	if (!empty( $quizzes ) ) {
-		return $quizzes[0]->ID;
-		
-	} else {
-		// Because we seem to have a mix of int and string values when these are serialized the format to look for end up being somewhat kludge-y. 
-		$quiz_id_str = sprintf('%s', $quiz_id);
-		$quiz_id_len = strlen($quiz_id_str);
-	
-		$opt = array(
-			'post_type' 		=> 	'sfwd-quiz',
-			'post_status' 		=> 	array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
-			// Mot sure why there would ever be more than one matching post for a quiz. 
-			'posts_per_page'	=> 	-1,
-			'orderby'			=>	'date',
-			'order'				=>	'ASC',
-			'meta_query' => array(
-				'relation'		=>	'OR',
-				array(
-					'key'		=>	'_sfwd-quiz',
-					'value'		=>	'sfwd-quiz_quiz_pro";i:'. $quiz_id .';',
-					'compare'	=>	'LIKE',
-				),
-				array(
-					'key' 		=>	'_sfwd-quiz',
-					'value'		=>	'"sfwd-quiz_quiz_pro";s:'. $quiz_id_len .':"'. $quiz_id_str .'"',
-					'compare'	=> 	'LIKE',
-				),
-			),
-		);
-	
-		$quizzes = get_posts( $opt );
-		if (!empty($quizzes)) {
-			foreach ( $quizzes as $quiz ) {
-				if ( $quiz_id == learndash_get_setting( $quiz, 'quiz_pro', true ) ) {
-					// Add the post_meta so next time we don't have to do the LIKE query and loop. 
-					update_post_meta( $quiz->ID, 'quiz_pro_id', $quiz_id );
-					
-					return $quiz->ID;
-				}
-			}
-		}
-	}
-}
-
-function learndash_get_quiz_id_by_pro_quiz_id_ORG( $quiz_id ) {
-	$opt = array(
-		'post_type' => 'sfwd-quiz',
-		'post_status' => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
-		'posts_per_page'	=> -1
-	);
-	$quizzes = get_posts( $opt );
-	foreach ( $quizzes as $quiz ) {
-		$pro_quiz_id  = learndash_get_setting( $quiz, 'quiz_pro', true );
-		if ( $quiz_id == $pro_quiz_id ) {
-			return $quiz->ID;
-		}
-	}
 }
 
 
@@ -484,7 +373,7 @@ function learndash_payment_buttons( $course ) {
 			$post_title = str_replace(array('[', ']'), array('', ''), $course->post_title);
 			
 			if ( empty( $course_price_type ) || $course_price_type == 'paynow' ) {
-				$shortcode_content = do_shortcode( '[paypal type="paynow" amount="'. $course_price .'" sandbox="'. $paypal_settings['paypal_sandbox'] .'" email="'. $paypal_settings['paypal_email'] .'" itemno="'. $course->ID .'" name="'. $post_title .'" noshipping="1" nonote="1" qty="1" currencycode="'. $paypal_settings['paypal_currency'] .'" rm="2" notifyurl="'. $paypal_settings['paypal_notifyurl'] .'" returnurl="'. $paypal_settings['paypal_returnurl'] .'" cancelurl="'. $paypal_settings['paypal_cancelurl'] .'" imagewidth="100px" pagestyle="paypal" lc="'. $paypal_settings['paypal_country'] .'" cbt="'. __( 'Complete Your Purchase', 'learndash' ) . '" custom="'. $user_id. '"]' );
+				$shortcode_content = do_shortcode( '[paypal type="paynow" amount="'. $course_price .'" sandbox="'. $paypal_settings['paypal_sandbox'] .'" email="'. $paypal_settings['paypal_email'] .'" itemno="'. $course->ID .'" name="'. $post_title .'" noshipping="1" nonote="1" qty="1" currencycode="'. $paypal_settings['paypal_currency'] .'" rm="2" notifyurl="'. $paypal_settings['paypal_notifyurl'] .'" returnurl="'. $paypal_settings['paypal_returnurl'] .'" cancelurl="'. $paypal_settings['paypal_cancelurl'] .'" imagewidth="100px" pagestyle="paypal" lc="'. $paypal_settings['paypal_country'] .'" cbt="'. esc_html__( 'Complete Your Purchase', 'learndash' ) . '" custom="'. $user_id. '"]' );
 				if (!empty( $shortcode_content ) ) {
 					$paypal_button = wptexturize( '<div class="learndash_checkout_button learndash_paypal_button">'. $shortcode_content .'</div>');
 				}
@@ -494,7 +383,7 @@ function learndash_payment_buttons( $course ) {
 				$course_price_billing_t3 = get_post_meta( $course_id, 'course_price_billing_t3',  true );
 				$srt = intval( $course_no_of_cycles );
 				
-				$shortcode_content = do_shortcode( '[paypal type="subscribe" a3="'. $course_price .'" p3="'. $course_price_billing_p3 .'" t3="'. $course_price_billing_t3 .'" sandbox="'. $paypal_settings['paypal_sandbox'] .'" email="'. $paypal_settings['paypal_email'] .'" itemno="'. $course->ID .'" name="'. $post_title .'" noshipping="1" nonote="1" qty="1" currencycode="'. $paypal_settings['paypal_currency'] .'" rm="2" notifyurl="'. $paypal_settings['paypal_notifyurl'] .'" cancelurl="'. $paypal_settings['paypal_cancelurl'] .'" returnurl="'. $paypal_settings['paypal_returnurl'] .'" imagewidth="100px" pagestyle="paypal" lc="'. $paypal_settings['paypal_country'] .'" cbt="'. __( 'Complete Your Purchase', 'learndash' ) .'" custom="'. $user_id .'" srt="'. $srt .'"]' );
+				$shortcode_content = do_shortcode( '[paypal type="subscribe" a3="'. $course_price .'" p3="'. $course_price_billing_p3 .'" t3="'. $course_price_billing_t3 .'" sandbox="'. $paypal_settings['paypal_sandbox'] .'" email="'. $paypal_settings['paypal_email'] .'" itemno="'. $course->ID .'" name="'. $post_title .'" noshipping="1" nonote="1" qty="1" currencycode="'. $paypal_settings['paypal_currency'] .'" rm="2" notifyurl="'. $paypal_settings['paypal_notifyurl'] .'" cancelurl="'. $paypal_settings['paypal_cancelurl'] .'" returnurl="'. $paypal_settings['paypal_returnurl'] .'" imagewidth="100px" pagestyle="paypal" lc="'. $paypal_settings['paypal_country'] .'" cbt="'. esc_html__( 'Complete Your Purchase', 'learndash' ) .'" custom="'. $user_id .'" srt="'. $srt .'"]' );
 				
 				if (!empty( $shortcode_content ) ) {
 					$paypal_button = wptexturize( '<div class="learndash_checkout_button learndash_paypal_button">'. $shortcode_content .'</div>' );
@@ -529,7 +418,7 @@ function learndash_payment_buttons( $course ) {
 				$dropdown_button .= 	'<div id="jq-dropdown-'. $course->ID .'" class="jq-dropdown jq-dropdown-tip checkout-dropdown-button">';
 				$dropdown_button .= 		'<ul class="jq-dropdown-menu">';
 				$dropdown_button .= 		'<li>';
-				$dropdown_button .= 			str_replace($button_text, __('Use Paypal', 'learndash'), $payment_buttons);
+				$dropdown_button .= 			str_replace($button_text, esc_html__('Use Paypal', 'learndash'), $payment_buttons);
 				$dropdown_button .= 		'</li>';
 				$dropdown_button .= 		'</ul>';
 				$dropdown_button .= 	'</div>';
@@ -708,8 +597,7 @@ function ld_remove_lessons_and_quizzes_page( $wp ) {
 
 	if ( is_archive() && ! is_admin() )  {
 		$post_type = get_post_type();
-
-		if ( $post_type == 'sfwd-lessons' || $post_type == 'sfwd-quiz' ) {
+		if ( ( is_post_type_archive( $post_type ) ) && ( in_array( $post_type, array('sfwd-lessons', 'sfwd-topic', 'sfwd-quiz' ) ) ) ) {
 			wp_redirect( home_url() );
 			exit;
 		}

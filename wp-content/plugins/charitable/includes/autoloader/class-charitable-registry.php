@@ -2,16 +2,18 @@
 /**
  * Responsible for holding instances of Charitable helper objects.
  *
- * @package   Charitable/Classes/Charitable_Registry 
+ * @package   Charitable/Classes/Charitable_Registry
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Registry' ) ) :
 
@@ -54,7 +56,7 @@ if ( ! class_exists( 'Charitable_Registry' ) ) :
 			if ( ! array_key_exists( $class_key, $this->objects ) ) {
 				$this->objects[ $class_key ] = $this->get_class_instance( $this->get_class_name( $class ) );
 			}
-			
+
 			return $this->objects[ $class_key ];
 		}
 
@@ -129,7 +131,8 @@ if ( ! class_exists( 'Charitable_Registry' ) ) :
 		 */
 		protected function get_class_instance( $class ) {
 			if ( ! class_exists( $class ) ) {
-				wp_die( sprintf( __( 'Class %s does not exists.', 'charitable' ), $class ) );
+				/* translators: %s: class name */
+				wp_die( sprintf( _x( 'Class %s does not exists.', 'error message when non-existent class is called', 'charitable' ), $class ) );
 			}
 
 			return new $class;

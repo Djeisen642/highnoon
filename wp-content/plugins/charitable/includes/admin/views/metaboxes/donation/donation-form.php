@@ -2,10 +2,11 @@
 /**
  * Renders the donation form meta box for the Donation post type.
  *
- * @since   1.5.0
- * @version 1.5.0
- *
- * @author  Studio 164a 
+ * @author    Eric Daams
+ * @package   Charitable/Admin Views/Metaboxes
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @since     1.5.0
+ * @version   1.5.0
  */
 
 $form   = $view_args['form'];
@@ -15,13 +16,13 @@ unset( $fields['meta_fields'] );
 
 ?>
 <div class="donation-banner-wrapper">
-    <div class="donation-banner">
-        <h3 class="donation-number"><?php printf( '%s #%d', __( 'Donation', 'charitable' ), $form->get_donation()->get_number() ) ?></h3>
-    </div>
+	<div class="donation-banner">
+		<h3 class="donation-number"><?php printf( '%s #%d', __( 'Donation', 'charitable' ), $form->get_donation()->get_number() ) ?></h3>
+	</div>
 </div>
 <div class="charitable-form-fields primary">
-    <?php
-    $form->view()->render_hidden_fields();
-    $form->view()->render_fields( $fields );
-    ?>
+	<?php
+	$form->view()->render_hidden_fields();
+	$form->view()->render_fields( $fields );
+	?>
 </div><!-- .charitable-form-fields -->

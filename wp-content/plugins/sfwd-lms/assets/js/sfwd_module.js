@@ -181,7 +181,10 @@ jQuery(document).ready(function(){
 		}
 	}
 
-	jQuery('a.user_statistic').click(function(e) {
+	jQuery( '#ld_course_info' ).on( 'click', 'a.user_statistic', show_user_statistic );
+	jQuery( '#learndash_profile' ).on( 'click', 'a.user_statistic', show_user_statistic );
+
+	function show_user_statistic( e ) {
 		e.preventDefault();
 		
 		var refId 				= 	jQuery(this).data('ref_id');
@@ -231,8 +234,7 @@ jQuery(document).ready(function(){
 		jQuery('#wpProQuiz_overlay_close').click(function() {
 			jQuery('#wpProQuiz_user_overlay').hide();
 		});
-	});
-	
+	}
 });
 
 jQuery(document).ready(function() {
@@ -1298,7 +1300,7 @@ var _click_confirm = null;
 jQuery(document).ready(function() {
 
 	if (jQuery( '#course_progress_details a.learndash-profile-course-details-link' ).length ) {
-		jQuery( '#course_progress_details a.learndash-profile-course-details-link' ).click(function() {
+		jQuery( '#course_progress_details' ).on( 'click', 'a.learndash-profile-course-details-link', function() {
 			var clicked_el = jQuery(this);
 			var clicked_div = jQuery(clicked_el).next();
 			jQuery('.widget_course_return', clicked_div).hide();
@@ -1871,7 +1873,9 @@ jQuery(function($) {
 
 jQuery(document).ready(function() {
 	if ( ( jQuery( 'body.wp-admin.profile-php #quiz_progress_details' ).length ) || ( jQuery( 'body.wp-admin.user-edit-php #quiz_progress_details' ).length ) ) {
-		jQuery( '#quiz_progress_details a.remove-quiz' ).click( function( e ) {
+
+		jQuery( '#quiz_progress_details' ).on( 'click', 'a.remove-quiz', function(e) {
+			
 			e.preventDefault();
 			if ( jQuery( '#ld-confirm-quiz-delete-message' ).length ) {
 				var quiz_delete_confirm_message = jQuery( '#ld-confirm-quiz-delete-message' ).html();

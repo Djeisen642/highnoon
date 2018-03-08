@@ -1,6 +1,4 @@
 <?php
-//require_once( ABSPATH . 'wp-admin/includes/meta-boxes.php' );
-
 if ( !class_exists( 'LearnDash_Settings_Page' ) ) {
 	abstract class LearnDash_Settings_Page {
 
@@ -206,7 +204,7 @@ if ( !class_exists( 'LearnDash_Settings_Page' ) ) {
 						</div>
 					<?php do_action('learndash_settings_page_inside_form_bottom', $this->settings_screen_id ); ?>
 					<?php echo $this->get_admin_page_form( false ); ?>
-					<?php do_action('learndash_settings_page_before_form', $this->settings_screen_id ); ?>
+					<?php do_action('learndash_settings_page_after_form', $this->settings_screen_id ); ?>
 				</div>
 				<?php
 				
@@ -224,7 +222,7 @@ if ( !class_exists( 'LearnDash_Settings_Page' ) ) {
 
 						do_settings_sections( $this->settings_page_id );
 				    ?>
-				    <?php submit_button( __( 'Save Changes', 'learndash' ) ) ; ?>
+				    <?php submit_button( esc_html__( 'Save Changes', 'learndash' ) ) ; ?>
 					<?php echo $this->get_admin_page_form( false ); ?>
 				</div>
 				<?php

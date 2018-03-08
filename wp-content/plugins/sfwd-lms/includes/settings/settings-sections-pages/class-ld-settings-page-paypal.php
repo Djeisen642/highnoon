@@ -6,7 +6,7 @@ if ( ( class_exists( 'LearnDash_Settings_Page' ) ) && ( !class_exists( 'LearnDas
 			$this->parent_menu_page_url		=	'admin.php?page=learndash_lms_settings';
 			$this->menu_page_capability		=	LEARNDASH_ADMIN_CAPABILITY_CHECK;
 			$this->settings_page_id 		= 	'learndash_lms_settings_paypal';
-			$this->settings_page_title 		= 	__( 'PayPal Settings', 'learndash' );
+			$this->settings_page_title 		= 	esc_html__( 'PayPal Settings', 'learndash' );
 			$this->settings_tab_title		=	$this->settings_page_title;
 			$this->settings_tab_priority	=	20;
 

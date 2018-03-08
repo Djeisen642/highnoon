@@ -421,7 +421,13 @@ body.post-type-sfwd-transactions a.page-title-action {
 
 
 /* Styles for the Support tab table output */
+#learndash-settings-support h2 {
+	clear: both;
+}
+
+#learndash-settings-support .learndash-support-settings-desc,	
 #learndash-settings-support table.learndash-support-settings {
+	clear: both;
 	width: 80%;
 }
 

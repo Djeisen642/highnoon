@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Admin/Charitable_Campaign_Meta_Boxes
  * @author    Eric Daams
- * @copyright Copyright (c) 2017, Studio 164a
+ * @copyright Copyright (c) 2018, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
@@ -290,9 +290,11 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 			) );
 
 			$submitted = $_POST;
+			$data      = array(
+				'ID' => $campaign_id,
+			);
 
 			foreach ( $meta_keys as $key ) {
-
 				$value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
 
 				/**
@@ -316,11 +318,11 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				 * @param array $submitted   All of the submitted values.
 				 * @param int   $campaign_id The campaign ID.
 				 */
-				$value = apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted, $campaign_id );
+				$data[ $key ] = apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted, $campaign_id );
+			}
 
-				update_post_meta( $campaign_id, $key, $value );
-
-			}//end foreach
+			$processor = new Charitable_Campaign_Processor( $data, $meta_keys );
+			$processor->save_meta();
 
 			/**
 			 * Do something with the posted data.

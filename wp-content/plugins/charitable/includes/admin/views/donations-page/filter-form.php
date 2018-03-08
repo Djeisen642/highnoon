@@ -23,7 +23,7 @@ $post_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 <div id="charitable-donations-filter-modal" style="display: none" class="charitable-donations-modal <?php echo esc_attr( $modal_class ) ?>" tabindex="0">
 	<a class="modal-close"></a>
 	<h3><?php _e( 'Filter Donations', 'charitable' ) ?></h3>
-	<form class="charitable-donations-modal-form" method="get" action="">
+	<form class="charitable-donations-modal-form charitable-modal-form" method="get" action="">
 		<input type="hidden" name="post_type" class="post_type_page" value="donation">
 		<fieldset>
 			<legend><?php _e( 'Filter by Date', 'charitable' ) ?></legend>

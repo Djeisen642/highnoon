@@ -96,7 +96,7 @@ function learndash_quizinfo( $attr ) {
 			break;
 
 		case 'pass':
-			$selected_quizinfo['pass'] = ! empty( $selected_quizinfo['pass'] ) ? __( 'Yes', 'learndash' ) : __( 'No', 'learndash' );
+			$selected_quizinfo['pass'] = ! empty( $selected_quizinfo['pass'] ) ? esc_html__( 'Yes', 'learndash' ) : esc_html__( 'No', 'learndash' );
 			break;
 
 		case 'quiz_title':

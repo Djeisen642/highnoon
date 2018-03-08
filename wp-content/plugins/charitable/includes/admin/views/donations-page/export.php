@@ -11,4 +11,3 @@
 <div class="alignleft actions charitable-export-actions">
 	<a href="#charitable-donations-export-modal" class="charitable-donations-export button dashicons-before dashicons-download trigger-modal hide-if-no-js" data-trigger-modal><?php _e( 'Export', 'charitable' ) ?></a>
 </div>
-

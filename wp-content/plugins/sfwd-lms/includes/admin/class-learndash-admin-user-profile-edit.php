@@ -30,6 +30,12 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 			);
 			$learndash_assets_loaded['styles']['learndash_style'] = __FUNCTION__;
 
+			$filepath = SFWD_LMS::get_template( 'learndash_template_style.css', null, null, true );
+			if ( !empty( $filepath ) ) {
+				wp_enqueue_style( 'learndash_template_style_css', learndash_template_url_from_path( $filepath ), array(), LEARNDASH_SCRIPT_VERSION_TOKEN );
+				$learndash_assets_loaded['styles']['learndash_template_style_css'] = __FUNCTION__;
+			} 
+
 
 			wp_enqueue_style( 
 				'learndash-admin-style', 
@@ -38,7 +44,6 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 				LEARNDASH_SCRIPT_VERSION_TOKEN 
 			);
 			$learndash_assets_loaded['styles']['learndash-admin-style'] = __FUNCTION__;
-
 
 
 			wp_enqueue_style( 
@@ -67,6 +72,20 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 				true 
 			);
 			$learndash_assets_loaded['scripts']['sfwd-module-script'] = __FUNCTION__;	
+
+			$filepath = SFWD_LMS::get_template( 'learndash_pager.css', null, null, true );
+			if ( !empty( $filepath ) ) {
+				wp_enqueue_style( 'learndash_pager_css', learndash_template_url_from_path( $filepath ), array(), LEARNDASH_SCRIPT_VERSION_TOKEN );
+				$learndash_assets_loaded['styles']['learndash_pager_css'] = __FUNCTION__;
+			} 
+
+			$filepath = SFWD_LMS::get_template( 'learndash_pager.js', null, null, true );
+			if ( !empty( $filepath ) ) {
+				wp_enqueue_script( 'learndash_pager_js', learndash_template_url_from_path( $filepath ), array( 'jquery' ), LEARNDASH_SCRIPT_VERSION_TOKEN, true );
+				$learndash_assets_loaded['scripts']['learndash_pager_js'] = __FUNCTION__;
+			}
+
+
 
 			$data = array();
 
@@ -139,15 +158,27 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 		 */
 		function show_user_course_info( $user ) {
 			$user_id = $user->ID;
-			echo '<h3>' . sprintf( _x( '%s Info', 'Course Info Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '</h3>';
+			echo '<h3>' . sprintf( esc_html_x( '%s Info', 'Course Info Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ) . '</h3>';
 			//echo $this->get_course_info( $user_id );
-			echo SFWD_LMS::get_course_info( $user_id );
+			
+			$atts = array(
+				'progress_num' => LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Section_General_Per_Page', 'progress_num' ),
+				'progress_orderby' => 'title',
+				'progress_order' => 'ASC',
+				'quiz_num' => LearnDash_Settings_Section::get_section_setting( 'LearnDash_Settings_Section_General_Per_Page', 'quiz_num' ),
+				'quiz_orderby' => 'title',
+				'quiz_order' => 'ASC'
+			);
+			
+			$atts = apply_filters('learndash_profile_course_info_atts', $atts, $user );
+			
+			echo SFWD_LMS::get_course_info( $user_id, $atts );
 		}
 		
 		function show_user_upgrade_data_link( $user ) {
 			?>
-			<h2><?php _e( 'Upgrade User Data', 'learndash' ); ?></h2>
-			<p><button class="learndash-data-upgrades-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-upgrades-user-meta-courses-' . get_current_user_id() ); ?>" data-slug="user-meta-courses"><?php printf( _x( 'Upgrade User %s Data', 'Upgrade User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></button> <button class="learndash-data-upgrades-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-upgrades-user-meta-quizzes-' . get_current_user_id() ); ?>" data-slug="user-meta-quizzes"><?php printf( _x( 'Upgrade User %s Data', 'Upgrade User Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></button></p><?php
+			<h2><?php esc_html_e( 'Upgrade User Data', 'learndash' ); ?></h2>
+			<p><button class="learndash-data-upgrades-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-upgrades-user-meta-courses-' . get_current_user_id() ); ?>" data-slug="user-meta-courses"><?php printf( esc_html_x( 'Upgrade User %s Data', 'Upgrade User Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></button> <button class="learndash-data-upgrades-button button button-primary" data-nonce="<?php echo wp_create_nonce( 'learndash-data-upgrades-user-meta-quizzes-' . get_current_user_id() ); ?>" data-slug="user-meta-quizzes"><?php printf( esc_html_x( 'Upgrade User %s Data', 'Upgrade User Quiz Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'quiz' ) ); ?></button></p><?php
 		}
 				
 				
@@ -166,8 +197,8 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 
 			?>
 			<div id="learndash_delete_user_data">
-				<h2><?php printf( _x( 'Permanently Delete %s Data', 'Permanently Delete Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'Course' ) ); ?></h2>
-				<p><input type="checkbox" id="learndash_delete_user_data" name="learndash_delete_user_data" value="<?php echo $user->ID; ?>"> <label for="learndash_delete_user_data"><?php _e( 'Check and click update profile to permanently delete user\'s LearnDash course data. <strong>This cannot be undone.</strong>', 'learndash' ); ?></label></p>
+				<h2><?php printf( esc_html_x( 'Permanently Delete %s Data', 'Permanently Delete Course Data Label', 'learndash' ), LearnDash_Custom_Label::get_label( 'Course' ) ); ?></h2>
+				<p><input type="checkbox" id="learndash_delete_user_data" name="learndash_delete_user_data" value="<?php echo $user->ID; ?>"> <label for="learndash_delete_user_data"><?php echo wp_kses_post( __( 'Check and click update profile to permanently delete user\'s LearnDash course data. <strong>This cannot be undone.</strong>', 'learndash' ) ); ?></label></p>
 				<?php
 			
 					global $wpdb;
@@ -198,7 +229,7 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 							if ( !empty( $quiz_query->posts ) ) {
 					
 								?>
-								<p><label for=""><?php _e( 'Remove the Quiz lock(s) for this user.', 'learndash' ); ?></label> <select 
+								<p><label for=""><?php esc_html_e( 'Remove the Quiz lock(s) for this user.', 'learndash' ); ?></label> <select
 									id="learndash_delete_quiz_user_lock_data" name="learndash_delete_quiz_user_lock_data">
 									<option value=""></option>
 									<?php
@@ -293,8 +324,8 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 					
 					if ( $course_autoenroll_admin_filtered ) {
 						?>
-						<h3><?php echo sprintf( _x('User Enrolled %s', 'User Enrolled Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) )  ?></h3>
-						<p><?php _e('Administrators are automatically enrolled in all Courses.', 'learndash') ?></p>
+						<h3><?php echo sprintf( esc_html_x('User Enrolled %s', 'User Enrolled Courses', 'learndash'), LearnDash_Custom_Label::get_label( 'courses' ) )  ?></h3>
+						<p><?php esc_html_e('Administrators are automatically enrolled in all Courses.', 'learndash') ?></p>
 						<?php
 						return;
 					} 
@@ -374,10 +405,10 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 						<table id="learndash-admin-user-courses" class="learndash-admin-user-courses">
 						<thead>
 							<tr>
-								<th class="col-title"><?php _e('Title', 'learndash' ); ?></th>
-								<th class="col-status"><?php _e('Status', 'learndash' ); ?></th>
-								<th class="col-steps"><?php _e('Steps', 'learndash' ); ?></th>
-								<th class="col-steps"><?php _e('Started / Completed', 'learndash' ); ?></th>
+								<th class="col-title"><?php esc_html_e('Title', 'learndash' ); ?></th>
+								<th class="col-status"><?php esc_html_e('Status', 'learndash' ); ?></th>
+								<th class="col-steps"><?php esc_html_e('Steps', 'learndash' ); ?></th>
+								<th class="col-steps"><?php esc_html_e('Started / Completed', 'learndash' ); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -408,7 +439,7 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 												</span>
 											<?php } ?>
 											<span class="view">
-												<a href="<?php echo get_permalink( $course->ID ); ?>" aria-label="View"><?php _e('view', 'learndash') ?></a>
+												<a href="<?php echo get_permalink( $course->ID ); ?>" aria-label="View"><?php esc_html_e('view', 'learndash') ?></a>
 												|
 											</span>
 										</div>
@@ -451,12 +482,12 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 										$since = ld_course_access_from( $course->ID,  $user->ID );
 										if ( !empty( $since ) ) {
 											if ( !empty( $output_str ) ) $output_str .= '<br />';
-											$output_str .= sprintf( __('Started: %s', 'learndash' ), learndash_adjust_date_time_display( $since ) );
+											$output_str .= sprintf( esc_html_x('Started: %s', 'placeholder: Started date', 'learndash' ), learndash_adjust_date_time_display( $since ) );
 										} else {
 											$since = learndash_user_group_enrolled_to_course_from( $user->ID, $course->ID );
 											if ( !empty( $since ) ) {
 												if ( !empty( $output_str ) ) $output_str .= '<br />';
-												$output_str .= sprintf( __('Started: %s (Group Access)', 'learndash'), learndash_adjust_date_time_display( $since ) );
+												$output_str .= sprintf( esc_html_x('Started: %s (Group Access)', 'placeholder: Started Group date', 'learndash'), learndash_adjust_date_time_display( $since ) );
 											}
 										}
 										
@@ -467,12 +498,12 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 											$expired = ld_course_access_expired( $course_id, $user->ID );
 											if ( $expired ) {
 												if ( !empty( $output_str ) ) $output_str .= '<br />'; 
-												$output_str .= __('(access expired)', 'learndash');
+												$output_str .= esc_html__('(access expired)', 'learndash');
 											} else {
 												$expired_on = ld_course_access_expires_on($course_id, $user->ID);
 												if (!empty( $expired_on ) ) {
 													if ( !empty( $output_str ) ) $output_str .= '<br />'; 
-													$output_str .= sprintf( _x('Expires: %s', 'Course Expires on date', 'learndash'), learndash_adjust_date_time_display( $expired_on ) );
+													$output_str .= sprintf( esc_html_x('Expires: %s', 'Course Expires on date', 'learndash'), learndash_adjust_date_time_display( $expired_on ) );
 												}
 											}
 										}
@@ -480,7 +511,7 @@ if (!class_exists('Learndash_Admin_User_Profile_Edit')) {
 										$completed = get_user_meta( $user->ID, 'course_completed_'. $course->ID, true );
 										if ( !empty( $completed ) ) {
 											if ( !empty( $output_str ) ) $output_str .= '<br />'; 
-											$output_str .= sprintf( __('Completed: %s', 'learndash' ), learndash_adjust_date_time_display( $completed ) );
+											$output_str .= sprintf( esc_html_x('Completed: %s', 'placeholder: Completed date', 'learndash' ), learndash_adjust_date_time_display( $completed ) );
 										} 
 										
 										echo $output_str

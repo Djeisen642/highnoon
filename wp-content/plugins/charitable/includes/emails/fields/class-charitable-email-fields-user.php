@@ -2,10 +2,12 @@
 /**
  * Email Fields Donation class.
  *
- * @since   1.5.0
- * @version 1.5.0
- * @package Charitable/Classes/Charitable_Email_Fields_User
- * @author  Eric Daams
+ * @package   Charitable/Classes/Charitable_Email_Fields_User
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.5.0
+ * @version   1.5.0
  */
 
 // Exit if accessed directly.
@@ -37,7 +39,7 @@ if ( ! class_exists( 'Charitable_Email_Fields_User' ) ) :
 		 * @param Charitable_Email $email   The email object.
 		 * @param boolean          $preview Whether this is an email preview.
 		 */
-		public function __construct( Charitable_Email $email, $preview ) {            
+		public function __construct( Charitable_Email $email, $preview ) {
 			$this->email   = $email;
 			$this->preview = $preview;
 			$this->user    = $email->get( 'user' );
@@ -70,7 +72,7 @@ if ( ! class_exists( 'Charitable_Email_Fields_User' ) ) :
 					'preview'     => 'Adam Jones',
 				),
 			);
-			
+
 			if ( $this->has_valid_user() ) {
 				$fields = array_merge_recursive( $fields, array(
 					'user_login'   => array( 'value' => $this->user->user_login ),
@@ -112,7 +114,7 @@ if ( ! class_exists( 'Charitable_Email_Fields_User' ) ) :
 		 */
 		public function has_valid_user() {
 			return is_a( $this->user, 'WP_User' );
-		}		
+		}
 	}
 
 endif;

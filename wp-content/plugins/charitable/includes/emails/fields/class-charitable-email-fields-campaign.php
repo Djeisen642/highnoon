@@ -2,10 +2,12 @@
 /**
  * Email Fields Campaign class.
  *
- * @since   1.5.0
- * @version 1.5.0
- * @package Charitable/Classes/Charitable_Email_Fields_Campaign
- * @author  Eric Daams
+ * @package   Charitable/Classes/Charitable_Email_Fields_Campaign
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2018, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.5.0
+ * @version   1.5.0
  */
 
 // Exit if accessed directly.

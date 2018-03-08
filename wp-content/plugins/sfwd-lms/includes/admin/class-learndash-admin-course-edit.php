@@ -71,7 +71,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 				if ( apply_filters('learndash_show_course_builder', $this->use_course_builder ) === true ) {
 					add_meta_box(
 						'learndash_course_builder',
-						sprintf( _x( 'LearnDash %s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+						sprintf( esc_html_x( 'LearnDash %s Builder', 'Course Builder', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 						array( $this->course_builder, 'course_builder_box' ),
 						$this->courses_post_type
 					);
@@ -92,7 +92,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 	
 					add_meta_box(
 						'learndash_couse_groups',
-						sprintf( _x( 'LearnDash %s Groups', 'LearnDash Course Groups', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+						sprintf( esc_html_x( 'LearnDash %s Groups', 'LearnDash Course Groups', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 						array( $this, 'course_groups_page_box' ),
 						$this->courses_post_type
 					);
@@ -114,7 +114,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 	
 					add_meta_box(
 						'learndash_couse_users',
-						sprintf( _x( 'LearnDash %s Users', 'LearnDash Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
+						sprintf( esc_html_x( 'LearnDash %s Users', 'LearnDash Course Users', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ),
 						array( $this, 'course_users_page_box' ),
 						$this->courses_post_type
 					);
@@ -180,7 +180,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 				if ( LearnDash_Settings_Section::get_section_setting('LearnDash_Settings_Section_General_Admin_User', 'courses_autoenroll_admin_users' ) === 'yes' ) {
 					$exclude_admin = true;
 					$course_users_binary_args['role__not_in'] = 'Administrator';
-					$metabox_description .= __('Admininstrator users are not shown because they are auto-enrolled.', 'learndash');
+					$metabox_description .= esc_html__('Admininstrator users are not shown because they are auto-enrolled.', 'learndash');
 					
 				} else {
 					$exclude_admin = false;
@@ -206,7 +206,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 				wp_nonce_field( 'learndash_course_users_nonce_'. $this->course_id, 'learndash_course_users_nonce' );
 
 				if ( !empty( $metabox_description ) ) $metabox_description .= ' ';
-				$metabox_description .= sprintf( _x('Users enrolled via Groups using this %s are excluded from the listings below and should be manage via the Group admin screen.', 'placeholder: Course', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) );
+				$metabox_description .= sprintf( esc_html_x('Users enrolled via Groups using this %s are excluded from the listings below and should be manage via the Group admin screen.', 'placeholder: Course', 'learndash'), LearnDash_Custom_Label::get_label( 'course' ) );
 			
 				?>
 				<div id="learndash_course_users_page_box" class="learndash_course_users_page_box">
@@ -220,7 +220,7 @@ if (!class_exists('Learndash_Admin_Course_Edit')) {
 				</div>
 				<?php 
 			} else {
-				?><p><?php echo sprintf( _x( 'The %s price type is set to "open". This means ALL are automatically enrolled.', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></p><?php
+				?><p><?php echo sprintf( esc_html_x( 'The %s price type is set to "open". This means ALL are automatically enrolled.', 'placeholder: Course', 'learndash' ), LearnDash_Custom_Label::get_label( 'course' ) ); ?></p><?php
 			}
 		}
 		
