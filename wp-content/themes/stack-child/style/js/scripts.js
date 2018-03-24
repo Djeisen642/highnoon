@@ -2137,30 +2137,25 @@ mr = (function (mr, $, window, document){
 			    var videoCover = $(this);
 			    if(videoCover.find('iframe[src]').length){
               var src = videoCover.find('iframe').attr('src');
-              if (src.indexOf('hn') >= 0) {
-                videoCover.addClass('reveal-video');
-              } else {
-                videoCover.find('iframe').attr('data-src', videoCover.find('iframe').attr('src'));
-  			        videoCover.find('iframe').attr('src','');
-              }
+              videoCover.addClass('reveal-video');
 			    }
 			});
 
-			$('.video-cover .video-play-icon').on("click", function(){
-			    var playIcon = $(this);
-			    var videoCover = playIcon.closest('.video-cover');
-			    if(videoCover.find('video').length){
-			        var video = videoCover.find('video').get(0);
-			        videoCover.addClass('reveal-video');
-			        video.play();
-			        return false;
-			    }else if(videoCover.find('iframe').length){
-			        var iframe = videoCover.find('iframe');
-			        iframe.attr('src',iframe.attr('data-src'));
-			        videoCover.addClass('reveal-video');
-			        return false;
-			    }
-			});
+			// $('.video-cover .video-play-icon').on("click", function(){
+			//     var playIcon = $(this);
+			//     var videoCover = playIcon.closest('.video-cover');
+			//     if(videoCover.find('video').length){
+			//         var video = videoCover.find('video').get(0);
+			//         videoCover.addClass('reveal-video');
+			//         video.play();
+			//         return false;
+			//     }else if(videoCover.find('iframe').length){
+			//         var iframe = videoCover.find('iframe');
+			//         iframe.attr('src',iframe.attr('data-src'));
+			//         videoCover.addClass('reveal-video');
+			//         return false;
+			//     }
+			// });
 	  };
 
 	  mr.video = {
